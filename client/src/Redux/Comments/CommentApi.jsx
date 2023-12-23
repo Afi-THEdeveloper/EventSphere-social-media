@@ -13,22 +13,6 @@ export const commentsApi = rootApi.injectEndpoints({
         body: data,
       }),
       invalidatesTags: ["Comment"],
-
-      // async onQueryStarted(args, { queryFulfilled, dispatch }) {
-      //     try {
-
-      //         const { data: createdComment} = await queryFulfilled;
-
-      //         dispatch(
-      //             rootApi.util.updateQueryData('fetchComments', undefined, (draft) => {
-      //                 draft?.push(createdComment);
-      //             })
-      //         )
-
-      //     } catch (error) {
-      //         console.log(error);
-      //     }
-      // }
     }),
 
     addReply: builder.mutation({

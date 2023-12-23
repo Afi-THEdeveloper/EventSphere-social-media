@@ -7,6 +7,7 @@ export const apiEndPoints = {
     getEPosts:'/api/user/getEventPost',
     likePost:'api/user/likePost',
     UnlikePost:'api/user/UnlikePost',
+    getStories:'api/user/getStories',
 
     //admin end points
     postLoginAdmin: '/api/admin/verifyAdmin',
@@ -29,5 +30,7 @@ export const apiEndPoints = {
     addPost:'api/event/addPost',
     deleteEventPost:'api/event/deletePost',
     getEventPosts:'api/event/getEventPosts',
+    addStory:'api/event/addStory',
+    getEventStory:'api/event/getStory',
 }
 

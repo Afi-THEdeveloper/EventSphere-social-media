@@ -14,7 +14,7 @@ import ImageCrop from "./ImageCrop";
 import { hideLoading, showLoading } from "../Redux/slices/LoadingSlice";
 
 
-function AddPostForm({ title }) {
+function AddPostForm() {
   const [imageFile, setImageFile] = useState(null);
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
@@ -52,7 +52,7 @@ function AddPostForm({ title }) {
         dispatch(hideLoading());
         if (res.data.success) {
           toast.success(res.data.success);
-          navigate(ServerVariables.eventProfile);
+          navigate(ServerVariables.eventHome);
         } else {
           toast.error(res.data.error);
         }
@@ -66,7 +66,7 @@ function AddPostForm({ title }) {
   return (
     <div className="flex-1 flex flex-col items-center justify-center min-h-screen">
       <div className="flex w-full flex-col max-w-[400px] items-center space-y-3">
-        <Myh1 title={title} />
+        <Myh1 title='Add post' />
         <div className="w-full mt-10">
           <AuthInput
             name="location"

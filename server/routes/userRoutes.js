@@ -11,6 +11,7 @@ userRouter.post('/register', userController.register)
     .get('/getEventPost', userAuth, userController.getEventPosts)
     .post('/likePost', userAuth, userController.likePost)
     .post('/UnlikePost', userAuth, userController.UnlikePost)
+    .get('/getStories', userAuth, userController.getStories)
     
     .post('/comments/:postId/createComment',userAuth, commentController.createComment)
     .get('/comments/:postId/comments',userAuth, commentController.getAllComments)

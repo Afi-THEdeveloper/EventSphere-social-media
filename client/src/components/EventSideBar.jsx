@@ -3,7 +3,6 @@ import { ServerVariables } from "../utils/ServerVariables";
 import HomeIcon from "./icons/HomeIcon";
 import SidebarItem from "./SidebarItem";
 import MessageIcon from "./icons/MessageIcon";
-import SearchIcons from "./icons/SearchIcons";
 import NotificationIcon from "./icons/NotificationIcon";
 import ProfileIcon from "./icons/ProfileIcon";
 import LogoutIcon from "./icons/LogoutIcon";
@@ -14,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 
 function EventSideBar() {
   const dispatch = useDispatch() 
-  const navigate = useNavigate() 
   const sideBarItems = [
     {
       label: "Home",
@@ -27,17 +25,12 @@ function EventSideBar() {
       href: ServerVariables.eventHome,
     },
     {
-      label: "Search",
-      icon: <SearchIcons />,
-      href: ServerVariables.eventHome,
-    },
-    {
       label: "Notifications",
       icon: <NotificationIcon />,
       href: ServerVariables.eventHome,
     },
     {
-      label: "Profile",
+      label: "Jobs Requests",
       icon: <ProfileIcon />,
       href: ServerVariables.eventProfile,
     },

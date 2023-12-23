@@ -84,7 +84,7 @@ function PostCard({ post, event }) {
       {EventPosts &&
         EventPosts.map((post) => {
           return (
-            <div className="flex flex-col gap-2 bg-[#E0CDB6] mt-2 mx-4 rounded-xl border border-slate-200">
+            <div className="flex flex-col gap-2 bg-[#E0CDB6] mt-2 mx-4 rounded-xl border border-slate-200" key={post._id}>
               {/* top div */}
               <div className="flex flex-row justify-between items-center">
                 <div className="flex flex-row items-center gap-4">
@@ -107,7 +107,7 @@ function PostCard({ post, event }) {
                 )}
               </div>
               {/* icons */}
-              <div className="my-2 mx-4 mb-2 flex flow-row justify-between">
+              <div className="my-2 mx-4 mb-2 flex flow-row justify-between">  
                 <div className="flex flex-row gap-4 items-center">
                   {post?.likes?.includes(user?._id) ? (
                     <FaHeart

@@ -1,10 +1,10 @@
 const Event = require("../../models/EventModel");
 const EventPost = require("../../models/EventPostModel");
+const Story = require('../../models/StoryModel')
 const CatchAsync = require("../../util/CatchAsync");
 const bcrypt = require("bcrypt");
 const randomString = require("randomstring");
 const OtpMailer = require("../../util/OtpMailer");
-const cloudinary = require("../../util/Cloudinary");
 const jwt = require("jsonwebtoken");
 
 //hashing  password
@@ -200,4 +200,35 @@ exports.addPost = CatchAsync(async (req, res) => {
 exports.deletePost = CatchAsync(async (req, res) => {
   await EventPost.findByIdAndDelete({ _id: req.body.id });
   return res.status(200).json({ success: "post deleted" });
+});
+
+exports.addStory = CatchAsync(async (req, res) => {
+  const event = await Event.findById(req.eventId);
+  let data = {};
+
+  if (req.body.image) {
+    data.image = req.body.image;
+  } else {
+    return res.json({ error: "post image is missing" });
+  }
+
+  if (req.body.description) data.description = req.body.description;
+
+  data.postedBy = event._id;
+  console.log(data);
+  const story = new Story(data);
+  await story.save();
+  return res.status(200).json({ success: "story Added Successfully", story });
+});
+
+
+exports.getEventStory = CatchAsync(async (req, res) => {
+  const event = await Event.findById(req.eventId);
+  const currentDate = new Date();
+  const deleted = await Story.deleteMany({ expiresAt: { $lt: currentDate } });  
+  const stories = await Story.aggregate([
+    {$match:{postedBy:event._id}}
+  ]);
+  console.log(stories)
+  return res.status(200).json({ success: "ok", stories });
 });

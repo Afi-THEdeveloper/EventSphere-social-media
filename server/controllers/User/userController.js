@@ -1,5 +1,6 @@
 const User = require("../../models/UserModel");
 const EventPost = require("../../models/EventPostModel");
+const Story = require("../../models/StoryModel");
 const Comment = require("../../models/CommentModel");
 const randomString = require("randomstring");
 const OtpMailer = require("../../util/OtpMailer");
@@ -140,7 +141,7 @@ exports.likePost = CatchAsync(async (req, res) => {
     { new: true }
   );
   if (likedPost) {
-    return res.status(200).json({ success: "ok",post: likedPost });
+    return res.status(200).json({ success: "ok", post: likedPost });
   }
   return res.json({ error: "failed to like,try again" });
 });
@@ -153,7 +154,44 @@ exports.UnlikePost = CatchAsync(async (req, res) => {
     { new: true }
   );
   if (UnlikedPost) {
-    return res.status(200).json({ success: "ok",post: UnlikedPost });
+    return res.status(200).json({ success: "ok", post: UnlikedPost });
   }
   return res.json({ error: "failed to like,try again" });
+});
+
+exports.getStories = CatchAsync(async (req, res) => {
+  const currentDate = new Date();
+  const deleted = await Story.deleteMany({ expiresAt: { $lt: currentDate } });  
+  const stories = await Story.aggregate([
+    {
+      $sort: { createdAt: -1 },
+    },
+    {
+      $lookup: {
+        from: "events",
+        localField: "postedBy",
+        foreignField: "_id",
+        as: "postedByDetails",
+      },
+    },
+    {
+      $unwind: "$postedByDetails",
+    },
+    {
+      $group: {
+        _id: "$postedBy",
+        stories: { $push: "$$ROOT" }, // Add each document to the 'stories' array
+      },
+    },
+    {
+      $project: {
+        _id: 0, // Exclude the default '_id' field
+        postedBy: "$_id", // Rename '_id' to 'postedBy'
+        stories: 1, // Include the 'stories' field
+      },
+    },
+  ]);
+
+  console.log(stories[0].stories);
+  return res.status(200).json({ success: "ok", stories });
 });

@@ -5,20 +5,20 @@ import PostCard from "../../components/User/PostCard";
 import { apiEndPoints } from "../../utils/api";
 import toast from "react-hot-toast";
 import { userRequest } from "../../Helper/instance";
+import StoryComp from "../../components/StoryComp";
 
 function UserHome() {
-  
-
-
   return (
     <>
       <div className="flex">
         <UserSidebar />
 
         <div className="flex-grow flex-shrink min-h-screen">
-          <div className="w-full h-24 border-b-[0.5px] border-[#E0CDB6]"></div>
+          <div className="max-w-full w-full h-30 border-b-[0.5px] border-[#E0CDB6] mx-auto p-2 overflow-x-auto">
+            <StoryComp />
+          </div>
           <div className="mx-auto flex flex-col justify-center max-w-lg mt-4">
-                <PostCard />
+            <PostCard />
           </div>
         </div>
 

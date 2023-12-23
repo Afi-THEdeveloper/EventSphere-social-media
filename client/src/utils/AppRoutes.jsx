@@ -26,11 +26,13 @@ import IsLoggedOutEvent from "../components/IsLoggedOutEvent";
 import IsAdminLogged from "../components/IsAdminLogged";
 import IsAdminLoggedOut from "../components/IsAdminLoggedOut";
 import EventsTable from "../pages/AdminPages/EventsTable";
-import EventProfile from "../pages/EventPages/EventProfile";
+import EventProfile from "../pages/EventPages/EventHome";
 import EditEventProfile from "../pages/EventPages/EditEventProfile";
 import EditEvent from "../pages/EventPages/EditEvent";
 import AddPost from "../pages/EventPages/AddPost";
 import PostDetail from "../pages/UserPages/PostDetail";
+import AddStory from "../pages/EventPages/AddStory";
+import StoryCourosel from "../components/StoryCourosel";
 
 function AppRoutes() {
   const { loading } = useSelector((state) => state.loadings);
@@ -68,6 +70,10 @@ function AppRoutes() {
       <Routes>
         <Route path={ServerVariables.Landing} element={<LandingPage />} />
 
+
+
+
+
         {/* user routes */}
 
         <Route element={<IsloggedOutUser />}>
@@ -76,11 +82,14 @@ function AppRoutes() {
           <Route path={ServerVariables.Otp} element={<Otp />} />
         </Route>
 
-        <Route element={<IsLoggedInUser />}>
-          {/* protected  */}
+        <Route element={<IsLoggedInUser />}> {/* protected  */}
           <Route path={ServerVariables.UserHome} element={<UserHome />} />
           <Route path={ServerVariables.postDetails} element={<PostDetail />} />
         </Route>
+
+
+
+
 
         {/* admin routes */}
         <Route element={<IsAdminLogged />}>
@@ -96,30 +105,33 @@ function AppRoutes() {
           <Route path={ServerVariables.AdminLogin} element={<AdminLogin />} />
         </Route>
 
+
+
+
+
+
+
         {/* event Routes */}
 
         <Route element={<IsLoggedEvent />}>
           <Route path={ServerVariables.eventHome} element={<EventHome />} />
-          <Route
-            path={ServerVariables.eventProfile}
-            element={<EventProfile />}
-          />
-          <Route
-            path={ServerVariables.editProfileImage}
-            element={<EditEventProfile />}
-          />
+          <Route path={ServerVariables.editProfileImage} element={<EditEventProfile />}/>
           <Route path={ServerVariables.editEvent} element={<EditEvent />} />
           <Route path={ServerVariables.addPost} element={<AddPost />} />
+          <Route path={ServerVariables.addStory} element={<AddStory />} />
+          <Route path={ServerVariables.storyCourosel} element={<StoryCourosel />} />
         </Route>
 
         <Route element={<IsLoggedOutEvent />}>
           <Route path={ServerVariables.eventLogin} element={<EventLogin />} />
-          <Route
-            path={ServerVariables.eventRegister}
-            element={<EventRegister />}
-          />
+          <Route path={ServerVariables.eventRegister} element={<EventRegister />}/>
           <Route path={ServerVariables.eventOtp} element={<EventOtp />} />
         </Route>
+
+
+
+
+
       </Routes>
     </div>
   );
