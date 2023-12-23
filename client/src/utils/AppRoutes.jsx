@@ -33,6 +33,9 @@ import AddPost from "../pages/EventPages/AddPost";
 import PostDetail from "../pages/UserPages/PostDetail";
 import AddStory from "../pages/EventPages/AddStory";
 import StoryCourosel from "../components/StoryCourosel";
+import Plans from "../pages/EventPages/Plans";
+import PaymentSuccess from "../pages/EventPages/PaymentSuccess";
+import PaymentError from "../pages/EventPages/PaymentError";
 
 function AppRoutes() {
   const { loading } = useSelector((state) => state.loadings);
@@ -120,6 +123,9 @@ function AppRoutes() {
           <Route path={ServerVariables.addPost} element={<AddPost />} />
           <Route path={ServerVariables.addStory} element={<AddStory />} />
           <Route path={ServerVariables.storyCourosel} element={<StoryCourosel />} />
+          <Route path={ServerVariables.PlansAvailable} element={<Plans />} />
+          <Route path={ServerVariables.success} element={<PaymentSuccess />} />
+          <Route path={ServerVariables.error} element={<PaymentError />} />
         </Route>
 
         <Route element={<IsLoggedOutEvent />}>

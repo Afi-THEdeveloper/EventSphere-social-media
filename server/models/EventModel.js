@@ -54,6 +54,9 @@ const eventSchema = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: "Plan",
       },
+      transactionId:{
+        type:String,
+      },
       expiry: {
         type: Date,
       },

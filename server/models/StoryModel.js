@@ -27,8 +27,7 @@ const eventStorySchema = new mongoose.Schema(
     expiresAt: {
       type: Date,
       default: function () {
-        // Set to expire 24 hours after createdAt
-        return new Date(this.createdAt.getTime() + 3 * 60 * 1000);
+        return new Date(this.createdAt.getTime() + 5 * 60 * 1000);
       },
     },
   },

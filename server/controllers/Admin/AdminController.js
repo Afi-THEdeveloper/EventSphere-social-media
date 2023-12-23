@@ -96,7 +96,18 @@ exports.blockPlan = CatchAsync(async (req, res) => {
 exports.addPlan = CatchAsync(async (req, res) => {
   console.log(req.body);
   const { name, amount, description, duration } = req.body;
-  const samePlan = await Plan.findOne({ name: new RegExp(name, "i") });
+  // const samePlan = await Plan.findOne({ name: new RegExp(name, "i") });
+
+  let totalDays;
+  if (name === "weekly") {
+    totalDays = duration * 7;
+  } else if (name === "monthly") {
+    totalDays = duration * 28;
+  } else {
+    totalDays = duration * 365;
+  }
+
+  const samePlan = await Plan.findOne({ totalDays: totalDays });
   if (samePlan) {
     return res.json({ error: "plan already exists" });
   }
@@ -106,6 +117,7 @@ exports.addPlan = CatchAsync(async (req, res) => {
     amount,
     duration,
     description,
+    totalDays,
   });
   await newPlan.save();
   res.status(200).json({ success: `${newPlan.name} added successfully` });
@@ -114,12 +126,24 @@ exports.addPlan = CatchAsync(async (req, res) => {
 exports.editPlan = CatchAsync(async (req, res) => {
   const { name, amount, description, id, duration } = req.body;
   const plan = await Plan.findById(id);
-  const duplicatePlans = await Plan.find({
-    name: { $ne: plan.name, $regex: new RegExp("^" + name + "$", "i") },
-  });
-  console.log(duplicatePlans);
 
-  if (duplicatePlans.length) {
+  let totalDays;
+  if (name === "weekly") {
+    totalDays = duration * 7;
+  } else if (name === "monthly") {
+    totalDays = duration * 28;
+  } else {
+    totalDays = duration * 365;
+  }
+
+  const duplicatePlans = await Plan.findOne({
+    $and: [
+      { totalDays: totalDays }, // The total days you want to check for duplicates
+      { totalDays: { $ne: plan.totalDays } }, // Exclude the current plan's total days
+    ],
+  });   
+
+  if (duplicatePlans) {
     return res.json({ error: "plan name already exists" });
   }
   const updatedPlan = await Plan.findByIdAndUpdate(
@@ -130,8 +154,10 @@ exports.editPlan = CatchAsync(async (req, res) => {
         duration,
         amount,
         description,
+        totalDays,
       },
-    }
+    },
+    {new:true}
   );
   if (updatedPlan) {
     return res

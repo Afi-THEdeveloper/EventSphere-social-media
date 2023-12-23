@@ -32,5 +32,7 @@ export const apiEndPoints = {
     getEventPosts:'api/event/getEventPosts',
     addStory:'api/event/addStory',
     getEventStory:'api/event/getStory',
+    AvailablePlans:'api/event/availablePlans',
+    subscribePlan:'api/event/subscribePlan',
 }
 

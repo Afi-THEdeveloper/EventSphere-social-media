@@ -90,7 +90,6 @@ function AddPlan() {
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
-            <option value="4">4</option>
           </select>
         );
       case "monthly":
@@ -103,7 +102,7 @@ function AddPlan() {
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
           >
             <option>Choose</option>
-            {Array.from({ length: 12 }, (_, index) => (
+            {Array.from({ length: 11 }, (_, index) => (
               <option key={index + 1} value={index + 1}>
                 {index + 1}
               </option>

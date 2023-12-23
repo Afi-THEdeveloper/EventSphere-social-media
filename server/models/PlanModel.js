@@ -18,6 +18,10 @@ const planSchema = new mongoose.Schema({
         type:Number,
         required:true
     },
+    totalDays:{
+        type:Number,
+        required:true
+    },
     isDeleted:{
         type:Boolean,
         default:false

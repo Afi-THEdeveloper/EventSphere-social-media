@@ -9,13 +9,14 @@ import { adminRequest } from "../../Helper/instance";
 import api from "../../config/api";
 import { apiEndPoints } from "../../utils/api";
 import toast from "react-hot-toast";
+import { AxiosError } from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 
 function EditPlan() {
   const [error, setError] = useState("");
-  const [id,setId] = useState('')
   const [name, setName] = useState("");
-  const [duration, setDuration] = useState('');
+  const [id,setId] = useState('')
+  const [duration, setDuration] = useState("");
   const [amount, setAmount] = useState();
   const [description, setDescription] = useState("");
   const navigate = useNavigate()
@@ -31,10 +32,13 @@ function EditPlan() {
         setAmount(plan[0].amount)
         setDescription(plan[0].description)
         setDuration(plan[0].duration)
+    }else{
+      toast.error('select a plan first')
+      navigate(ServerVariables.PlansTable)
     }
   },[])
 
-  const handleEditPlan = () => {
+  const handleAddPlan = () => {
     console.log(duration);
     console.log("hy");
     if (
@@ -89,6 +93,75 @@ function EditPlan() {
     })
   };
 
+
+  const renderDurationOptions = () => {
+    switch (name.toLowerCase()) {
+      case "weekly":
+        return (
+          <select
+            id="duration"
+            name="duration"
+            autoComplete="duration-name"
+            value={duration}
+            onChange={(e) => setDuration(e.target.value)}
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+          >
+            <option>Choose</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        );
+      case "monthly":
+        return (
+          <select
+            id="duration"
+            name="duration"
+            autoComplete="duration-name"
+            value={duration}
+            onChange={(e) => setDuration(e.target.value)}
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+          >
+            <option>Choose</option>
+            {Array.from({ length: 11 }, (_, index) => (
+              <option key={index + 1} value={index + 1}>
+                {index + 1}
+              </option>
+            ))}
+          </select>
+        );
+      case "yearly":
+        return (
+          <select
+            id="duration"
+            name="duration"
+            value={duration}
+            autoComplete="duration-name"
+            onChange={(e) => setDuration(e.target.value)}
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+          >
+            <option>Choose</option>
+            {Array.from({ length: 3 }, (_, index) => (
+              <option key={index + 1} value={index + 1}>
+                {index + 1}
+              </option>
+            ))}
+          </select>
+        );
+      default:
+        return (
+          <select
+            id="duration"
+            name="duration"
+            autoComplete="duration-name"
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+          >
+            <option>Choose</option>
+          </select>
+        );
+    }
+  };
+
   return (
     <>
       <AdminNavbar />
@@ -96,7 +169,7 @@ function EditPlan() {
         <header className="bg-black shadow">
           <div className="mx-auto max-w-7xl px-4 py-6 flex items-center justify-between sm:px-6 lg:px-8">
             <h2 className="text-3xl font-bold tracking-tight text-white">
-              Edit plan
+              Add plan
             </h2>
           </div>
         </header>
@@ -109,15 +182,19 @@ function EditPlan() {
               Plan name
             </label>
             <div className="mt-2">
-              <input
-                type="text"
-                name="first-name"
-                id="first-name"
-                autoComplete="given-name"
-                onChange={(e) => setName(e.target.value)}
+            <select
+                id="duration"
+                name="duration"
+                autoComplete="duration-name"
                 value={name}
-                className="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm p-4 sm:leading-6"
-              />
+                onChange={(e) => setName(e.target.value)}
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+              >
+                <option>Choose</option>
+                <option>weekly</option>
+                <option>monthly</option>
+                <option>yearly</option>
+              </select>
             </div>
           </div>
 
@@ -133,9 +210,9 @@ function EditPlan() {
                 type="number"
                 name="last-name"
                 id="last-name"
+                value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 autoComplete="family-name"
-                value={amount}
                 className="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm  p-4 sm:leading-6"
               />
             </div>
@@ -153,9 +230,10 @@ function EditPlan() {
                 id="about"
                 name="about"
                 rows={3}
-                onChange={(e) => setDescription(e.target.value)}
                 value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 className="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm p-4 sm:leading-6"
+                defaultValue={""}
               />
             </div>
           </div>
@@ -165,43 +243,20 @@ function EditPlan() {
               htmlFor="duration"
               className="block text-sm font-medium leading-6 text-white"
             >
-              Choose Duration (Months)
+              Choose Duration {name && `no of (${name})` }
             </label>
-            <div className="mt-2">
-              <select
-                id="duration"
-                name="duration"
-                autoComplete="duration-name"
-                onChange={(e) => setDuration(e.target.value)}
-                defaultValue={duration}
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-              >
-                <option>Choose</option>
-                <option value='1'>1</option>
-                <option value='2'>2</option>
-                <option value='3'>3</option>
-                <option value='4'>4</option>
-                <option value='5'>5</option>
-                <option value='6'>6</option>
-                <option value='7'>7</option>
-                <option value='8'>8</option>
-                <option value='9'>9</option>
-                <option value='10'>10</option>
-                <option value='11'>11</option>
-                <option value='12'>12</option>
-              </select>
-            </div>
+            <div className="mt-2">{renderDurationOptions()} </div>
           </div>
           <button
-            onClick={handleEditPlan}
+            onClick={handleAddPlan}
             class=" rounded-md bg-[#353a50] px-3 py-4 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 mt-4"
           >
-            Edit
+            Add
           </button>
           <button type="button" onClick={()=> window.history.back()} className="text-sm font-semibold leading-6 text-white mt-2">
           Cancel
          </button>
-          <div className="mt-7">
+          <div className="mt-7 w-full">
             {error && (
               <p className="text-sm font-bold text-red-600 ">{error}</p>
             )}

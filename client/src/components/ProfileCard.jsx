@@ -12,27 +12,33 @@ import { hideLoading, showLoading } from "../Redux/slices/LoadingSlice";
 
 function ProfileCard({ event, postCount }) {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
-  const [story,setStory] = useState([])
-  useEffect(()=>{
-   getEventStory()
-  },[])
-  const getEventStory = ()=>{
-    dispatch(showLoading())
+  const dispatch = useDispatch();
+  const [story, setStory] = useState([]);
+  useEffect(() => {
+    getEventStory();
+  }, []);
+  const getEventStory = () => {
+    dispatch(showLoading());
     eventRequest({
-      url:apiEndPoints.getEventStory,
-      method:'get',
-    }).then(res=>{
-      dispatch(hideLoading())
-      setStory(res.data.stories)
-    }).catch(err=>{
-      dispatch(hideLoading())
-      toast.error(err.message)
+      url: apiEndPoints.getEventStory,
+      method: "get",
     })
-  }
-  const ProfileClickHandler = ()=>{
-    navigate(ServerVariables.storyCourosel, {state:{stories:story}})
-  }
+      .then((res) => {
+        dispatch(hideLoading());
+        setStory(res.data.stories);
+      })
+      .catch((err) => {
+        dispatch(hideLoading());
+        toast.error(err.message);
+      });
+  };
+  const ProfileClickHandler = () => {
+    if (story.length) {
+      navigate(ServerVariables.storyCourosel, { state: { stories: story } });
+    }else{
+      toast.error('no stories exists')
+    }
+  };
 
   return (
     <>
@@ -74,7 +80,6 @@ function ProfileCard({ event, postCount }) {
                     }
                   </span>
                 </div>
-                
 
                 <div className="p-3 text-center">
                   <span className="text-xl font-bold block uppercase tracking-wide text-slate-400">
@@ -87,7 +92,6 @@ function ProfileCard({ event, postCount }) {
                   </span>
                   <span className="text-sm text-slate-400">Add story</span>
                 </div>
-
               </div>
             </div>
           </div>

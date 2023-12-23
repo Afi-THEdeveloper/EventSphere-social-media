@@ -29,5 +29,8 @@ export const ServerVariables = {
   addPost:'/addPost',
   addStory:'/addStory',
   storyCourosel:'/storyCourosel',
+  PlansAvailable:'/Plans',
+  success:'/PaymentSuccess',
+  error:'/PaymentError'
 };
 

@@ -107,6 +107,7 @@ function PlansTable() {
                     <th className="border-b p-4">Description</th>
                     <th className="border-b p-4">Amount</th>
                     <th className="border-b p-4">Duration</th>
+                    <th className="border-b p-4">No of days</th>
                     <th className="border-b p-4">Actions</th>
                   </tr>
                 </thead>
@@ -134,6 +135,9 @@ function PlansTable() {
                         </td>
                         <td className="border-b p-4 text-center">
                           {plan.duration}
+                        </td>
+                        <td className="border-b p-4 text-center">
+                          {plan.totalDays}
                         </td>
                         <td className="text-center">
 

@@ -232,3 +232,5 @@ exports.getEventStory = CatchAsync(async (req, res) => {
   console.log(stories)
   return res.status(200).json({ success: "ok", stories });
 });
+
+

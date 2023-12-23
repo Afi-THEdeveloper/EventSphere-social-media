@@ -51,6 +51,7 @@ function AddStory() {
           navigate(ServerVariables.eventHome);
         } else {
           toast.error(res.data.error);
+          navigate(ServerVariables.PlansAvailable)
         }
       })
       .catch((err) => {

@@ -37,7 +37,7 @@ function EventSideBar() {
     {
       label: "Subscriptions",
       icon: <SubscribePlanIcon />,
-      href: ServerVariables.eventHome,
+      href: ServerVariables.PlansAvailable,
     },
     {
       label: "Logout",
