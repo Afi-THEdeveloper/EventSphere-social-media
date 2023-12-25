@@ -17,7 +17,7 @@ const Comment = ({ comment, user }) => {
       commentId: comment?._id,
       data: {
         commentId: comment?._id,
-        username: user.username,
+        username: user?.username,
         reply: reply,
       },
     });
@@ -37,7 +37,7 @@ const Comment = ({ comment, user }) => {
           <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
             <img
               className="mr-2 w-6 h-6 rounded-full"
-              src={`http://localhost:5000/Event/${user?.profile}`}
+              src={`http://localhost:5000/profiles/${user?.profile}`}
               alt="Michael Gough"
             />
             {comment?.username}

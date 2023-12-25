@@ -12,7 +12,18 @@ paypal.configure({
 
 exports.availablePlans = CatchAsync(async (req, res) => {
   const plans = await Plan.find({ isDeleted: false });
-  return res.status(200).json({ success: "ok", plans });
+  const event = await Event.findById(req?.eventId);
+
+  let currentPlan = null
+  if(event.selectedPlan.transactionId){
+    currentPlan = await Plan.findById(event.selectedPlan.plan) 
+    if (currentPlan) {
+      currentPlan = currentPlan.toObject();
+      currentPlan.expiresOn = event.selectedPlan.expiry.toDateString()
+    }
+  }
+  console.log(currentPlan)
+  return res.status(200).json({ success: "ok", plans, currentPlan });
 });
 
 exports.buyPlan = CatchAsync(async (req, res) => {

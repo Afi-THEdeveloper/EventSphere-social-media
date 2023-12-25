@@ -12,6 +12,11 @@ const commentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    userId:{
+      type: ObjectId,
+      ref:'user',
+      required: true,
+    },
     comment: {
       type: String,
       required: true,
@@ -20,6 +25,10 @@ const commentSchema = new mongoose.Schema(
       {
         username: {
           type: String,
+          required: true,
+        },
+        repliedUser:{
+          type:Object,
           required: true,
         },
         commentId: {

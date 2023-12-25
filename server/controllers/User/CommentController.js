@@ -1,5 +1,6 @@
 const Comment = require("../../models/CommentModel");
 const EventPost = require("../../models/EventPostModel");
+const User = require("../../models/UserModel");
 const CatchAsync = require("../../util/CatchAsync");
 
 exports.createComment = CatchAsync(async (req, res) => {
@@ -10,6 +11,7 @@ exports.createComment = CatchAsync(async (req, res) => {
       postId: id,
       comment: comment,
       username: username ? username : "event",
+      userId:req?.userId,
     });
     
     const post = await EventPost.findById(id);
@@ -43,10 +45,13 @@ exports.getAllComments = CatchAsync(async (req, res) => {
 exports.addReply = CatchAsync(async (req, res) => {
   console.log(req.params, req.body);
   const comment_Id = req?.params?.commentId;
+  const user = await User.findById(req?.userId)
+  console.log(user)
   if (comment_Id) {
     const reply = {
       commentId: comment_Id,
       username: req.body.username,
+      repliedUser:{profile:user?.profile,email:user?.email},
       reply: req.body.reply,
     };
     const newComment = await Comment.findByIdAndUpdate(

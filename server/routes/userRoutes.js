@@ -3,6 +3,7 @@ const userRouter = express.Router()
 const userController = require('../controllers/User/userController')
 const commentController = require('../controllers/User/CommentController')
 const userAuth = require('../middlewares/UserAuthMiddleware')
+const {uploadUserProfile,resizeUserProfile, uploadCv} = require('../middlewares/imgUploads')
 
 userRouter.post('/register', userController.register)
     .post('/VerifyOtp', userController.VerifyOtp)
@@ -17,6 +18,10 @@ userRouter.post('/register', userController.register)
     .get('/comments/:postId/comments',userAuth, commentController.getAllComments)
     .put('/comments/:commentId/reply',userAuth, commentController.addReply)
     .delete('/comments/:commentId/replies/:replyId',userAuth, commentController.deleteReply)
+
+    .post('/editUser', userAuth, uploadUserProfile, resizeUserProfile, userController.editUser)
+    .post('/addJobProfile', userAuth, uploadCv, userController.addJobProfile)
+    .post('/updateJobProfile', userAuth, uploadCv, userController.updateJobProfile)
 
 
 module.exports = userRouter

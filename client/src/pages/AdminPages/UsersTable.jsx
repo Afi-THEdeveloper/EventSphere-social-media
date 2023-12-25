@@ -29,7 +29,7 @@ function UsersTable() {
       selector: (row) => (
         <img
           className="h-10 w-10 rounded-full"
-          src={`http://localhost:5000/Event/${row?.profile}`}
+          src={`http://localhost:5000/profiles/${row?.profile}`}
           alt="image"
         />
       ),

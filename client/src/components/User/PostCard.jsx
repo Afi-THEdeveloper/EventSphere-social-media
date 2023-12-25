@@ -89,7 +89,7 @@ function PostCard({ post, event }) {
               <div className="flex flex-row justify-between items-center">
                 <div className="flex flex-row items-center gap-4">
                   <img
-                    src={`http://localhost:5000/Event/${post?.postedBy?.profile}`}
+                    src={`http://localhost:5000/profiles/${post?.postedBy?.profile}`}
                     className="h-10 w-10 rounded-full object-cover border-2 border-[#FFB992]"
                     alt="profile"
                   />

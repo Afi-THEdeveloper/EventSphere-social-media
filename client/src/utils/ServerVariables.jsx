@@ -7,6 +7,10 @@ export const ServerVariables = {
   Otp:'/otp',
   UserHome:'/UserHome',
   postDetails:'/postDetails',
+  userProfile:'/userProfile',
+  editUser:'/editUser',
+  addJobProfile:'/addJobProfile',
+  editJobProfile:'/editJobProfile',
 
   //admin routes
   AdminLogin:'/adminLogin',

@@ -1,6 +1,7 @@
 const multer = require("multer");
 const sharp = require("sharp");
 const Event = require("../models/EventModel");
+const User = require("../models/UserModel");
 const fs = require("fs").promises;
 
 const multerStorage = multer.memoryStorage();
@@ -50,10 +51,45 @@ exports.resizeEventProfile = async (req, res, next) => {
       .resize(1080, 1080)
       .toFormat("jpeg")
       .jpeg({ quality: 90 })
-      .toFile(`public/assets/Event/${req.file.filename}`);
+      .toFile(`public/assets/profiles/${req.file.filename}`);
     next();
   } catch (error) {
     res.json({ error: "error in resizing image" });
     console.log(error.message);
   }
 };
+
+//user profile
+
+exports.uploadUserProfile = upload.single("profile");
+exports.resizeUserProfile = async (req, res, next) => {
+  const user = await User.findById(req.userId);
+  try {
+    if (!req.file) return next();
+    req.file.filename = `event-${user.email}-${Date.now()}.jpeg`;
+    req.body.profile = req.file.filename;
+    await sharp(req.file.buffer)
+      .resize(1080, 1080)
+      .toFormat("jpeg")
+      .jpeg({ quality: 90 })
+      .toFile(`public/assets/profiles/${req.file.filename}`);
+    next();
+  } catch (error) {
+    res.json({ error: "error in resizing image" });
+    console.log(error.message);
+  }
+};
+
+//pdf upload
+const Pdfstorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./public/assets/files");
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now();
+    cb(null, uniqueSuffix + file.originalname);
+  },
+});
+const PdfUpload = multer({ storage: Pdfstorage });
+
+exports.uploadCv = PdfUpload.single("file");

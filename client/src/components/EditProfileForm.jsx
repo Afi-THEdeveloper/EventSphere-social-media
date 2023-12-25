@@ -50,7 +50,7 @@ function EditProfileForm({title}) {
       if(res.data.success){
         toast.success(res.data.success)
         dispatch(updateEvent(res.data.event))
-        navigate(ServerVariables.eventProfile)
+        navigate(ServerVariables.eventHome)
       }else{
         toast.error(res.data.error)
       }

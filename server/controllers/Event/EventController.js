@@ -1,6 +1,7 @@
 const Event = require("../../models/EventModel");
 const EventPost = require("../../models/EventPostModel");
-const Story = require('../../models/StoryModel')
+const Comment = require("../../models/CommentModel");
+const Story = require("../../models/StoryModel");
 const CatchAsync = require("../../util/CatchAsync");
 const bcrypt = require("bcrypt");
 const randomString = require("randomstring");
@@ -131,6 +132,8 @@ exports.verifyEventLogin = CatchAsync(async (req, res) => {
   res.status(200).json({ success: "Login successful", token, event });
 });
 
+
+
 exports.updateEvent = CatchAsync(async (req, res) => {
   const { title, ownerName, place, services, officeAddress, phone, altPhone } =
     req.body;
@@ -159,6 +162,8 @@ exports.updateEvent = CatchAsync(async (req, res) => {
   return res.json({ error: "event updation failed, try again" });
 });
 
+
+
 exports.updateEventProfile = CatchAsync(async (req, res) => {
   const event = await Event.findById(req.eventId);
   event.profile = req.body.profile;
@@ -168,12 +173,89 @@ exports.updateEventProfile = CatchAsync(async (req, res) => {
     .json({ success: "profile updated successfully", event });
 });
 
+
+
 exports.getEventPosts = CatchAsync(async (req, res) => {
   const posts = await EventPost.find({ postedBy: req.eventId }).sort({
     createdAt: -1,
   });
   console.log(posts);
   return res.status(200).json({ success: "ok", posts });
+});
+
+
+
+
+exports.getPostComments = CatchAsync(async (req, res) => {
+  const id = req?.body?.postId;
+  if (id) {
+    const comments = await Comment.find({ postId: id })
+      .sort({
+        createdAt: "desc",
+      })
+      .populate("userId");
+    let replies = comments.map((c) => {
+      return c?.replies?.length >= 0 ? c?.replies.reverse() : [];
+    });
+
+    let NewComments = [...comments, replies];
+    console.log(comments);
+    return res.status(200).json({ success: "ok", comments });
+  } else {
+    res.json({ error: "POST id is not found" });
+  }
+});
+
+exports.EventReply = CatchAsync(async (req, res) => {
+  console.log(req.body);
+  const comment_Id = req?.body?.commentId;
+  const id = req?.body?.postId;
+  const event = await Event.findById(req?.eventId);
+  console.log(event);
+  if (comment_Id) {
+    const reply = {
+      commentId: comment_Id,
+      username: event.title,
+      repliedUser: { profile: event?.profile, email: event?.email },
+      reply: req.body?.reply,
+    };
+    await Comment.findByIdAndUpdate(
+      { _id: comment_Id },
+      { $push: { replies: reply } },
+      { new: true }
+    );
+    const comments = await Comment.find({ postId: id })
+      .sort({
+        createdAt: "desc",
+      })
+      .populate("userId");
+    let replies = comments.map((c) => {
+      return c?.replies?.length >= 0 ? c?.replies.reverse() : [];
+    });
+
+    let NewComments = [...comments, replies];
+    console.log(comments);
+    return res.status(200).json({ success: "ok", comments });
+  } else {
+    res.json({ message: "comment id is not found" });
+  }
+});
+
+exports.deleteReply = CatchAsync(async (req, res) => {
+  const comment_Id = req?.body?.commentId;
+  const reply_Id = req?.body?.replyId;
+
+  if (comment_Id && reply_Id) {
+    const newComment = await Comment.findByIdAndUpdate(
+      { _id: comment_Id },
+      { $pull: { replies: { _id: reply_Id } } },
+      { new: true }
+    );
+
+    return res.status(200).json({ success: "ok" });
+  } else {
+    res.json({ message: "comment id is not found" });
+  }
 });
 
 exports.addPost = CatchAsync(async (req, res) => {
@@ -221,16 +303,11 @@ exports.addStory = CatchAsync(async (req, res) => {
   return res.status(200).json({ success: "story Added Successfully", story });
 });
 
-
 exports.getEventStory = CatchAsync(async (req, res) => {
   const event = await Event.findById(req.eventId);
   const currentDate = new Date();
-  const deleted = await Story.deleteMany({ expiresAt: { $lt: currentDate } });  
-  const stories = await Story.aggregate([
-    {$match:{postedBy:event._id}}
-  ]);
-  console.log(stories)
+  const deleted = await Story.deleteMany({ expiresAt: { $lt: currentDate } });
+  const stories = await Story.aggregate([{ $match: { postedBy: event._id } }]);
+  console.log(stories);
   return res.status(200).json({ success: "ok", stories });
 });
-
-

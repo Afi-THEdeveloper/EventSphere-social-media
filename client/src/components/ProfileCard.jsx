@@ -48,7 +48,7 @@ function ProfileCard({ event, postCount }) {
             <div className="w-full flex justify-center">
               <div className="relative">
                 <img
-                  src={`http://localhost:5000/Event/${event.profile}`}
+                  src={`http://localhost:5000/profiles/${event.profile}`}
                   className="shadow-xl rounded-full align-middle absolute -m-16 -ml-20 lg:-ml-16 max-w-[150px]  border-2 border-[#E0CDB6]"
                   alt=""
                   onClick={ProfileClickHandler}

@@ -44,7 +44,7 @@ function UserSidebar() {
     {
       label: "Profile",
       icon: <ProfileIcon />,
-      href: ServerVariables.UserHome,
+      href: ServerVariables.userProfile,
     },
     {
       label: "Logout",

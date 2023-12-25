@@ -161,7 +161,7 @@ exports.UnlikePost = CatchAsync(async (req, res) => {
 
 exports.getStories = CatchAsync(async (req, res) => {
   const currentDate = new Date();
-  const deleted = await Story.deleteMany({ expiresAt: { $lt: currentDate } });  
+  const deleted = await Story.deleteMany({ expiresAt: { $lt: currentDate } });
   const stories = await Story.aggregate([
     {
       $sort: { createdAt: -1 },
@@ -192,6 +192,64 @@ exports.getStories = CatchAsync(async (req, res) => {
     },
   ]);
 
-  console.log(stories[0].stories);
+  console.log(stories[0]?.stories);
   return res.status(200).json({ success: "ok", stories });
 });
+
+exports.editUser = CatchAsync(async (req, res) => {
+  console.log(req.body);
+  const user = await User.findById(req?.userId);
+  if (user) {
+    user.username = req?.body?.username;
+    user.phone = req?.body?.phone;
+    user.profile = req?.body?.profile;
+    await user.save();
+    return res.status(200).json({ success: "profile updated", user });
+  } else {
+    return res.json({ error: "user not found" });
+  }
+});
+
+
+exports.addJobProfile = CatchAsync(async (req, res) => {
+  console.log(req.file)
+  console.log(req.body)
+  const user = await User.findById(req?.userId);
+  if(user) {
+    user.jobProfile = user.jobProfile || {};
+
+    user.jobProfile.fullName = req?.body?.fullName;
+    user.jobProfile.phone = req?.body?.phone;
+    user.jobProfile.skills = req?.body?.skills;
+    user.jobProfile.jobRole = req?.body?.jobRole
+    user.jobProfile.yearOfExperience =req?.body?.yearOfExperience;
+    user.jobProfile.CV = req?.file?.filename
+    user.isJobSeeker = true;
+    await user.save();
+    return res.status(200).json({ success: "job profile added", user});
+  }else{
+    return res.json({erroe:'user not found'})
+  }
+})
+
+
+exports.updateJobProfile = CatchAsync(async (req,res)=>{
+  console.log(req.file)
+  console.log(req.body)
+  const user = await User.findById(req?.userId);
+  if(user) {
+    user.jobProfile = user.jobProfile || {};
+
+    user.jobProfile.fullName = req?.body?.fullName;
+    user.jobProfile.phone = req?.body?.phone;
+    user.jobProfile.skills = req?.body?.skills;
+    user.jobProfile.jobRole = req?.body?.jobRole
+    user.jobProfile.yearOfExperience =req?.body?.yearOfExperience;
+    user.jobProfile.CV = req?.file?.filename
+    user.isJobSeeker = true;
+    await user.save();
+    return res.status(200).json({ success: "job profile added", user});
+  }else{
+    return res.json({erroe:'user not found'})
+  }
+})

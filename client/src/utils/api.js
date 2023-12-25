@@ -8,6 +8,9 @@ export const apiEndPoints = {
     likePost:'api/user/likePost',
     UnlikePost:'api/user/UnlikePost',
     getStories:'api/user/getStories',
+    editUser:'api/user/editUser',
+    addJobProfile:'/api/user/addJobProfile',
+    updateJobProfile:'/api/user/updateJobProfile',
 
     //admin end points
     postLoginAdmin: '/api/admin/verifyAdmin',
@@ -34,5 +37,8 @@ export const apiEndPoints = {
     getEventStory:'api/event/getStory',
     AvailablePlans:'api/event/availablePlans',
     subscribePlan:'api/event/subscribePlan',
+    getPostComments:'api/event/getPostComments',
+    EventReply:'api/event/EventReply',
+    deleteReply:'api/event/deleteReply',
 }
 

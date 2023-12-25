@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import UserSidebar from "../../components/User/UserSidebar";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   useAddCommentMutation,
   useFetchCommentsQuery,
@@ -13,24 +13,28 @@ import toast from "react-hot-toast";
 import { userRequest } from "../../Helper/instance";
 import { apiEndPoints } from "../../utils/api";
 import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
+import { ServerVariables } from "../../utils/ServerVariables";
 
 function PostDetail() {
   const [post,setPost]= useState({})
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const [comment, setComment] = useState("");
   const { user } = useSelector((state) => state.Auth);
 
   const location = useLocation();
-  const Post = location.state ? location.state.postDetails : {};
+  const Post = location.state ? location.state.postDetails : null;
 
   useEffect(()=>{
     if(Post){
       setPost(Post);
+    }else{
+      navigate(ServerVariables.UserHome)
     }
   },[])
 
   const [addComment] = useAddCommentMutation() || {};
-  const { data: comments } = useFetchCommentsQuery(Post._id) || {};
+  const { data: comments } = useFetchCommentsQuery(Post?._id) || {};
 
   let totals = comments?.map((item) => item?.replies?.length);
   let ultimateTotal = totals?.reduce((acc, item) => acc + item, 0);
@@ -99,7 +103,6 @@ function PostDetail() {
         <UserSidebar />
 
         <div className="flex-grow flex-shrink min-h-screen">
-          <div className="w-full h-24 border-b-[0.5px] border-[#E0CDB6]"></div>
           <div className="mx-auto flex flex-col justify-center max-w-lg mt-4">
             {/* postDetail  */}
             <div className="container shadow-sm items-center mx-auto my-5 py-5 px-5 bg-[#E0CDB6]">

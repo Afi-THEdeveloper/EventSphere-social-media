@@ -7,8 +7,46 @@ import { eventRequest } from "../Helper/instance";
 import { apiEndPoints } from "../utils/api";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
+import CommentModal from "./CommentModal";
+import Modal from "react-modal";
 
 const PostCard = ({ post, onDelete }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [comments, setComments] = useState([]);
+
+  const openModal = (id) => {
+    eventRequest({
+      url: apiEndPoints.getPostComments,
+      method: "post",
+      data: { postId: id },
+    })
+      .then((res) => {
+        if (res.data.success) {
+          setComments(res.data?.comments);
+          setIsModalOpen(true);
+        } else {
+          toast.error(res.data.error);
+        }
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const customStyles = {
+    content: {
+      top: "30%",
+      left: "50%",
+      right: "auto",
+      bottom: "30%",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+    },
+  };
   return (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden m-4 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5">
       {post?.image && (
@@ -19,20 +57,17 @@ const PostCard = ({ post, onDelete }) => {
         />
       )}
 
-      {post?.video && (
-        <video width="320" height="400" controls>
-          <source
-            src={`http://localhost:5000/Event/posts/${post?.video}`}
-            type="video/mp4"
-          />
-        </video>
-      )}
-
       <div className="p-4">
         <h2 className="text-xl font-semibold mb-2">
           {post.likes.length} likes
         </h2>
-        <p className="text-gray-600 mb-2">{post?.description}</p>
+
+        <p
+          className="text-gray-900 hover:font-bold mb-2 cursor-pointer"
+          onClick={()=> openModal(post._id)}
+        >
+          {post?.commentsCount} comments
+        </p>
         <button
           className="bg-red-500 text-white p-2 rounded-full hover:bg-red-700"
           onClick={() => onDelete(post._id)}
@@ -40,6 +75,20 @@ const PostCard = ({ post, onDelete }) => {
           <TrashIcon className="h-6 w-6" />
         </button>
       </div>
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        ariaHideApp={false}
+        style={customStyles}
+      >
+        {/* Use the CommentModal component */}
+        <CommentModal
+          isOpen={isModalOpen}
+          closeModal={closeModal}
+          Comments={comments}
+          post={post}
+        />
+      </Modal>
     </div>
   );
 };
@@ -71,7 +120,7 @@ const PostsPage = ({ AllPosts }) => {
   const [posts, setPosts] = useState([]);
   useEffect(() => {
     setPosts(AllPosts);
-  },[AllPosts]);
+  }, [AllPosts]);
 
   const getPosts = async () => {
     eventRequest({

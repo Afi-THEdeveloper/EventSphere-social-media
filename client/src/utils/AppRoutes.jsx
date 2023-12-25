@@ -36,6 +36,10 @@ import StoryCourosel from "../components/StoryCourosel";
 import Plans from "../pages/EventPages/Plans";
 import PaymentSuccess from "../pages/EventPages/PaymentSuccess";
 import PaymentError from "../pages/EventPages/PaymentError";
+import UserProfile from "../pages/UserPages/UserProfile";
+import EditUser from "../pages/UserPages/EditUser";
+import AddJobProfile from "../pages/UserPages/AddJobProfile";
+import EditJobProfile from "../pages/UserPages/EditJobProfile";
 
 function AppRoutes() {
   const { loading } = useSelector((state) => state.loadings);
@@ -88,6 +92,10 @@ function AppRoutes() {
         <Route element={<IsLoggedInUser />}> {/* protected  */}
           <Route path={ServerVariables.UserHome} element={<UserHome />} />
           <Route path={ServerVariables.postDetails} element={<PostDetail />} />
+          <Route path={ServerVariables.userProfile} element={<UserProfile />} />
+          <Route path={ServerVariables.editUser} element={<EditUser />} />
+          <Route path={ServerVariables.addJobProfile} element={<AddJobProfile />} />
+          <Route path={ServerVariables.editJobProfile} element={<EditJobProfile />} />
         </Route>
 
 

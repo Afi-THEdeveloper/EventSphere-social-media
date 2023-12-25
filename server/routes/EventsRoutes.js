@@ -25,6 +25,9 @@ eventRouter
     .post('/subscribePlan', eventAuth, subscriptionController.buyPlan)
     .get('/PaymentSuccess',subscriptionController.getSuccessPage)
     .get('/PaymentError',subscriptionController.getErrorPage)
+    .post('/getPostComments',eventAuth,eventController.getPostComments)
+    .post('/EventReply',eventAuth,eventController.EventReply)
+    .post('/deleteReply', eventAuth, eventController.deleteReply)
 
 module.exports = eventRouter   
 

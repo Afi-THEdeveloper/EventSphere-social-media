@@ -2,9 +2,6 @@ import React, { useEffect, useState } from "react";
 import UserSidebar from "../../components/User/UserSidebar";
 import UserRightbar from "../../components/User/UserRightbar";
 import PostCard from "../../components/User/PostCard";
-import { apiEndPoints } from "../../utils/api";
-import toast from "react-hot-toast";
-import { userRequest } from "../../Helper/instance";
 import StoryComp from "../../components/StoryComp";
 
 function UserHome() {
