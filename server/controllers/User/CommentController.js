@@ -51,7 +51,7 @@ exports.addReply = CatchAsync(async (req, res) => {
     const reply = {
       commentId: comment_Id,
       username: req.body.username,
-      repliedUser:{profile:user?.profile,email:user?.email},
+      repliedUser:{profile:user?.profile,id:user?._id},
       reply: req.body.reply,
     };
     const newComment = await Comment.findByIdAndUpdate(

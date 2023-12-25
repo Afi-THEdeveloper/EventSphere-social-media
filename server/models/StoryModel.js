@@ -20,18 +20,11 @@ const eventStorySchema = new mongoose.Schema(
         ref: "user",
       },
     ],
-    createdAt: {
+    expiresOn: {
       type: Date,
-      default: Date.now(),
-    },
-    expiresAt: {
-      type: Date,
-      default: function () {
-        return new Date(this.createdAt.getTime() + 5 * 60 * 1000);
-      },
+      required: true,
     },
   },
-  { timestamps: true }
 );
 
 const eventStoryModel = mongoose.model("stories", eventStorySchema);

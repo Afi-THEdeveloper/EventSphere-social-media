@@ -162,6 +162,7 @@ exports.UnlikePost = CatchAsync(async (req, res) => {
 exports.getStories = CatchAsync(async (req, res) => {
   const currentDate = new Date();
   const deleted = await Story.deleteMany({ expiresAt: { $lt: currentDate } });
+  console.log('expired stories',deleted)
   const stories = await Story.aggregate([
     {
       $sort: { createdAt: -1 },

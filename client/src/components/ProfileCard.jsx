@@ -32,13 +32,14 @@ function ProfileCard({ event, postCount }) {
         toast.error(err.message);
       });
   };
+
   const ProfileClickHandler = () => {
     if (story.length) {
       navigate(ServerVariables.storyCourosel, { state: { stories: story } });
     }else{
       toast.error('no stories exists')
     }
-  };
+  }; 
 
   return (
     <>

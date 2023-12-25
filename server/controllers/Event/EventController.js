@@ -216,7 +216,7 @@ exports.EventReply = CatchAsync(async (req, res) => {
     const reply = {
       commentId: comment_Id,
       username: event.title,
-      repliedUser: { profile: event?.profile, email: event?.email },
+      repliedUser: { profile: event?.profile, id: event?._id },
       reply: req.body?.reply,
     };
     await Comment.findByIdAndUpdate(
@@ -295,18 +295,24 @@ exports.addStory = CatchAsync(async (req, res) => {
   }
 
   if (req.body.description) data.description = req.body.description;
+  const createdAt = new Date();
 
   data.postedBy = event._id;
+  data.expiresOn = new Date(createdAt.getTime() + 3 * 60 * 1000);  // 3 mins valid
   console.log(data);
   const story = new Story(data);
   await story.save();
   return res.status(200).json({ success: "story Added Successfully", story });
 });
 
+
+
+
 exports.getEventStory = CatchAsync(async (req, res) => {
   const event = await Event.findById(req.eventId);
   const currentDate = new Date();
-  const deleted = await Story.deleteMany({ expiresAt: { $lt: currentDate } });
+  const deleted = await Story.deleteMany({ expiresOn: { $lt: currentDate } });
+  console.log('deleted', deleted)
   const stories = await Story.aggregate([{ $match: { postedBy: event._id } }]);
   console.log(stories);
   return res.status(200).json({ success: "ok", stories });

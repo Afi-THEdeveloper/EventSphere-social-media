@@ -54,7 +54,7 @@ const EventReply = ({ Reply, Post, comment }) => {
               {reply?.reply}
             </time>
           </p>
-          {reply.repliedUser.email === event.email && <MdOutlineDeleteForever
+          {reply.repliedUser.id === event._id && <MdOutlineDeleteForever 
             className="fill-red-800 mx-2"
             onClick={() =>
               deleteReplyhandler(reply?._id, comment._id)

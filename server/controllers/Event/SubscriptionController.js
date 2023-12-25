@@ -119,7 +119,7 @@ exports.getSuccessPage = CatchAsync(async (req, res) => {
 
         event.selectedPlan.plan = plan._id
         event.selectedPlan.transactionId = transactionId;
-        event.selectedPlan.expiry = new Date(createdAt.getTime() + 3 * 60 * 1000); // 3 min valid for test case
+        event.selectedPlan.expiry = new Date(createdAt.getTime() + 10 * 60 * 1000); // 10 min valid for test case
         await event.save();
         return res.redirect("http://localhost:5173/PaymentSuccess");
       }

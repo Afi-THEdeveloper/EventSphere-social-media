@@ -43,8 +43,8 @@ function EventsTable() {
     {
       name: "Plan Expiry",
       selector: (row) => {
-        return row?.selectedPlan
-          ? row?.selectedPlan.expiry.toDateString()
+        return row?.selectedPlan     
+          ? new Date(row?.selectedPlan?.expiry).toLocaleString()     
           : "No plan";
       },
       sortable: true,

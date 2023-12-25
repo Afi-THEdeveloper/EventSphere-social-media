@@ -13,6 +13,9 @@ const Reply = ({ reply, user, }) => {
     });
   };
 
+  console.log('reply', reply.repliedUser.email)
+  console.log('user', user.email === reply.repliedUser.email)
+
   return (
     <footer class="flex justify-between items-center mb-2 ml-8">
       <div class="flex items-center mx-2 px-2 rounded-md my-1 py-0.5">
@@ -29,7 +32,7 @@ const Reply = ({ reply, user, }) => {
             {reply?.reply}
           </time>
         </p>
-        {reply.repliedUser.email === user.email &&<MdOutlineDeleteForever
+        {reply.repliedUser.id === user._id &&<MdOutlineDeleteForever
           className="fill-red-800 mx-2"
           onClick={deleteReplyhandler}
         />}

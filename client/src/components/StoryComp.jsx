@@ -53,7 +53,7 @@ const StoryComp = () => {
                 >
                   <img
                     className="h-16 w-16 rounded-full"
-                    src={`http://localhost:5000/Event/${story?.stories[0]?.postedByDetails.profile}`}
+                    src={`http://localhost:5000/profiles/${story?.stories[0]?.postedByDetails.profile}`}
                     alt="cute kitty"
                   />
                 </p>
