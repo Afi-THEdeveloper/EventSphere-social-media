@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { ObjectId } = mongoose.Schema.Types;
 
 const eventSchema = new mongoose.Schema(
   {
@@ -51,7 +52,7 @@ const eventSchema = new mongoose.Schema(
     },
     selectedPlan: {
       plan: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: ObjectId,
         ref: "Plan",
       },
       transactionId:{
@@ -63,9 +64,8 @@ const eventSchema = new mongoose.Schema(
     },
     followers: [
       {
-        user: {
-          type: mongoose.Schema.Types.ObjectId,
-        },
+        type: ObjectId,
+        ref: "user",
       },
     ],
     jobPosts: [

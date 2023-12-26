@@ -40,6 +40,8 @@ import UserProfile from "../pages/UserPages/UserProfile";
 import EditUser from "../pages/UserPages/EditUser";
 import AddJobProfile from "../pages/UserPages/AddJobProfile";
 import EditJobProfile from "../pages/UserPages/EditJobProfile";
+import ShowEvent from "../pages/UserPages/ShowEvent";
+import Page404 from "../pages/Page404";
 
 function AppRoutes() {
   const { loading } = useSelector((state) => state.loadings);
@@ -76,7 +78,8 @@ function AppRoutes() {
 
       <Routes>
         <Route path={ServerVariables.Landing} element={<LandingPage />} />
-
+        <Route path='*' element={<Page404 />} />
+        
 
 
 
@@ -96,6 +99,7 @@ function AppRoutes() {
           <Route path={ServerVariables.editUser} element={<EditUser />} />
           <Route path={ServerVariables.addJobProfile} element={<AddJobProfile />} />
           <Route path={ServerVariables.editJobProfile} element={<EditJobProfile />} />
+          <Route path={ServerVariables.showEvent} element={<ShowEvent />} />
         </Route>
 
 

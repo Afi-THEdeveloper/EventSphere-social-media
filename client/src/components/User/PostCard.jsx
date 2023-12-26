@@ -5,6 +5,7 @@ import { FiSend } from "react-icons/fi";
 import { BsBookmark } from "react-icons/bs";
 import { BookmarkIcon } from "@heroicons/react/24/outline";
 import { SlUserFollow } from "react-icons/sl";
+import { SlUserUnfollow } from "react-icons/sl";
 import { userRequest } from "../../Helper/instance";
 import { apiEndPoints } from "../../utils/api";
 import toast from "react-hot-toast";
@@ -12,11 +13,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
 import { useNavigate } from "react-router-dom";
 import { ServerVariables } from "../../utils/ServerVariables";
+import { updateUser } from "../../Redux/slices/AuthSlice";
+import { updateEvent } from "../../Redux/slices/EventAuthSlice";
 
 function PostCard({ post, event }) {
   const [EventPosts, setEventPosts] = useState([]);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.Auth);
   const getPosts = () => {
     userRequest({
@@ -79,12 +82,62 @@ function PostCard({ post, event }) {
         toast.error(err.message);
       });
   };
+
+  const handleFollow = (eventId) => {
+    dispatch(showLoading());
+    userRequest({
+      url: apiEndPoints.followEvent,
+      method: "post",
+      data: { eventId },
+    })
+      .then((res) => {
+        dispatch(hideLoading());
+        if (res.data.success) {
+          dispatch(updateUser(res.data.user));
+          dispatch(updateEvent(res.data.event));
+          getPosts();
+        } else {
+          toast.error(res.data.error);
+        }
+      })
+      .catch((err) => {
+        dispatch(hideLoading());
+        toast.error(err.message);
+      });
+  };
+
+  const handleUnFollow = (eventId) => {
+    dispatch(showLoading());
+    userRequest({
+      url: apiEndPoints.unfollowEvent,
+      method: "post",
+      data: { eventId },
+    })
+      .then((res) => {
+        dispatch(hideLoading());
+        if (res.data.success) {
+          dispatch(updateUser(res.data.user));
+          dispatch(updateEvent(res.data.event));
+          getPosts();
+        } else {
+          toast.error(res.data.error);
+        }
+      })
+      .catch((err) => {
+        dispatch(hideLoading());
+        toast.error(err.message);
+      });
+  };
+
   return (
     <>
       {EventPosts &&
         EventPosts.map((post) => {
           return (
-            <div className="flex flex-col gap-2 bg-[#E0CDB6] mt-2 mx-4 rounded-xl border border-slate-200" key={post._id}>
+            <div
+              className="flex flex-col gap-2 bg-[#E0CDB6] mt-2 mx-4 rounded-xl border border-slate-200"
+              key={post._id}
+            >
               {/* top div */}
               <div className="flex flex-row justify-between items-center">
                 <div className="flex flex-row items-center gap-4">
@@ -93,9 +146,47 @@ function PostCard({ post, event }) {
                     className="h-10 w-10 rounded-full object-cover border-2 border-[#FFB992]"
                     alt="profile"
                   />
-                  <span><h4 className="font-bold cursor-pointer">{post?.postedBy?.title}</h4><small>{post?.location}</small></span>
+                  <span>
+                    <h4
+                      className="font-bold cursor-pointer"
+                      onClick={() =>
+                        navigate(ServerVariables.showEvent, {
+                          state: { event: post?.postedBy },
+                        })
+                      }
+                    >
+                      {post?.postedBy?.title}
+                    </h4>
+                    <small>{post?.location}</small>
+                  </span>
                 </div>
-                <SlUserFollow className="w-6 h-6 mx-2" />
+                {user?.following?.includes(post?.postedBy?._id) ? (
+                  <div>
+                    <SlUserUnfollow
+                      className="w-6 h-6 mx-2 cursor-pointer"
+                      onClick={() => handleUnFollow(post?.postedBy?._id)}
+                    />
+                    <small
+                      className="text-black font-bold mr-2 cursor-pointer"
+                      onClick={() => handleUnFollow(post?.postedBy?._id)}
+                    >
+                      Following
+                    </small>
+                  </div>
+                ) : (
+                  <div>
+                    <SlUserFollow
+                      className="w-6 h-6 mx-2 cursor-pointer"
+                      onClick={() => handleFollow(post?.postedBy?._id)}
+                    />
+                    <small
+                      className="text-black font-bold mr-2 cursor-pointer"
+                      onClick={() => handleFollow(post?.postedBy?._id)}
+                    >
+                      Follow
+                    </small>
+                  </div>
+                )}
               </div>
               {/* post */}
               <div>
@@ -107,7 +198,7 @@ function PostCard({ post, event }) {
                 )}
               </div>
               {/* icons */}
-              <div className="my-2 mx-4 mb-2 flex flow-row justify-between">  
+              <div className="my-2 mx-4 mb-2 flex flow-row justify-between">
                 <div className="flex flex-row gap-4 items-center">
                   {post?.likes?.includes(user?._id) ? (
                     <FaHeart
@@ -120,12 +211,26 @@ function PostCard({ post, event }) {
                       onClick={() => handleLike(post._id)}
                     />
                   )}
-                  <FaRegComment className="w-7 h-7" onClick={()=> navigate(ServerVariables.postDetails, {state:{postDetails:post}})} />
+                  <FaRegComment
+                    className="w-7 h-7"
+                    onClick={() =>
+                      navigate(ServerVariables.postDetails, {
+                        state: { postDetails: post },
+                      })
+                    }
+                  />
                   {/* <FiSend className="w-7 h-7" /> */}
                 </div>
                 {/* <BookmarkIcon className="w-6 h-6" /> */}
               </div>
-              <p className="text-black font-bold mx-2 cursor-pointer" onClick={()=> navigate(ServerVariables.postDetails, {state:{postDetails:post}})}>{`${post?.likes.length} likes   ${post?.commentsCount} comments`}</p>
+              <p
+                className="text-black font-bold mx-2 cursor-pointer"
+                onClick={() =>
+                  navigate(ServerVariables.postDetails, {
+                    state: { postDetails: post },
+                  })
+                }
+              >{`${post?.likes.length} likes   ${post?.commentsCount} comments`}</p>
               <div>
                 <p>{post?.description}</p>
               </div>

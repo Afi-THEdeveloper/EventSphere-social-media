@@ -14,13 +14,13 @@ eventRouter
     .post('/verifyEventLogin', eventController.verifyEventLogin)
     .post('/updateEvent', eventAuth, eventController.updateEvent)
     .post('/updateEventProfile', eventAuth,uploadEventProfile,resizeEventProfile, eventController.updateEventProfile)
-    .get('/getEventPosts', eventAuth, eventController.getEventPosts)
+    .post('/getEventPosts', eventAuth, eventController.getEventPosts)
 
     .post('/addPost', eventAuth,IsPlanExpired, uploadEventPost,processEventPost, eventController.addPost)
 
     .post('/deletePost', eventAuth, eventController.deletePost)
     .post('/addStory', eventAuth,IsPlanExpired, uploadEventPost, processEventPost, eventController.addStory)
-    .get('/getStory', eventAuth, eventController.getEventStory)
+    .post('/getStory', eventAuth, eventController.getEventStory)
     .get('/availablePlans', eventAuth, subscriptionController.availablePlans) 
     .post('/subscribePlan', eventAuth, subscriptionController.buyPlan)
     .get('/PaymentSuccess',subscriptionController.getSuccessPage)

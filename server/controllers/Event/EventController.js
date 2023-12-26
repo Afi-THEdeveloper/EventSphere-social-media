@@ -173,19 +173,6 @@ exports.updateEventProfile = CatchAsync(async (req, res) => {
     .json({ success: "profile updated successfully", event });
 });
 
-
-
-exports.getEventPosts = CatchAsync(async (req, res) => {
-  const posts = await EventPost.find({ postedBy: req.eventId }).sort({
-    createdAt: -1,
-  });
-  console.log(posts);
-  return res.status(200).json({ success: "ok", posts });
-});
-
-
-
-
 exports.getPostComments = CatchAsync(async (req, res) => {
   const id = req?.body?.postId;
   if (id) {
@@ -305,15 +292,23 @@ exports.addStory = CatchAsync(async (req, res) => {
   return res.status(200).json({ success: "story Added Successfully", story });
 });
 
-
+exports.getEventPosts = CatchAsync(async (req, res) => {
+  const posts = await EventPost.find({ postedBy: req.body?.eventId }).sort({
+    createdAt: -1,
+  });
+  console.log(posts);
+  return res.status(200).json({ success: "ok", posts });
+});
 
 
 exports.getEventStory = CatchAsync(async (req, res) => {
-  const event = await Event.findById(req.eventId);
+  console.log(req?.body?.eventId)
+  const event = await Event.findById(req?.body?.eventId);
+  console.log(event)
   const currentDate = new Date();
   const deleted = await Story.deleteMany({ expiresOn: { $lt: currentDate } });
   console.log('deleted', deleted)
-  const stories = await Story.aggregate([{ $match: { postedBy: event._id } }]);
-  console.log(stories);
+  const stories = await Story.find({postedBy:event._id})
+  console.log('stories',stories);
   return res.status(200).json({ success: "ok", stories });
 });

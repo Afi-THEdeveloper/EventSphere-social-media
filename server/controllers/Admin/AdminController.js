@@ -2,6 +2,7 @@ const Admin = require("../../models/AdminModel");
 const User = require("../../models/UserModel");
 const Plan = require("../../models/PlanModel");
 const Event = require("../../models/EventModel");
+const PurchaseHistory = require("../../models/PurchaseHistory");
 const CatchAsync = require("../../util/CatchAsync");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -141,7 +142,7 @@ exports.editPlan = CatchAsync(async (req, res) => {
       { totalDays: totalDays }, // The total days you want to check for duplicates
       { totalDays: { $ne: plan.totalDays } }, // Exclude the current plan's total days
     ],
-  });   
+  });
 
   if (duplicatePlans) {
     return res.json({ error: "plan name already exists" });
@@ -157,7 +158,7 @@ exports.editPlan = CatchAsync(async (req, res) => {
         totalDays,
       },
     },
-    {new:true}
+    { new: true }
   );
   if (updatedPlan) {
     return res
@@ -198,4 +199,25 @@ exports.blockEvent = CatchAsync(async (req, res) => {
   } else {
     return res.status(200).json({ success: `${event.title} is unblocked` });
   }
+});
+
+exports.getSubscriptionHistory = CatchAsync(async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const pageSize = 2;
+  const totalDocs = await PurchaseHistory.countDocuments();
+  const totalPages = Math.ceil(totalDocs / pageSize);
+
+  const histories = await PurchaseHistory.find({})
+    .skip((page - 1) * pageSize)
+    .limit(pageSize)
+    .sort({ createdAt: -1 })
+    .populate("event plan");
+    console.log('histories',histories)
+
+  return res.status(200).json({
+    success: "ok",
+    payments: histories,
+    currentPage: page,
+    totalPages,
+  });
 });

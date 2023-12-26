@@ -11,7 +11,9 @@ export const ServerVariables = {
   editUser:'/editUser',
   addJobProfile:'/addJobProfile',
   editJobProfile:'/editJobProfile',
-
+  showEvent:'/showEvent', 
+   
+  
   //admin routes
   AdminLogin:'/adminLogin',
   AdminHome:'/adminHome',

@@ -2,6 +2,7 @@ const paypal = require("paypal-rest-sdk");
 const CatchAsync = require("../../util/CatchAsync");
 const Plan = require("../../models/PlanModel");
 const Event = require("../../models/EventModel");
+const PurchaseHistory = require('../../models/PurchaseHistory') 
 const { PAYPAL_MODE, PAYPAL_CLIENT_ID, PAYPAL_SECRET_KEY } = process.env;
 
 paypal.configure({
@@ -114,13 +115,21 @@ exports.getSuccessPage = CatchAsync(async (req, res) => {
         const parsedResponse = JSON.parse(response);
 
         const transactionId = parsedResponse.transactions[0].related_resources[0].sale.id;
-        const createdAt = new Date();
+        const createdOn = new Date();
         console.log(transactionId)
 
         event.selectedPlan.plan = plan._id
         event.selectedPlan.transactionId = transactionId;
-        event.selectedPlan.expiry = new Date(createdAt.getTime() + 10 * 60 * 1000); // 10 min valid for test case
+        event.selectedPlan.expiry = new Date(createdOn.getTime() + 10 * 60 * 1000); // 10 min valid for test case
         await event.save();
+
+        await PurchaseHistory.create({
+          plan:plan._id,
+          event:eventId,
+          transactionId:transactionId,
+          startDate:createdOn,
+          expireDate:new Date(createdOn.getTime() + 10 * 60 * 1000)
+        })
         return res.redirect("http://localhost:5173/PaymentSuccess");
       }
     }

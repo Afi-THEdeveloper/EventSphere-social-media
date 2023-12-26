@@ -1,5 +1,6 @@
 const User = require("../../models/UserModel");
 const EventPost = require("../../models/EventPostModel");
+const Event = require("../../models/EventModel");
 const Story = require("../../models/StoryModel");
 const Comment = require("../../models/CommentModel");
 const randomString = require("randomstring");
@@ -159,10 +160,50 @@ exports.UnlikePost = CatchAsync(async (req, res) => {
   return res.json({ error: "failed to like,try again" });
 });
 
+exports.followEvent = CatchAsync(async (req, res) => {
+  const eventId = req?.body?.eventId;
+  if (eventId) {
+    const user = await User.findById(req.userId);
+    const event = await Event.findById(eventId);
+    event.followers.push(user?._id);
+    user.following.push(event?._id);
+    await event.save();
+    await user.save();
+    return res.status(200).json({ success: "ok", event, user });
+  } else {
+    return res.json({ error: "event id not found" });
+  }
+});
+
+exports.unfollowEvent = CatchAsync(async (req, res) => {
+  const eventId = req?.body?.eventId;
+  if (eventId) {
+    const userUnfollowed = await User.findByIdAndUpdate(
+      req?.userId,
+
+      { $pull: { following: eventId } },
+      { new: true }
+    );
+    const unfollowedEvent = await Event.findByIdAndUpdate(
+      eventId,
+
+      { $pull: { followers: req?.userId } },
+      { new: true }
+    );
+    return res
+      .status(200)
+      .json({ success: "ok", event: unfollowedEvent, user: userUnfollowed });
+  } else {
+    return res.json({ error: "event id not found" });
+  }
+});
+
+
+
 exports.getStories = CatchAsync(async (req, res) => {
   const currentDate = new Date();
-  const deleted = await Story.deleteMany({ expiresAt: { $lt: currentDate } });
-  console.log('expired stories',deleted)
+  const deleted = await Story.deleteMany({ expiresOn: { $lt: currentDate } });
+  console.log("expired stories", deleted);
   const stories = await Story.aggregate([
     {
       $sort: { createdAt: -1 },
@@ -193,7 +234,7 @@ exports.getStories = CatchAsync(async (req, res) => {
     },
   ]);
 
-  console.log(stories[0]?.stories);
+  console.log('userSide',stories[0]?.stories);
   return res.status(200).json({ success: "ok", stories });
 });
 
@@ -211,46 +252,44 @@ exports.editUser = CatchAsync(async (req, res) => {
   }
 });
 
-
 exports.addJobProfile = CatchAsync(async (req, res) => {
-  console.log(req.file)
-  console.log(req.body)
+  console.log(req.file);
+  console.log(req.body);
   const user = await User.findById(req?.userId);
-  if(user) {
+  if (user) {
     user.jobProfile = user.jobProfile || {};
 
     user.jobProfile.fullName = req?.body?.fullName;
     user.jobProfile.phone = req?.body?.phone;
     user.jobProfile.skills = req?.body?.skills;
-    user.jobProfile.jobRole = req?.body?.jobRole
-    user.jobProfile.yearOfExperience =req?.body?.yearOfExperience;
-    user.jobProfile.CV = req?.file?.filename
+    user.jobProfile.jobRole = req?.body?.jobRole;
+    user.jobProfile.yearOfExperience = req?.body?.yearOfExperience;
+    user.jobProfile.CV = req?.file?.filename;
     user.isJobSeeker = true;
     await user.save();
-    return res.status(200).json({ success: "job profile added", user});
-  }else{
-    return res.json({erroe:'user not found'})
+    return res.status(200).json({ success: "job profile added", user });
+  } else {
+    return res.json({ erroe: "user not found" });
   }
-})
+});
 
-
-exports.updateJobProfile = CatchAsync(async (req,res)=>{
-  console.log(req.file)
-  console.log(req.body)
+exports.updateJobProfile = CatchAsync(async (req, res) => {
+  console.log(req.file);
+  console.log(req.body);
   const user = await User.findById(req?.userId);
-  if(user) {
+  if (user) {
     user.jobProfile = user.jobProfile || {};
 
     user.jobProfile.fullName = req?.body?.fullName;
     user.jobProfile.phone = req?.body?.phone;
     user.jobProfile.skills = req?.body?.skills;
-    user.jobProfile.jobRole = req?.body?.jobRole
-    user.jobProfile.yearOfExperience =req?.body?.yearOfExperience;
-    user.jobProfile.CV = req?.file?.filename
+    user.jobProfile.jobRole = req?.body?.jobRole;
+    user.jobProfile.yearOfExperience = req?.body?.yearOfExperience;
+    user.jobProfile.CV = req?.file?.filename;
     user.isJobSeeker = true;
     await user.save();
-    return res.status(200).json({ success: "job profile added", user});
-  }else{
-    return res.json({erroe:'user not found'})
+    return res.status(200).json({ success: "job profile added", user });
+  } else {
+    return res.json({ erroe: "user not found" });
   }
-})
+});

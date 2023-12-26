@@ -64,7 +64,7 @@ const PostCard = ({ post, onDelete }) => {
 
         <p
           className="text-gray-900 hover:font-bold mb-2 cursor-pointer"
-          onClick={()=> openModal(post._id)}
+          onClick={() => openModal(post._id)}
         >
           {post?.commentsCount} comments
         </p>
@@ -118,6 +118,7 @@ const NewPostButton = () => {
 const PostsPage = ({ AllPosts }) => {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
+
   useEffect(() => {
     setPosts(AllPosts);
   }, [AllPosts]);

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { ObjectId } = mongoose.Schema.Types;
 
 const userSchema = new mongoose.Schema(
   {
@@ -28,7 +29,7 @@ const userSchema = new mongoose.Schema(
       default: false,
     },
     jobProfile: {
-     type:{
+      type: {
         fullName: {
           type: String,
           required: function () {
@@ -71,10 +72,8 @@ const userSchema = new mongoose.Schema(
     },
     following: [
       {
-        event: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Event",
-        },
+        type: ObjectId,
+        ref: "event",
       },
     ],
     isBlocked: {

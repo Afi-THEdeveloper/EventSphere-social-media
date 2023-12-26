@@ -12,6 +12,7 @@ adminRouter
   .post("/addPlan", AdminAuth, adminController.addPlan)
   .post("/editPlan", AdminAuth, adminController.editPlan)
   .get("/getEvents", AdminAuth, adminController.getEvents)
-  .post("/blockEvent", AdminAuth, adminController.blockEvent);
+  .post("/blockEvent", AdminAuth, adminController.blockEvent)
+  .get('/getSubscriptionHistory', AdminAuth, adminController.getSubscriptionHistory)
 
 module.exports = adminRouter;

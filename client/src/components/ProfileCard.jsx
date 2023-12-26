@@ -10,36 +10,15 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../Redux/slices/LoadingSlice";
 
-function ProfileCard({ event, postCount }) {
+function ProfileCard({ event, postCount, story }) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [story, setStory] = useState([]);
-  useEffect(() => {
-    getEventStory();
-  }, []);
-  const getEventStory = () => {
-    dispatch(showLoading());
-    eventRequest({
-      url: apiEndPoints.getEventStory,
-      method: "get",
-    })
-      .then((res) => {
-        dispatch(hideLoading());
-        setStory(res.data.stories);
-      })
-      .catch((err) => {
-        dispatch(hideLoading());
-        toast.error(err.message);
-      });
-  };
-
   const ProfileClickHandler = () => {
-    if (story.length) {
+    if (story?.length) {
       navigate(ServerVariables.storyCourosel, { state: { stories: story } });
-    }else{
-      toast.error('no stories exists')
+    } else {
+      toast.error("no stories exists");
     }
-  }; 
+  };
 
   return (
     <>

@@ -7,10 +7,13 @@ export const apiEndPoints = {
     getEPosts:'/api/user/getEventPost',
     likePost:'api/user/likePost',
     UnlikePost:'api/user/UnlikePost',
+    followEvent:'api/user/followEvent',
+    unfollowEvent:'api/user/unfollowEvent',
     getStories:'api/user/getStories',
     editUser:'api/user/editUser',
     addJobProfile:'/api/user/addJobProfile',
     updateJobProfile:'/api/user/updateJobProfile',
+    
 
     //admin end points
     postLoginAdmin: '/api/admin/verifyAdmin',
@@ -22,7 +25,9 @@ export const apiEndPoints = {
     editPlan:'api/admin/editPlan',
     getEvents:'api/admin/getEvents',
     blockEvent:'api/admin/blockEvent',
+    getSubscriptionHistory:'api/admin/getSubscriptionHistory',
 
+    
     //event end points
     postEventRegisterData : 'api/event/registerEvent',
     postEventRegisterOtp  : 'api/event/verifyEventOtp',
