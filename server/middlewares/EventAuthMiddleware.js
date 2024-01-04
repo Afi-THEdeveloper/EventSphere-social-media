@@ -20,9 +20,9 @@ module.exports = async (req, res, next) => {
         // check and clear expired plan of event
         const event = await Event.findById(req.eventId);
         const currentDate = new Date();
-        console.log("selected", event.selectedPlan);
-        if (event.selectedPlan.transactionId) {
-          if (event.selectedPlan.expiry < currentDate) {
+        console.log("selected", event?.selectedPlan);
+        if (event?.selectedPlan?.transactionId) {
+          if (event?.selectedPlan?.expiry < currentDate) {
             await Event.updateOne(
               { _id: req.eventId },
               { $unset: { selectedPlan: 1 } }

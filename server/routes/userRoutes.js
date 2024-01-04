@@ -2,6 +2,7 @@ const express = require('express')
 const userRouter = express.Router()
 const userController = require('../controllers/User/userController')
 const commentController = require('../controllers/User/CommentController')
+const chatController = require('../controllers/chatController')
 const userAuth = require('../middlewares/UserAuthMiddleware')
 const {uploadUserProfile,resizeUserProfile, uploadCv} = require('../middlewares/imgUploads')
 
@@ -24,6 +25,11 @@ userRouter.post('/register', userController.register)
     .post('/editUser', userAuth, uploadUserProfile, resizeUserProfile, userController.editUser)
     .post('/addJobProfile', userAuth, uploadCv, userController.addJobProfile)
     .post('/updateJobProfile', userAuth, uploadCv, userController.updateJobProfile)
+
+    // chats
+    .get('/getContactsList', userAuth, chatController.getContactsList)
+    .post('/sendNewMessage', userAuth, chatController.sendNewMessage)
+    .post('/getMessages', userAuth, chatController.getMessages)
 
 
 module.exports = userRouter

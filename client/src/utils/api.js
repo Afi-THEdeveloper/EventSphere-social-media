@@ -13,6 +13,9 @@ export const apiEndPoints = {
     editUser:'api/user/editUser',
     addJobProfile:'/api/user/addJobProfile',
     updateJobProfile:'/api/user/updateJobProfile',
+    getContactsList:'api/user/getContactsList',
+    sendNewMessage:'api/user/sendNewMessage',
+    getMessages:'api/user/getMessages',
     
 
     //admin end points
@@ -45,5 +48,8 @@ export const apiEndPoints = {
     getPostComments:'api/event/getPostComments',
     EventReply:'api/event/EventReply',
     deleteReply:'api/event/deleteReply',
+    getEventContacts:'api/event/getEventContacts',
+    getEventMessages:'api/event/getEventMessages',
+    sendMessage:'api/event/sendMessage',
 }
 

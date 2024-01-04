@@ -2,6 +2,7 @@ const express = require('express')
 const eventRouter = express.Router()
 const eventController = require('../controllers/Event/EventController')
 const subscriptionController = require('../controllers/Event/SubscriptionController')
+const chatController = require('../controllers/chatController')
 const eventAuth = require('../middlewares/EventAuthMiddleware')
 const IsPlanExpired = require('../middlewares/IsPlanExpired')
 const {uploadEventProfile,resizeEventProfile,uploadEventPost, processEventPost} = require('../middlewares/imgUploads')
@@ -28,6 +29,10 @@ eventRouter
     .post('/getPostComments',eventAuth,eventController.getPostComments)
     .post('/EventReply',eventAuth,eventController.EventReply)
     .post('/deleteReply', eventAuth, eventController.deleteReply)
+
+    .get('/getEventContacts', eventAuth, chatController.getEventContacts)
+    .post('/getEventMessages', eventAuth, chatController.getEventMessages)
+    .post('/sendMessage', eventAuth, chatController.sendMessage)
 
 module.exports = eventRouter   
 

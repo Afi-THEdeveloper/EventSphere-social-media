@@ -127,8 +127,9 @@ exports.verifyEventLogin = CatchAsync(async (req, res) => {
   const token = jwt.sign({ id: event._id }, process.env.JWT_SECRET, {
     expiresIn: "1d",
   });
+  event.role = 'admin'
+  await event.save()
   event.password = "";
-  event.otp.code = "";
   res.status(200).json({ success: "Login successful", token, event });
 });
 

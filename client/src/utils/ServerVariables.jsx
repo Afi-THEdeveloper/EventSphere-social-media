@@ -12,6 +12,7 @@ export const ServerVariables = {
   addJobProfile:'/addJobProfile',
   editJobProfile:'/editJobProfile',
   showEvent:'/showEvent', 
+  chatPage:'/chats',
    
   
   //admin routes
@@ -37,6 +38,7 @@ export const ServerVariables = {
   storyCourosel:'/storyCourosel',
   PlansAvailable:'/Plans',
   success:'/PaymentSuccess',
-  error:'/PaymentError'
+  error:'/PaymentError',
+  eventChats:'/eventChats',
 };
 

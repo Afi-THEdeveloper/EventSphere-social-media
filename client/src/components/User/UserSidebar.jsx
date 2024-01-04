@@ -34,7 +34,7 @@ function UserSidebar() {
     {
       label: "Messages",
       icon: <MessageIcon />,
-      href: ServerVariables.UserHome,
+      href: ServerVariables.chatPage,
     },
     {
       label: "Notifications",

@@ -72,12 +72,14 @@ exports.loginUser = CatchAsync(async (req, res) => {
     return res.status(200).json({ error: "Account Not Verified SignUp Again" });
   }
 
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+  const token = jwt.sign({ id: user._id,user }, process.env.JWT_SECRET, {
     expiresIn: "1d",
   });
-  delete user.password;
+  user.password = "";
   res.status(200).json({ success: "Login successful", token, user });
 });
+
+
 
 exports.VerifyOtp = CatchAsync(async (req, res) => {
   const { otp, email } = req.body;
@@ -198,8 +200,6 @@ exports.unfollowEvent = CatchAsync(async (req, res) => {
   }
 });
 
-
-
 exports.getStories = CatchAsync(async (req, res) => {
   const currentDate = new Date();
   const deleted = await Story.deleteMany({ expiresOn: { $lt: currentDate } });
@@ -234,7 +234,7 @@ exports.getStories = CatchAsync(async (req, res) => {
     },
   ]);
 
-  console.log('userSide',stories[0]?.stories);
+  console.log("userSide", stories[0]?.stories);
   return res.status(200).json({ success: "ok", stories });
 });
 

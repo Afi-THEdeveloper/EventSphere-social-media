@@ -42,6 +42,9 @@ import AddJobProfile from "../pages/UserPages/AddJobProfile";
 import EditJobProfile from "../pages/UserPages/EditJobProfile";
 import ShowEvent from "../pages/UserPages/ShowEvent";
 import Page404 from "../pages/Page404";
+import ChatUI from "../components/ChatUI";
+import Chat from "../components/Chat";
+import EventChats from "../pages/EventPages/EventChats";
 
 function AppRoutes() {
   const { loading } = useSelector((state) => state.loadings);
@@ -74,6 +77,8 @@ function AppRoutes() {
           </div>
         </div>
       )}
+   
+
       <Toaster position="top-center" reverseOrder={false} />
 
       <Routes>
@@ -100,6 +105,7 @@ function AppRoutes() {
           <Route path={ServerVariables.addJobProfile} element={<AddJobProfile />} />
           <Route path={ServerVariables.editJobProfile} element={<EditJobProfile />} />
           <Route path={ServerVariables.showEvent} element={<ShowEvent />} />
+          <Route path={ServerVariables.chatPage} element={<Chat />} />
         </Route>
 
 
@@ -138,6 +144,7 @@ function AppRoutes() {
           <Route path={ServerVariables.PlansAvailable} element={<Plans />} />
           <Route path={ServerVariables.success} element={<PaymentSuccess />} />
           <Route path={ServerVariables.error} element={<PaymentError />} />
+          <Route path={ServerVariables.eventChats} element={<EventChats />} />
         </Route>
 
         <Route element={<IsLoggedOutEvent />}>

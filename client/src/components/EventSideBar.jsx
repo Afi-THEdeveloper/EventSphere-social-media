@@ -22,7 +22,7 @@ function EventSideBar() {
     {
       label: "Messages",
       icon: <MessageIcon />,
-      href: ServerVariables.eventHome,
+      href: ServerVariables.eventChats,
     },
     {
       label: "Notifications",
