@@ -108,13 +108,22 @@ function Chat() {
     })
   };
 
+  const updateChatHistory = (message) => {
+    setChatHistory((prevChatHistory) => [...(prevChatHistory || []), message]);
+  };
+
 
   useEffect(() => {
-    socket.on("message recieved", (message) => { 
-      setMsg(message);
-      setChatHistory([...chatHistory, message]);
+    socket.on("message recieved", (message) => {
+        if (message.eventId === selectedEventId) {
+            updateChatHistory(message);
+        }
     });
-  }, [chatHistory]);
+    return () => {
+        // Clean up the socket listener on component unmount
+        socket.off("message recieved");
+    };
+  }, [selectedEventId]);
 
   const chatContainerRef = useRef(null);
   useEffect(() => {
