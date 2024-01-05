@@ -17,11 +17,9 @@ function Chat() {
   const [newMessageText, setNewMessageText] = useState("");
   const [chatPartner, setChatPartner] = useState([]);
   const [chatHistory, setChatHistory] = useState([]);
-  const [msg, setMsg] = useState([]);
   const inputRef = useRef(null);
   const dispatch = useDispatch();
 
-//   var BigData = chatHistory
 
   useEffect(() => {
     userRequest({
@@ -81,47 +79,48 @@ function Chat() {
         .catch((error) => {
           console.log(error);
         });
-    } 
+    }
   }
 
   const fetchChatMessages = async (eventId) => {
-    dispatch(showLoading())
+    dispatch(showLoading());
     userRequest({
       url: apiEndPoints.getMessages,
       method: "post",
       data: {
         eventId,
       },
-    }).then((response) => {
-      dispatch(hideLoading())  
-      if (response.data.success) {
-        setNewMessageText("");
-        socket.emit("setup", response.data.userId);
-
-        socket.emit("join", response.data.roomId);
-        setChatPartner(response.data?.Data);
-        setChatHistory(response.data?.mes);
-      }
-    }).catch(err =>{
-        dispatch(hideLoading())  
-        toast.error(err.message)
     })
+      .then((response) => {
+        dispatch(hideLoading());
+        if (response.data.success) {
+          setNewMessageText("");
+          socket.emit("setup", response.data.userId);
+
+          socket.emit("join", response.data.roomId);
+          setChatPartner(response.data?.Data);
+          setChatHistory(response.data?.mes);
+        }
+      })
+      .catch((err) => {
+        dispatch(hideLoading());
+        toast.error(err.message);
+      });
   };
 
   const updateChatHistory = (message) => {
     setChatHistory((prevChatHistory) => [...(prevChatHistory || []), message]);
   };
 
-
   useEffect(() => {
     socket.on("message recieved", (message) => {
-        if (message.eventId === selectedEventId) {
-            updateChatHistory(message);
-        }
+      if (message.eventId === selectedEventId) {
+        updateChatHistory(message);
+      }
     });
     return () => {
-        // Clean up the socket listener on component unmount
-        socket.off("message recieved");
+      // Clean up the socket listener on component unmount
+      socket.off("message recieved");
     };
   }, [selectedEventId]);
 
@@ -142,13 +141,14 @@ function Chat() {
     <div className="flex h-screen">
       {/* contacts */}
       <div className="w-1/3 border-r-2 border-[#E0CDB6]">
-        <div className="text-[#E0CDB6] font-bold flex gap-2 p-4">
+        <div className="text-[#E0CDB6] font-bold flex gap-2 p-4 my-2 border-b-2 border-[#E0CDB6]">
           <IoArrowBackCircleOutline
             className="h-8 w-8 mx-2"
             onClick={() => window.history.back()}
           />
           <MessageIcon />
-          Chats
+          chats
+          {/* <img className="rounded-full w-10 h-10" src={`http://localhost:5000/profiles/${user?.profile}`} alt="my image"  /> */}
         </div>
         {contactLists.length ? (
           contactLists.map((contact) => (

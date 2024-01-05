@@ -2,7 +2,7 @@ const User = require("../../models/UserModel");
 const EventPost = require("../../models/EventPostModel");
 const Event = require("../../models/EventModel");
 const Story = require("../../models/StoryModel");
-const Comment = require("../../models/CommentModel");
+const Notification = require('../../models/NotificationModel');
 const randomString = require("randomstring");
 const OtpMailer = require("../../util/OtpMailer");
 const CatchAsync = require("../../util/CatchAsync");
@@ -136,6 +136,8 @@ exports.getEventPosts = CatchAsync(async (req, res) => {
   return res.status(200).json({ success: "ok", posts });
 });
 
+
+
 exports.likePost = CatchAsync(async (req, res) => {
   const likedPost = await EventPost.findByIdAndUpdate(
     req.body.postId,
@@ -144,10 +146,21 @@ exports.likePost = CatchAsync(async (req, res) => {
     { new: true }
   );
   if (likedPost) {
+    const user = await User.findById(req?.userId)
+    const sendNotification = new Notification({
+      recieverId:likedPost.postedBy,
+      senderId:user._id,
+      notificationMessage:`${user?.username} liked you post`,
+      actionOn:likedPost?._id,
+      date:new Date(),
+    })
+    await sendNotification.save();
     return res.status(200).json({ success: "ok", post: likedPost });
   }
   return res.json({ error: "failed to like,try again" });
 });
+
+
 
 exports.UnlikePost = CatchAsync(async (req, res) => {
   const UnlikedPost = await EventPost.findByIdAndUpdate(
@@ -171,6 +184,14 @@ exports.followEvent = CatchAsync(async (req, res) => {
     user.following.push(event?._id);
     await event.save();
     await user.save();
+
+    const sendNotification = new Notification({
+      recieverId:eventId,
+      senderId:user._id,
+      notificationMessage:`${user?.username} started following you`,
+      date:new Date(),
+    })
+    await sendNotification.save();
     return res.status(200).json({ success: "ok", event, user });
   } else {
     return res.json({ error: "event id not found" });

@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import CommentModal from "./CommentModal";
 import Modal from "react-modal";
+import { hideLoading, showLoading } from "../Redux/slices/LoadingSlice";
 
 const PostCard = ({ post, onDelete }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -53,24 +54,24 @@ const PostCard = ({ post, onDelete }) => {
         <img
           className="w-full h-42 object-cover"
           src={`http://localhost:5000/Event/posts/${post?.image}`}
-          alt={post.description}
+          alt={post?.description}
         />
       )}
 
       <div className="p-4">
         <h2 className="text-xl font-semibold mb-2">
-          {post.likes.length} likes
+          {post?.likes?.length} likes
         </h2>
 
         <p
           className="text-gray-900 hover:font-bold mb-2 cursor-pointer"
-          onClick={() => openModal(post._id)}
+          onClick={() => openModal(post?._id)}
         >
           {post?.commentsCount} comments
         </p>
         <button
           className="bg-red-500 text-white p-2 rounded-full hover:bg-red-700"
-          onClick={() => onDelete(post._id)}
+          onClick={() => onDelete(post?._id)}
         >
           <TrashIcon className="h-6 w-6" />
         </button>
@@ -115,22 +116,20 @@ const NewPostButton = () => {
   );
 };
 
-const PostsPage = ({ AllPosts }) => {
+const PostsPage = ({eventId}) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [posts, setPosts] = useState([]);
 
-  useEffect(() => {
-    setPosts(AllPosts);
-  }, [AllPosts]);
-
-  const getPosts = async () => {
+  const getPosts = async (eventId) => {
     eventRequest({
       url: apiEndPoints.getEventPosts,
-      method: "get",
+      method: "post",
+      data : {eventId}
     })
       .then((res) => {
         if (res.data?.success) {
-          setPosts(res.data.posts);
+          setPosts(res.data?.posts);
         } else {
           toast.error(res.data?.error);
         }
@@ -152,24 +151,27 @@ const PostsPage = ({ AllPosts }) => {
       cancelButtonText: "Cancel",
     });
     if (result.isConfirmed) {
+      dispatch(showLoading())
       eventRequest({
         url: apiEndPoints.deleteEventPost,
         method: "post",
         data: { id: PostId },
       })
         .then((res) => {
-          if (res.data.success) {
-            getPosts();
-            toast.success(res.data.success);
-          } else {
-            toast.error(res.data.error);
-          }
+          dispatch(hideLoading())
+          getPosts(eventId);
+          toast.success(res.data.success);
         })
         .catch((err) => {
+          dispatch(hideLoading())
           toast.error(err.message);
         });
     }
   };
+
+  useEffect(() => {
+    getPosts(eventId);
+  }, []);
 
   return (
     <>

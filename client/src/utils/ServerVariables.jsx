@@ -40,5 +40,6 @@ export const ServerVariables = {
   success:'/PaymentSuccess',
   error:'/PaymentError',
   eventChats:'/eventChats',
+  eventNotifications:'/eventNotifications',
 };
 

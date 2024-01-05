@@ -51,5 +51,9 @@ export const apiEndPoints = {
     getEventContacts:'api/event/getEventContacts',
     getEventMessages:'api/event/getEventMessages',
     sendMessage:'api/event/sendMessage',
+    getNotifications:'api/event/getNotifications',
+    clearNotification:'api/event/clearNotification',
+    clearAllNotifications:'api/event/clearAllNotifications',
+    getNotificationsCount:'api/event/getNotificationsCount',
 }
 

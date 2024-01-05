@@ -12,22 +12,22 @@ import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
 
 function EventHome() {
   const [posts, setPosts] = useState([]);
-  const [story,setStory] = useState([]);
+  const [story, setStory] = useState([]);
   const dispatch = useDispatch();
-  const {event} = useSelector(state => state.EventAuth)
-  console.log('eventProfile',event)  
+  const { event } = useSelector((state) => state.EventAuth);
+  console.log("eventProfile", event);
 
   useEffect(() => {
     getPosts(event._id);
     getEventStory(event._id);
   }, []);
-  
+
   const getPosts = async (eventId) => {
     dispatch(showLoading());
     eventRequest({
       url: apiEndPoints.getEventPosts,
       method: "post",
-      data:{eventId}
+      data: { eventId },
     })
       .then((res) => {
         dispatch(hideLoading());
@@ -65,9 +65,11 @@ function EventHome() {
       <div className="flex">
         <EventSideBar />
         <div className="flex-grow flex-shrink min-h-screen">
-            <ProfileCard event={event} postCount={posts.length} story={story}/>
-            <div className="text-center"><Myh1 title='posts'/></div>
-            <PostsPage AllPosts={posts}/>
+          <ProfileCard event={event} postCount={posts.length} story={story} />
+          <div className="text-center">
+            <Myh1 title="posts" />
+          </div>
+          <PostsPage eventId={event._id}/>
         </div>
       </div>
     </>

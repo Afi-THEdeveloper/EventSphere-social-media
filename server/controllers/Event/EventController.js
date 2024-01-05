@@ -2,6 +2,7 @@ const Event = require("../../models/EventModel");
 const EventPost = require("../../models/EventPostModel");
 const Comment = require("../../models/CommentModel");
 const Story = require("../../models/StoryModel");
+const Notification = require("../../models/NotificationModel");
 const CatchAsync = require("../../util/CatchAsync");
 const bcrypt = require("bcrypt");
 const randomString = require("randomstring");
@@ -127,13 +128,11 @@ exports.verifyEventLogin = CatchAsync(async (req, res) => {
   const token = jwt.sign({ id: event._id }, process.env.JWT_SECRET, {
     expiresIn: "1d",
   });
-  event.role = 'admin'
-  await event.save()
+  event.role = "admin";
+  await event.save();
   event.password = "";
   res.status(200).json({ success: "Login successful", token, event });
 });
-
-
 
 exports.updateEvent = CatchAsync(async (req, res) => {
   const { title, ownerName, place, services, officeAddress, phone, altPhone } =
@@ -162,8 +161,6 @@ exports.updateEvent = CatchAsync(async (req, res) => {
 
   return res.json({ error: "event updation failed, try again" });
 });
-
-
 
 exports.updateEventProfile = CatchAsync(async (req, res) => {
   const event = await Event.findById(req.eventId);
@@ -286,7 +283,7 @@ exports.addStory = CatchAsync(async (req, res) => {
   const createdAt = new Date();
 
   data.postedBy = event._id;
-  data.expiresOn = new Date(createdAt.getTime() + 3 * 60 * 1000);  // 3 mins valid
+  data.expiresOn = new Date(createdAt.getTime() + 3 * 60 * 1000); // 3 mins valid
   console.log(data);
   const story = new Story(data);
   await story.save();
@@ -294,22 +291,59 @@ exports.addStory = CatchAsync(async (req, res) => {
 });
 
 exports.getEventPosts = CatchAsync(async (req, res) => {
-  const posts = await EventPost.find({ postedBy: req.body?.eventId }).sort({
+  const posts = await EventPost.find({ postedBy: req?.body?.eventId }).sort({
     createdAt: -1,
   });
-  console.log(posts);
-  return res.status(200).json({ success: "ok", posts });
+  console.log("posts", posts);
+  if (posts) {
+    return res.status(200).json({ success: "ok", posts });
+  } else {
+    return res.status(200).json({ error: "failed to fetch posts" });
+  }
 });
-
 
 exports.getEventStory = CatchAsync(async (req, res) => {
-  console.log(req?.body?.eventId)
+  console.log(req?.body?.eventId);
   const event = await Event.findById(req?.body?.eventId);
-  console.log(event)
+  console.log(event);
   const currentDate = new Date();
   const deleted = await Story.deleteMany({ expiresOn: { $lt: currentDate } });
-  console.log('deleted', deleted)
-  const stories = await Story.find({postedBy:event._id})
-  console.log('stories',stories);
+  console.log("deleted", deleted);
+  const stories = await Story.find({ postedBy: event._id });
+  console.log("stories", stories);
   return res.status(200).json({ success: "ok", stories });
 });
+
+// notifications
+
+exports.getNotificationsCount = CatchAsync(async (req, res) => {
+  const count  = await Notification.countDocuments({recieverId:req?.eventId, seen:false});
+  return res.status(200).json({success: true, count});
+})
+
+exports.getNotifications = CatchAsync(async (req, res) => {
+  await Notification.updateMany(
+    { recieverId: req?.eventId, seen: false },
+    { $set: { seen: true } }
+  );
+  const notifications = await Notification.find({
+    recieverId: req?.eventId,
+    seen: true,
+  })
+    .sort({ date: -1 })
+    .populate("actionOn");
+  console.log(notifications);
+  return res.status(200).json({ success: true, notifications });
+});
+
+exports.clearNotification = CatchAsync(async (req, res) => {
+  const Id = req.body?.NotId;
+  await Notification.findByIdAndDelete(Id);
+  res.status(200).send({ success: true });
+});
+
+exports.clearAllNotifications = CatchAsync(async (req, res) => {
+  await Notification.deleteMany({ recieverId: req?.eventId,seen: true });
+  res.status(200).send({ success: "cleared All" });
+});
+

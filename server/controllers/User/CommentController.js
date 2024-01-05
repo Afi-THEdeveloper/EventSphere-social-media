@@ -1,6 +1,7 @@
 const Comment = require("../../models/CommentModel");
 const EventPost = require("../../models/EventPostModel");
 const User = require("../../models/UserModel");
+const Notification = require("../../models/NotificationModel");
 const CatchAsync = require("../../util/CatchAsync");
 
 exports.createComment = CatchAsync(async (req, res) => {
@@ -18,6 +19,16 @@ exports.createComment = CatchAsync(async (req, res) => {
     const currentCommentsCount = post ? post.commentsCount : 0;
     post.commentsCount = currentCommentsCount + 1;
     await post.save();
+
+    //send notification
+    const sendNotification = new Notification({
+      recieverId:post.postedBy,
+      senderId:req?.userId,
+      notificationMessage:`${username} commented "${comment}" on your post`,
+      actionOn:id,
+      date:new Date(),
+    })
+    await sendNotification.save();
 
     return res.status(200).json({ success: "ok", createdComment });
   } else {

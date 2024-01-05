@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ServerVariables } from "../utils/ServerVariables";
 import HomeIcon from "./icons/HomeIcon";
 import SidebarItem from "./SidebarItem";
@@ -9,53 +9,107 @@ import LogoutIcon from "./icons/LogoutIcon";
 import { useDispatch } from "react-redux";
 import { logout } from "../Redux/slices/EventAuthSlice";
 import SubscribePlanIcon from "./icons/SubscribePlanIcon";
-import { useNavigate } from "react-router-dom";
+import { eventRequest } from "../Helper/instance";
+import { apiEndPoints } from "../utils/api";
+import toast from "react-hot-toast";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function EventSideBar() {
-  const dispatch = useDispatch() 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [activeItem, setActiveItem] = useState("Home");
+  const [notificationsCount, setNotificationsCount] = useState(0);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state) {
+      const { clicked } = location.state;
+      setActiveItem(clicked);
+    }
+  }, []);
+
+  useEffect(() => {
+    eventRequest({
+      url: apiEndPoints.getNotificationsCount,
+      method: "get",
+    })
+      .then((res) => {
+        setNotificationsCount(res.data.count);
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  }, [notificationsCount]);
+
   const sideBarItems = [
     {
       label: "Home",
       icon: <HomeIcon />,
-      href: ServerVariables.eventHome,
+      onclick: () => {
+        navigate(ServerVariables.eventHome, { state: { clicked: "Home" } });
+      },
     },
     {
       label: "Messages",
       icon: <MessageIcon />,
-      href: ServerVariables.eventChats,
+      onclick: () => {
+        navigate(ServerVariables.eventChats, {
+          state: { clicked: "Messages" },
+        });
+      },
     },
     {
       label: "Notifications",
       icon: <NotificationIcon />,
-      href: ServerVariables.eventHome,
+      onclick: () => {
+        navigate(ServerVariables.eventNotifications, {
+          state: { clicked: "Notifications" },
+        });
+      },
     },
     {
       label: "Jobs Requests",
       icon: <ProfileIcon />,
-      href: ServerVariables.eventProfile,
+      onclick: () => {
+        navigate(ServerVariables.eventProfile, {
+          state: { clicked: "Job Requests" },
+        });
+      },
     },
     {
       label: "Subscriptions",
       icon: <SubscribePlanIcon />,
-      href: ServerVariables.PlansAvailable,
+      onclick: () => {
+        navigate(ServerVariables.PlansAvailable, {
+          state: { clicked: "Subscriptions" },
+        });
+      },
     },
     {
       label: "Logout",
       icon: <LogoutIcon />,
       href: ServerVariables.eventHome,
-      onclick:()=>{
-        dispatch(logout())
+      onclick: () => {
+        dispatch(logout());
       },
     },
-    
   ];
 
   return (
     <div className="flex-col w-[300px] hidden md:flex min-h-screen flex-shrink-0 border-r-2 border-[#E0CDB6]">
-      <h1 className="uppercase text-3xl font-thin text-[#FFB992] mt-2 mx-2">EventSphere</h1>
+      <h1 className="uppercase text-3xl font-thin text-[#FFB992] mt-2 mx-2">
+        EventSphere
+      </h1>
       <div className="mt-8">
         {sideBarItems.map((item) => (
-          <SidebarItem key={item.label} icon={item.icon} href={item.href} label={item.label} onClick={item?.onclick} />
+          <SidebarItem
+            key={item.label}
+            icon={item.icon}
+            label={item.label}
+            onClick={item?.onclick}
+            NotfCount={notificationsCount}
+            clickedOn = {activeItem}
+          />
         ))}
       </div>
     </div>

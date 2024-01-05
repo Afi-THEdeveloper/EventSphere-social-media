@@ -34,6 +34,11 @@ eventRouter
     .post('/getEventMessages', eventAuth, chatController.getEventMessages)
     .post('/sendMessage', eventAuth, chatController.sendMessage)
 
+    .get('/getNotificationsCount', eventAuth,eventController.getNotificationsCount)
+    .get('/getNotifications', eventAuth, eventController.getNotifications)
+    .delete('/clearNotification', eventAuth, eventController.clearNotification)
+    .delete('/clearAllNotifications', eventAuth, eventController.clearAllNotifications)
+
 module.exports = eventRouter   
 
 

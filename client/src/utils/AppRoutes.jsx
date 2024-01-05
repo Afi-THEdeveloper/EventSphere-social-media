@@ -45,6 +45,7 @@ import Page404 from "../pages/Page404";
 import ChatUI from "../components/ChatUI";
 import Chat from "../components/Chat";
 import EventChats from "../pages/EventPages/EventChats";
+import EventNotifications from "../pages/EventPages/EventNotifications";
 
 function AppRoutes() {
   const { loading } = useSelector((state) => state.loadings);
@@ -145,6 +146,7 @@ function AppRoutes() {
           <Route path={ServerVariables.success} element={<PaymentSuccess />} />
           <Route path={ServerVariables.error} element={<PaymentError />} />
           <Route path={ServerVariables.eventChats} element={<EventChats />} />
+          <Route path={ServerVariables.eventNotifications} element={<EventNotifications />} />
         </Route>
 
         <Route element={<IsLoggedOutEvent />}>
