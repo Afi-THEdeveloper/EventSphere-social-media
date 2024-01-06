@@ -11,6 +11,7 @@ import { logout } from "../Redux/slices/EventAuthSlice";
 import SubscribePlanIcon from "./icons/SubscribePlanIcon";
 import { eventRequest } from "../Helper/instance";
 import { apiEndPoints } from "../utils/api";
+import socket from "../components/User/SocketIo";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -26,6 +27,17 @@ function EventSideBar() {
       const { clicked } = location.state;
       setActiveItem(clicked);
     }
+  }, []);
+
+  useEffect(() => {
+    // Handle the notification event
+    socket.on("eventNotification", (notification) => {
+      toast.success(notification.message, { duration: 5000 });
+    });
+
+    return () => {
+      socket.off("eventNotification");
+    };
   }, []);
 
   useEffect(() => {
@@ -108,7 +120,7 @@ function EventSideBar() {
             label={item.label}
             onClick={item?.onclick}
             NotfCount={notificationsCount}
-            clickedOn = {activeItem}
+            clickedOn={activeItem}
           />
         ))}
       </div>

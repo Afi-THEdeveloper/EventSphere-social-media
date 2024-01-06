@@ -2,14 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import MessageIcon from "../../components/icons/MessageIcon";
 import toast from "react-hot-toast";
-import { IoArrowBackCircleOutline } from "react-icons/io5";
 import { useRef } from "react";
 import socket from "../../components/User/SocketIo";
 import { formatDistanceToNow } from "date-fns";
+import { FaVideo } from "react-icons/fa";
 import Avatar from "../../components/Avatar";
 import { eventRequest } from "../../Helper/instance";
 import { apiEndPoints } from "../../utils/api";
 import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
+import EventSideBar from "../../components/EventSideBar";
 
 function EventChats() {
   const [selectedUserId, setSelectedUserId] = useState("");
@@ -17,11 +18,9 @@ function EventChats() {
   const [newMessageText, setNewMessageText] = useState("");
   const [chatPartner, setChatPartner] = useState([]);
   const [chatHistory, setChatHistory] = useState([]);
-  const [msg, setMsg] = useState([]);
   const inputRef = useRef(null);
   const dispatch = useDispatch();
-
-  //   var BigData = chatHistory
+  const navigate = useNavigate();
 
   useEffect(() => {
     eventRequest({
@@ -118,15 +117,15 @@ function EventChats() {
 
   useEffect(() => {
     socket.on("message recieved", (message) => {
-        if (message.userId === selectedUserId) {
-            updateChatHistory(message);
-        }
+      if (message.userId === selectedUserId) {
+        updateChatHistory(message);
+      }
     });
     return () => {
-        // Clean up the socket listener on component unmount
-        socket.off("message recieved");
+      // Clean up the socket listener on component unmount
+      socket.off("message recieved");
     };
-  }, [selectedUserId]);  
+  }, [selectedUserId]);
 
   const chatContainerRef = useRef(null);
   useEffect(() => {
@@ -141,186 +140,154 @@ function EventChats() {
     }
   }, [chatHistory]);
 
+  const handleVideoClick = ()=>{
+    
+  }
+
   return (
-    <div className="flex h-screen">
-      {/* contacts */}
-      <div className="w-1/3 border-r-2 border-[#E0CDB6]">
-        <div className="text-[#E0CDB6] font-bold flex gap-2 p-4">
-          <IoArrowBackCircleOutline
-            className="h-8 w-8 mx-2"
-            onClick={() => window.history.back()}
-          />
-          <MessageIcon />
-          Chats
-        </div>
-        {contactLists.length ? (
-          contactLists.map((contact) => (
-            <div
-              key={contact?.userId?._id}
-              onClick={() => handleClickContact(contact?.userId?._id)}
-              className={
-                "py-2 pl-4 border-0 border-gray-100 flex items-center gap-2 cursor-pointer " +
-                (contact?.userId?._id === selectedUserId ? "bg-[#E0CDB6]" : "")
-              }
-            >
-              {contact?.userId?._id === selectedUserId && (
-                <div className="bg-blue-500 w-1 h-12 rounded-r-md"></div>
-              )}
-
-              <div className="flex gap-4 py-2 pl-4 items-center">
-                <Avatar
-                  username={contact?.userId?.username}
-                  profile={contact?.userId?.profile}
-                  userId={contact?.userId?._id}
-                />
-                <span className="text-slate-500 font-bold">
-                  {contact?.userId?.username}
-                </span>
-              </div>
+    <div className="flex">
+      <EventSideBar />
+      <div className="flex-grow flex-shrink min-h-screen">
+        <div className="flex h-screen">
+          {/* contacts */}
+          <div className="w-1/3 border-r-2 border-[#E0CDB6]">
+            <div className="text-[#E0CDB6] font-bold flex gap-2 p-4">
+              <MessageIcon />
+              Chats
             </div>
-          ))
-        ) : (
-          <p className="text-gray-400 p-2">no connected users to chat</p>
-        )}
-      </div>
-
-      <div className="flex flex-col  w-2/3 p-2">
-        <div className="flex-grow">
-          {selectedUserId ? (
-            <div className="py-4 pl-4 bg-[#E0CDB6] border-2 border-gray-100 flex items-center gap-4 cursor-pointer">
-              <Avatar profile={chatPartner?.userImage} />
-              <div className="text-slate-600 font-bold">
-                {chatPartner?.userName}
-              </div>
-            </div>
-          ) : (
-            <div className="h-full flex items-center justify-center">
-              <div className="text-gray-400">
-                &larr; select a person from sidebar
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* chats  */}
-
-        {/* <div className="h-screen overflow-y-auto" ref={chatContainerRef}>
-            {chatHistory?.map((message) => {
-              const isEventChat = message.senderId === message.eventId;
-              const timeAgo = formatDistanceToNow(new Date(message.time), {
-                addSuffix: true,
-              });
-
-              return (
+            {contactLists.length ? (
+              contactLists.map((contact) => (
                 <div
-                  key={message._id}
-                  className={`flex my-6 cursor-pointer ${
-                    isEventChat ? "justify-end" : "justify-start"
-                  }`}
+                  key={contact?.userId?._id}
+                  onClick={() => handleClickContact(contact?.userId?._id)}
+                  className={
+                    "py-2 pl-4 border-0 border-gray-100 flex items-center gap-2 cursor-pointer " +
+                    (contact?.userId?._id === selectedUserId
+                      ? "bg-[#E0CDB6]"
+                      : "")
+                  }
                 >
-                  <div className="w-9 h-9 rounded-full flex items-center justify-center mr-2">
-                    <img
-                      src={
-                        isEventChat
-                          ? `http://localhost:5000/profiles/${chatPartner?.eventImage}`
-                          : `http://localhost:5000/profiles/${chatPartner?.userImage}`
-                      }
-                      alt={`${message.senderId}'s Avatar`}
-                      className="w-8 h-8 rounded-full"
+                  {contact?.userId?._id === selectedUserId && (
+                    <div className="bg-blue-500 w-1 h-12 rounded-r-md"></div>
+                  )}
+
+                  <div className="flex gap-4 py-2 pl-4 items-center">
+                    <Avatar
+                      username={contact?.userId?.username}
+                      profile={contact?.userId?.profile}
+                      userId={contact?.userId?._id}
                     />
-                  </div>
-                  <div
-                    className={`flex max-w-96 ${
-                      isEventChat
-                        ? "bg-indigo-500 text-white"
-                        : "bg-gray-300 text-gray-700"
-                    } rounded-lg p-2 gap-3`}
-                  >
-                    <p>{message.message}</p>
-                  </div>
-                  <div className="text-xs text-gray-500 ml-2 self-end">
-                    {timeAgo}
+                    <span className="text-slate-500 font-bold">
+                      {contact?.userId?.username}
+                    </span>
                   </div>
                 </div>
-              );
-            })}
+              ))
+            ) : (
+              <p className="text-gray-400 p-2">no connected users to chat</p>
+            )}
+          </div>
+            
+          {/* chat header */}
+          <div className="flex flex-col  w-2/3 p-2">
+            <div className="flex-grow">
+              {selectedUserId ? (
+                <div className="py-4 pl-4 bg-[#E0CDB6] border-2 border-gray-100 flex items-center gap-4 cursor-pointer justify-between">
+                  <Avatar profile={chatPartner?.userImage} />
+                  <div className="text-slate-600 font-bold">
+                    {chatPartner?.userName}
+                  </div>
+                  <FaVideo className="fill-slate-800 w-8 h-8 mr-2" onClick={handleVideoClick}/>
+                </div>
+              ) : (
+                <div className="h-full flex items-center justify-center">
+                  <div className="text-gray-400">
+                    &larr; select a person from sidebar
+                  </div>
+                </div>
+              )}
+            </div>
+              
+              
+            {/* chats */}
 
+            <div className="relative h-full">
+              <div
+                className="overflow-y-scroll absolute top-0 left-0 right-0 bottom-2"
+                ref={chatContainerRef}
+              >
+                {chatHistory?.map((message) => {
+                  const isEventChat = message.senderId === message.eventId;
+                  const timeAgo = formatDistanceToNow(new Date(message.time), {
+                    addSuffix: true,
+                  });
+                  return (
+                    <div
+                      key={message._id}
+                      className={
+                        isEventChat ? "text-right mx-8" : "text-left mx-8"
+                      }
+                    >
+                      <div
+                        className={
+                          "text-left inline-block p-2 my-2 rounded-md text-sm " +
+                          (isEventChat
+                            ? "bg-blue-500 text-white"
+                            : "bg-white text-gray-500")
+                        }
+                      >
+                        {message.message}
+                      </div>
 
-        </div>   */}
+                      <div className="text-xs text-gray-500 self-end">
+                        {timeAgo}
+                      </div>
+                    </div>
+                  );
+                })}
+                <div ref={divUnderMessages}></div>
+              </div>
+            </div>
 
-        <div className="relative h-full">
-          <div
-            className="overflow-y-scroll absolute top-0 left-0 right-0 bottom-2"
-            ref={chatContainerRef}
-          >
-            {chatHistory?.map((message) => {
-              const isEventChat = message.senderId === message.eventId;
-              const timeAgo = formatDistanceToNow(new Date(message.time), {
-                addSuffix: true,
-              });
-              return (
-                <div
-                  key={message._id}
-                  className={isEventChat ? "text-right mx-8" : "text-left mx-8"}
+            {!!selectedUserId && (
+              <div className="flex gap-2 mx-2 p-2">
+                <input
+                  type="text"
+                  ref={inputRef}
+                  value={newMessageText}
+                  onChange={(e) => setNewMessageText(e.target.value)}
+                  placeholder="message..."
+                  className="bg-[#1E1E1E] border p-2 flex-grow rounded-sm text-[#5A91E2]"
+                />
+                <button
+                  onClick={() =>
+                    sendMessage(
+                      chatPartner._id,
+                      selectedUserId,
+                      chatPartner.eventId
+                    )
+                  }
+                  className="bg-blue-500 p-2 text-white"
                 >
-                  <div
-                    className={
-                      "text-left inline-block p-2 my-2 rounded-md text-sm " +
-                      (isEventChat
-                        ? "bg-blue-500 text-white"
-                        : "bg-white text-gray-500")
-                    }
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-6 h-6"
                   >
-                    {message.message}
-                  </div>
-
-                  <div className="text-xs text-gray-500 self-end">
-                    {timeAgo}
-                  </div>
-                </div>
-              );
-            })}
-            <div ref={divUnderMessages}></div>
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
+                    />
+                  </svg>
+                </button>
+              </div>
+            )}
           </div>
         </div>
-
-        {!!selectedUserId && (
-          <div className="flex gap-2 mx-2 p-2">
-            <input
-              type="text"
-              ref={inputRef}
-              value={newMessageText}
-              onChange={(e) => setNewMessageText(e.target.value)}
-              placeholder="message..."
-              className="bg-[#1E1E1E] border p-2 flex-grow rounded-sm text-[#5A91E2]"
-            />
-            <button
-              onClick={() =>
-                sendMessage(
-                  chatPartner._id,
-                  selectedUserId,
-                  chatPartner.eventId
-                )
-              }
-              className="bg-blue-500 p-2 text-white"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="w-6 h-6"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
-                />
-              </svg>
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );
