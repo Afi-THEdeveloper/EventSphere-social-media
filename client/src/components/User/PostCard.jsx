@@ -11,7 +11,7 @@ import { apiEndPoints } from "../../utils/api";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ServerVariables } from "../../utils/ServerVariables";
 import { updateUser } from "../../Redux/slices/AuthSlice";
 import { updateEvent } from "../../Redux/slices/EventAuthSlice";
@@ -20,15 +20,16 @@ function PostCard({ post, event }) {
   const [EventPosts, setEventPosts] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useSelector((state) => state.Auth);
-  const getPosts = () => {
+  const getFollowingPosts = () => {
     userRequest({
-      url: apiEndPoints.getEPosts,
+      url: apiEndPoints.getFollowingposts,
       method: "get",
     })
       .then((res) => {
         if (res.data?.success) {
-          console.log(res.data);
+          console.log(res?.data);
           setEventPosts(res.data.posts);
         } else {
           toast.error(res.data.error);
@@ -38,8 +39,31 @@ function PostCard({ post, event }) {
         toast.error(err.message);
       });
   };
+  
+  const getPosts = () => {
+    userRequest({
+      url: apiEndPoints.getEPosts,
+      method: "get",
+    })
+      .then((res) => {
+        if (res.data?.success) {
+          console.log(res?.data);
+          setEventPosts(res.data.posts);
+        } else {
+          toast.error(res.data.error);
+        }
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  };
+
   useEffect(() => {
-    getPosts();
+    if (location.pathname === "/UserHome") {
+      getFollowingPosts();
+    } else {
+      getPosts();
+    }
   }, []);
 
   const handleLike = (postId) => {
@@ -52,7 +76,11 @@ function PostCard({ post, event }) {
       .then((res) => {
         dispatch(hideLoading());
         if (res.data.success) {
-          getPosts();
+          if (location.pathname === "/UserHome") {
+            getFollowingPosts();
+          } else {
+            getPosts();
+          }
         } else {
           toast.error(res.data.error);
         }
@@ -62,6 +90,7 @@ function PostCard({ post, event }) {
         toast.error(err.message);
       });
   };
+
   const handleUnLike = (postId) => {
     dispatch(showLoading());
     userRequest({
@@ -72,7 +101,11 @@ function PostCard({ post, event }) {
       .then((res) => {
         dispatch(hideLoading());
         if (res.data.success) {
-          getPosts();
+          if (location.pathname === "/UserHome") {
+            getFollowingPosts();
+          } else {
+            getPosts();
+          }
         } else {
           toast.error(res.data.error);
         }
@@ -95,7 +128,11 @@ function PostCard({ post, event }) {
         if (res.data.success) {
           dispatch(updateUser(res.data.user));
           dispatch(updateEvent(res.data.event));
-          getPosts();
+          if (location.pathname === "/UserHome") {
+            getFollowingPosts();
+          } else {
+            getPosts();
+          }
         } else {
           toast.error(res.data.error);
         }
@@ -118,7 +155,11 @@ function PostCard({ post, event }) {
         if (res.data.success) {
           dispatch(updateUser(res.data.user));
           dispatch(updateEvent(res.data.event));
-          getPosts();
+          if (location.pathname === "/UserHome") {
+            getFollowingPosts();
+          } else {
+            getPosts();
+          }
         } else {
           toast.error(res.data.error);
         }

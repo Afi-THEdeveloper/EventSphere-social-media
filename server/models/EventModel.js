@@ -9,7 +9,7 @@ const eventSchema = new mongoose.Schema(
     },
     role:{
       type: String,
-      default:'admin',
+      default:'event',
     },
     email: {
       type: String,
@@ -53,6 +53,7 @@ const eventSchema = new mongoose.Schema(
     },
     profile: {
       type: String,
+      default:'avatar.png',
     },
     selectedPlan: {
       plan: {

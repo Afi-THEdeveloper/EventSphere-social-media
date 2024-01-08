@@ -68,7 +68,7 @@ function UserSidebar() {
       label: "Explore",
       icon: <ExploreIcon />,
       onclick: () => {
-        navigate(ServerVariables.UserHome, { state: { clicked: "Explore" } });
+        navigate(ServerVariables.explore, { state: { clicked: "Explore" } });
       },
     },
     {

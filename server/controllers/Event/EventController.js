@@ -128,8 +128,6 @@ exports.verifyEventLogin = CatchAsync(async (req, res) => {
   const token = jwt.sign({ id: event._id }, process.env.JWT_SECRET, {
     expiresIn: "1d",
   });
-  event.role = "event";
-  await event.save();
   event.password = "";
   res.status(200).json({ success: "Login successful", token, event });
 });
@@ -289,6 +287,7 @@ exports.addStory = CatchAsync(async (req, res) => {
   await story.save();
   return res.status(200).json({ success: "story Added Successfully", story });
 });
+
 
 exports.getEventPosts = CatchAsync(async (req, res) => {
   const posts = await EventPost.find({ postedBy: req?.body?.eventId }).sort({

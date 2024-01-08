@@ -16,6 +16,7 @@ export const ServerVariables = {
   showEvent:'/showEvent', 
   chatPage:'/chats',
   userVideoCallRoom:'/userRoom',
+  explore:'/explore',
    
   
   //admin routes
