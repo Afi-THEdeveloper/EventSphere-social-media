@@ -16,7 +16,7 @@ import { ServerVariables } from "../../utils/ServerVariables";
 import { updateUser } from "../../Redux/slices/AuthSlice";
 import { updateEvent } from "../../Redux/slices/EventAuthSlice";
 
-function PostCard({ post, event }) {
+function PostCard() {
   const [EventPosts, setEventPosts] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -39,7 +39,7 @@ function PostCard({ post, event }) {
         toast.error(err.message);
       });
   };
-  
+
   const getPosts = () => {
     userRequest({
       url: apiEndPoints.getEPosts,

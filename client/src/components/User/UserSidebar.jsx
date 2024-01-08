@@ -75,7 +75,7 @@ function UserSidebar() {
       label: "Search",
       icon: <SearchIcons />,
       onclick: () => {
-        navigate(ServerVariables.UserHome, { state: { clicked: "Search" } });
+        navigate(ServerVariables.searchEvent, { state: { clicked: "Search" } });
       },
     },
     {

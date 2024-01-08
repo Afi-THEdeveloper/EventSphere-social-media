@@ -17,6 +17,7 @@ export const apiEndPoints = {
     getContactsList:'api/user/getContactsList',
     sendNewMessage:'api/user/sendNewMessage',
     getMessages:'api/user/getMessages',
+    searchEvents:'api/user/searchEvents',
     
 
     //admin end points

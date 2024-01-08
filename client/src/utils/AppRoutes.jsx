@@ -49,6 +49,7 @@ import EventNotifications from "../pages/EventPages/EventNotifications";
 import VideoRoom from "../pages/EventPages/VideoRoom";
 import UserVideoRoom from "../pages/UserPages/UserVideoRoom";
 import Explore from "../pages/UserPages/Explore";
+import SearchEvent from "../pages/UserPages/SearchEvent";
 
 function AppRoutes() {
   const { loading } = useSelector((state) => state.loadings);
@@ -112,6 +113,7 @@ function AppRoutes() {
           <Route path={ServerVariables.chatPage} element={<Chat />} />
           <Route path={`${ServerVariables.userVideoCallRoom}/:roomId/:eventId`} element={<UserVideoRoom/>} />
           <Route path={ServerVariables.explore} element={<Explore/>} />
+          <Route path={ServerVariables.searchEvent} element={<SearchEvent/>} />
         </Route>
 
 

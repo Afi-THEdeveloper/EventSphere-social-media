@@ -318,3 +318,24 @@ exports.updateJobProfile = CatchAsync(async (req, res) => {
     return res.json({ erroe: "user not found" });
   }
 });
+
+
+
+exports.getEvents = CatchAsync(async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const pageSize = 2;
+  console.log(page, pageSize);
+  const totalEvents = await Event.countDocuments({isBlocked:false});
+  const totalPages = Math.ceil(totalEvents / pageSize);
+
+  const events = await Event.find({isBlocked:false})
+    .skip((page - 1) * pageSize)
+    .limit(pageSize);
+
+  return res.status(200).json({
+    success: "ok",
+    events,
+    currentPage: page,
+    totalPages,
+  });
+});
