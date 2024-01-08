@@ -13,9 +13,14 @@ import ProfileIcon from "../icons/ProfileIcon";
 import NotificationIcon from "../icons/NotificationIcon";
 import SidebarItem from "../SidebarItem";
 import toast from "react-hot-toast";
+import Modal from "react-modal";
+import CallRequest from "../CallRequest";
 
 function UserSidebar() {
   const [activeItem, setActiveItem] = useState("Home");
+  const [sender, setSender] = useState({});
+  const [meetlink, setMeetlink] = useState("");
+  const [CallModalOpen, setCallModalOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -30,8 +35,15 @@ function UserSidebar() {
       toast.success(notification.message, { duration: 5000 });
     });
 
+    socket.on("videoCallInvite", (data) => {
+      setSender(data?.sender);
+      setMeetlink(data?.meetlink);
+      setCallModalOpen(true);
+    });
+
     return () => {
       socket.off("userNotification");
+      socket.off("videoCallInvite");
     };
   }, []);
 
@@ -43,8 +55,6 @@ function UserSidebar() {
       setActiveItem("Profile");
     }
   }, []);
-
-
 
   const sideBarItems = [
     {
@@ -103,24 +113,58 @@ function UserSidebar() {
     },
   ];
 
+  const customStyles = {
+    content: {
+      top: "30%",
+      left: "50%",
+      right: "auto",
+      bottom: "30%",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+    },
+  };
+  const closeModal = () => {
+    socket.emit("videoCallResponse", {
+      eventId: sender?._id,
+      accepted: false,
+    });
+    setCallModalOpen(false);
+  };
+
   return (
-    <div className="flex-col w-[300px] hidden md:flex min-h-screen flex-shrink-0 border-r-[0.5px] border-[#E0CDB6]">
-      <h1 className="uppercase text-3xl font-thin text-[#FFB992] mt-2 mx-2">
-        EventSphere
-      </h1>
-      <div className="mt-8">
-        {sideBarItems.map((item) => (
-          <SidebarItem
-            key={item.label}
-            icon={item.icon}
-            href={item.href}
-            label={item.label}
-            onClick={item?.onclick}
-            clickedOn={activeItem}
-          />
-        ))}
+    <>
+      <div className="flex-col w-[300px] hidden md:flex min-h-screen flex-shrink-0 border-r-[0.5px] border-[#E0CDB6]">
+        <h1 className="uppercase text-3xl font-thin text-[#FFB992] mt-2 mx-2">
+          EventSphere
+        </h1>
+        <div className="mt-8">
+          {sideBarItems.map((item) => (
+            <SidebarItem
+              key={item.label}
+              icon={item.icon}
+              href={item.href}
+              label={item.label}
+              onClick={item?.onclick}
+              clickedOn={activeItem}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+      <Modal
+        isOpen={CallModalOpen}
+        onRequestClose={closeModal}
+        ariaHideApp={false}
+        style={customStyles}
+      >
+        {/* Use the CommentModal component */}
+        <CallRequest
+          isOpen={CallModalOpen}
+          closeModal={closeModal}
+          sender={sender}
+          link={meetlink}
+        />
+      </Modal>
+    </>
   );
 }
 

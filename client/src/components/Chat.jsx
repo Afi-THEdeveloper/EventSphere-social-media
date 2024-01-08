@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import MessageIcon from "./icons/MessageIcon";
 import Avatar from "./Avatar";
@@ -11,6 +11,8 @@ import { formatDistanceToNow } from "date-fns";
 import { FaVideo } from "react-icons/fa";
 import { hideLoading, showLoading } from "../Redux/slices/LoadingSlice";
 import UserSidebar from "./User/UserSidebar";
+import { useNavigate } from "react-router-dom";
+import { ServerVariables } from "../utils/ServerVariables";
 
 function Chat() {
   const [selectedEventId, setSelectedEventId] = useState("");
@@ -20,6 +22,7 @@ function Chat() {
   const [chatHistory, setChatHistory] = useState([]);
   const inputRef = useRef(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     userRequest({
@@ -77,7 +80,7 @@ function Chat() {
           }
         })
         .catch((error) => {
-          console.log(error);
+          console.log(error);  
         });
     }
   }
@@ -137,6 +140,10 @@ function Chat() {
     }
   }, [chatHistory]);
 
+  const handleVideoClick = useCallback((roomId,eventId) => {
+    navigate(`${ServerVariables.userVideoCallRoom}/${roomId}/${eventId}`);
+  }, [navigate]);
+
   return (
     <div className="flex">
       <UserSidebar />
@@ -190,7 +197,7 @@ function Chat() {
                   <div className="text-slate-600 font-bold text-lg">
                     {chatPartner?.eventName}
                   </div>
-                  <FaVideo className="fill-slate-800 w-8 h-8 mr-2"/>
+                  <FaVideo onClick={()=> handleVideoClick(chatPartner?.userId,chatPartner?.eventId)} className="fill-slate-800 w-8 h-8 mr-2"/>
                 </div>
               ) : (
                 <div className="h-full flex items-center justify-center">

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import MessageIcon from "../../components/icons/MessageIcon";
 import toast from "react-hot-toast";
@@ -11,6 +11,8 @@ import { eventRequest } from "../../Helper/instance";
 import { apiEndPoints } from "../../utils/api";
 import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
 import EventSideBar from "../../components/EventSideBar";
+import { ServerVariables } from "../../utils/ServerVariables";
+import { useNavigate } from "react-router-dom";
 
 function EventChats() {
   const [selectedUserId, setSelectedUserId] = useState("");
@@ -140,9 +142,9 @@ function EventChats() {
     }
   }, [chatHistory]);
 
-  const handleVideoClick = ()=>{
-    
-  }
+  const handleVideoClick = useCallback((roomId,userId) => {
+    navigate(`${ServerVariables.EventVideoCallRoom}/${roomId}/${userId}`);
+  }, [navigate]);
 
   return (
     <div className="flex">
@@ -187,7 +189,7 @@ function EventChats() {
               <p className="text-gray-400 p-2">no connected users to chat</p>
             )}
           </div>
-            
+
           {/* chat header */}
           <div className="flex flex-col  w-2/3 p-2">
             <div className="flex-grow">
@@ -197,7 +199,10 @@ function EventChats() {
                   <div className="text-slate-600 font-bold">
                     {chatPartner?.userName}
                   </div>
-                  <FaVideo className="fill-slate-800 w-8 h-8 mr-2" onClick={handleVideoClick}/>
+                  <FaVideo
+                    className="fill-slate-800 w-8 h-8 mr-2"
+                    onClick={() => handleVideoClick(chatPartner?.eventId,chatPartner?.userId)}
+                  />
                 </div>
               ) : (
                 <div className="h-full flex items-center justify-center">
@@ -207,8 +212,7 @@ function EventChats() {
                 </div>
               )}
             </div>
-              
-              
+
             {/* chats */}
 
             <div className="relative h-full">

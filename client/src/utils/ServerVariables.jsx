@@ -1,6 +1,8 @@
 export const ServerVariables = {
   Landing: "/",
 
+
+
   //userRoutes
   Login: "/login",
   Register: "/signup",
@@ -13,6 +15,7 @@ export const ServerVariables = {
   editJobProfile:'/editJobProfile',
   showEvent:'/showEvent', 
   chatPage:'/chats',
+  userVideoCallRoom:'/userRoom',
    
   
   //admin routes
@@ -41,5 +44,6 @@ export const ServerVariables = {
   error:'/PaymentError',
   eventChats:'/eventChats',
   eventNotifications:'/eventNotifications',
+  EventVideoCallRoom:'/EventRoom',
 };
 

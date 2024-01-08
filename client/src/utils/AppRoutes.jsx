@@ -46,6 +46,8 @@ import ChatUI from "../components/ChatUI";
 import Chat from "../components/Chat";
 import EventChats from "../pages/EventPages/EventChats";
 import EventNotifications from "../pages/EventPages/EventNotifications";
+import VideoRoom from "../pages/EventPages/VideoRoom";
+import UserVideoRoom from "../pages/UserPages/UserVideoRoom";
 
 function AppRoutes() {
   const { loading } = useSelector((state) => state.loadings);
@@ -107,6 +109,7 @@ function AppRoutes() {
           <Route path={ServerVariables.editJobProfile} element={<EditJobProfile />} />
           <Route path={ServerVariables.showEvent} element={<ShowEvent />} />
           <Route path={ServerVariables.chatPage} element={<Chat />} />
+          <Route path={`${ServerVariables.userVideoCallRoom}/:roomId/:eventId`} element={<UserVideoRoom/>} />
         </Route>
 
 
@@ -147,6 +150,7 @@ function AppRoutes() {
           <Route path={ServerVariables.error} element={<PaymentError />} />
           <Route path={ServerVariables.eventChats} element={<EventChats />} />
           <Route path={ServerVariables.eventNotifications} element={<EventNotifications />} />
+          <Route path={`${ServerVariables.EventVideoCallRoom}/:roomId/:userId`} element={<VideoRoom />} />
         </Route>
 
         <Route element={<IsLoggedOutEvent />}>
