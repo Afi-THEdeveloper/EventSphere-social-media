@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../Redux/slices/AuthSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ServerVariables } from "../../utils/ServerVariables";
@@ -19,6 +19,7 @@ import { userRequest } from "../../Helper/instance";
 import { apiEndPoints } from "../../utils/api";
 
 function UserSidebar() {
+  const {user} = useSelector(state => state.Auth)
   const [activeItem, setActiveItem] = useState("Home");
   const [sender, setSender] = useState({});
   const [meetlink, setMeetlink] = useState("");
@@ -32,7 +33,6 @@ function UserSidebar() {
     ServerVariables.editJobProfile,
   ];
 
-
   useEffect(() => {
     if (location.state) {
       const { clicked } = location.state;
@@ -41,7 +41,6 @@ function UserSidebar() {
       setActiveItem("Profile");
     }
   }, []);
-
 
   useEffect(() => {
     // Handle the notification event
@@ -73,8 +72,6 @@ function UserSidebar() {
         toast.error(err.message);
       });
   }, [notificationsCount]);
-
-
 
   const sideBarItems = [
     {
@@ -154,9 +151,16 @@ function UserSidebar() {
   return (
     <>
       <div className="flex-col w-[300px] hidden md:flex min-h-screen flex-shrink-0 border-r-[0.5px] border-[#E0CDB6]">
-        <h1 className="uppercase text-3xl font-thin text-[#FFB992] mt-2 mx-2">
-          EventSphere
-        </h1>
+        <div className="flex gap-2 mt-2">
+          <img
+            className="w-8 h-8 rounded-full"
+            src={`http://localhost:5000/profiles/${user?.profile}`}
+            alt=""
+          />
+          <h1 className="uppercase text-3xl font-thin text-[#FFB992] mx-2">
+            EventSphere
+          </h1>
+        </div>
         <div className="mt-8">
           {sideBarItems.map((item) => (
             <SidebarItem

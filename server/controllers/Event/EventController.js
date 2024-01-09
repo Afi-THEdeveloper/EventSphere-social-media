@@ -3,6 +3,7 @@ const EventPost = require("../../models/EventPostModel");
 const Comment = require("../../models/CommentModel");
 const Story = require("../../models/StoryModel");
 const Notification = require("../../models/NotificationModel");
+const ChatConnection = require("../../models/ChatConnection");
 const CatchAsync = require("../../util/CatchAsync");
 const bcrypt = require("bcrypt");
 const randomString = require("randomstring");
@@ -162,8 +163,12 @@ exports.updateEvent = CatchAsync(async (req, res) => {
 
 exports.updateEventProfile = CatchAsync(async (req, res) => {
   const event = await Event.findById(req.eventId);
-  event.profile = req.body.profile;
+  event.profile = req.body?.profile;
   await event.save();
+  await ChatConnection.updateMany(
+    { eventId: req?.eventId },
+    { $set: { eventImage: req?.body?.profile } }
+  );
   return res
     .status(200)
     .json({ success: "profile updated successfully", event });
@@ -360,7 +365,7 @@ exports.clearAllNotifications = CatchAsync(async (req, res) => {
 exports.getFollowers = CatchAsync(async (req, res) => {
   const event = await Event.findById(req?.eventId).populate("followers");
   if (event) {
-    return res.status(200).json({ success: true, followers:event?.followers });
+    return res.status(200).json({ success: true, followers: event?.followers });
   } else {
     return res.json({ error: "failed to find followers,try again" });
   }

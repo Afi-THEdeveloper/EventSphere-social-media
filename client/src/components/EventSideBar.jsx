@@ -6,7 +6,7 @@ import MessageIcon from "./icons/MessageIcon";
 import NotificationIcon from "./icons/NotificationIcon";
 import ProfileIcon from "./icons/ProfileIcon";
 import LogoutIcon from "./icons/LogoutIcon";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../Redux/slices/EventAuthSlice";
 import SubscribePlanIcon from "./icons/SubscribePlanIcon";
 import { eventRequest } from "../Helper/instance";
@@ -18,6 +18,7 @@ import CallRequest from "./CallRequest";
 import Modal from "react-modal";
 
 function EventSideBar() {
+  const { event } = useSelector((state) => state.EventAuth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [activeItem, setActiveItem] = useState("Home");
@@ -140,9 +141,16 @@ function EventSideBar() {
   return (
     <>
       <div className="flex-col w-[300px] hidden md:flex min-h-screen flex-shrink-0 border-r-2 border-[#E0CDB6]">
-        <h1 className="uppercase text-3xl font-thin text-[#FFB992] mt-2 mx-2">
-          EventSphere
-        </h1>
+        <div className="flex gap-2 mt-2">
+          <img
+            className="w-8 h-8 rounded-full"
+            src={`http://localhost:5000/profiles/${event?.profile}`}
+            alt=""
+          />
+          <h1 className="uppercase text-3xl font-thin text-[#FFB992] mx-2">
+            EventSphere
+          </h1>
+        </div>
         <div className="mt-8">
           {sideBarItems.map((item) => (
             <SidebarItem

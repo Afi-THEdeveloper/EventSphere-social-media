@@ -3,6 +3,7 @@ const EventPost = require("../../models/EventPostModel");
 const Event = require("../../models/EventModel");
 const Story = require("../../models/StoryModel");
 const Notification = require("../../models/NotificationModel");
+const ChatConnection = require("../../models/ChatConnection");
 const randomString = require("randomstring");
 const OtpMailer = require("../../util/OtpMailer");
 const CatchAsync = require("../../util/CatchAsync");
@@ -271,6 +272,11 @@ exports.editUser = CatchAsync(async (req, res) => {
     user.phone = req?.body?.phone;
     user.profile = req?.body?.profile;
     await user.save();
+
+    await ChatConnection.updateMany(
+      { userId: req?.userId },
+      { $set: { userImage: req?.body?.profile } }
+    );
     return res.status(200).json({ success: "profile updated", user });
   } else {
     return res.json({ error: "user not found" });
@@ -321,7 +327,7 @@ exports.updateJobProfile = CatchAsync(async (req, res) => {
 
 exports.getEvents = CatchAsync(async (req, res) => {
   const page = parseInt(req.query.page) || 1;
-  const pageSize = 2;
+  const pageSize = 4;
   console.log(page, pageSize);
   const totalEvents = await Event.countDocuments({ isBlocked: false });
   const totalPages = Math.ceil(totalEvents / pageSize);

@@ -13,6 +13,7 @@ import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
 import EventSideBar from "../../components/EventSideBar";
 import { ServerVariables } from "../../utils/ServerVariables";
 import { useNavigate } from "react-router-dom";
+import Search1 from "../../components/Search1";
 
 function EventChats() {
   const [selectedUserId, setSelectedUserId] = useState("");
@@ -20,6 +21,7 @@ function EventChats() {
   const [newMessageText, setNewMessageText] = useState("");
   const [chatPartner, setChatPartner] = useState([]);
   const [chatHistory, setChatHistory] = useState([]);
+  const [searched, setSearched] = useState("");
   const inputRef = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -156,38 +158,48 @@ function EventChats() {
         <div className="flex h-screen">
           {/* contacts */}
           <div className="w-1/3 border-r-2 border-[#E0CDB6]">
-            <div className="text-[#E0CDB6] font-bold flex gap-2 p-4">
+            <div className="text-[#E0CDB6] font-bold flex gap-4 p-4  border-b-2 border-[#E0CDB6]">
               <MessageIcon />
-              Chats
+              <Search1
+                search={"search chats..."}
+                value={searched}
+                onChange={(e) => setSearched(e.target.value)}
+              />
             </div>
             {contactLists.length ? (
-              contactLists.map((contact) => (
-                <div
-                  key={contact?.userId?._id}
-                  onClick={() => handleClickContact(contact?.userId?._id)}
-                  className={
-                    "py-2 pl-4 border-0 border-gray-100 flex items-center gap-2 cursor-pointer " +
-                    (contact?.userId?._id === selectedUserId
-                      ? "bg-[#E0CDB6]"
-                      : "")
-                  }
-                >
-                  {contact?.userId?._id === selectedUserId && (
-                    <div className="bg-blue-500 w-1 h-12 rounded-r-md"></div>
-                  )}
+              contactLists
+                .filter((item) => {
+                  return searched?.toLowerCase() === ""
+                    ? item
+                    : item?.userId?.username?.toLowerCase().includes(searched);
+                })
+                .map((contact) => (
+                  <div
+                    key={contact?.userId?._id}
+                    onClick={() => handleClickContact(contact?.userId?._id)}
+                    className={
+                      "py-2 pl-4 border-0 border-gray-100 flex items-center gap-2 cursor-pointer " +
+                      (contact?.userId?._id === selectedUserId
+                        ? "bg-[#E0CDB6]"
+                        : "")
+                    }
+                  >
+                    {contact?.userId?._id === selectedUserId && (
+                      <div className="bg-blue-500 w-1 h-12 rounded-r-md"></div>
+                    )}
 
-                  <div className="flex gap-4 py-2 pl-4 items-center">
-                    <Avatar
-                      username={contact?.userId?.username}
-                      profile={contact?.userId?.profile}
-                      userId={contact?.userId?._id}
-                    />
-                    <span className="text-slate-500 font-bold">
-                      {contact?.userId?.username}
-                    </span>
+                    <div className="flex gap-4 py-2 pl-4 items-center">
+                      <Avatar
+                        username={contact?.userId?.username}
+                        profile={contact?.userId?.profile}
+                        userId={contact?.userId?._id}
+                      />
+                      <span className="text-slate-500 font-bold">
+                        {contact?.userId?.username}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))
+                ))
             ) : (
               <p className="text-gray-400 p-2">no connected users to chat</p>
             )}
@@ -205,7 +217,10 @@ function EventChats() {
                   <FaVideo
                     className="fill-slate-800 w-8 h-8 mr-2"
                     onClick={() =>
-                      handleVideoClick(chatPartner?.eventId, chatPartner?.userId)
+                      handleVideoClick(
+                        chatPartner?.eventId,
+                        chatPartner?.userId
+                      )
                     }
                   />
                 </div>

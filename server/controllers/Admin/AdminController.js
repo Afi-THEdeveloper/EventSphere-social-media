@@ -36,7 +36,7 @@ exports.verifyAdminLogin = CatchAsync(async (req, res) => {
 
 exports.getUsers = CatchAsync(async (req, res) => {
   const page = parseInt(req.query.page) || 1;
-  const pageSize = 2;
+  const pageSize = 3;
   console.log(page, pageSize);
   const totalUsers = await User.countDocuments();
   const totalPages = Math.ceil(totalUsers / pageSize);
@@ -171,7 +171,7 @@ exports.editPlan = CatchAsync(async (req, res) => {
 
 exports.getEvents = CatchAsync(async (req, res) => {
   const page = parseInt(req.query.page) || 1;
-  const pageSize = 1;
+  const pageSize = 3;
   console.log(page, pageSize);
   const totalEvents = await Event.countDocuments();
   const totalPages = Math.ceil(totalEvents / pageSize);
@@ -203,7 +203,7 @@ exports.blockEvent = CatchAsync(async (req, res) => {
 
 exports.getSubscriptionHistory = CatchAsync(async (req, res) => {
   const page = parseInt(req.query.page) || 1;
-  const pageSize = 2;
+  const pageSize = 6;
   const totalDocs = await PurchaseHistory.countDocuments();
   const totalPages = Math.ceil(totalDocs / pageSize);
 

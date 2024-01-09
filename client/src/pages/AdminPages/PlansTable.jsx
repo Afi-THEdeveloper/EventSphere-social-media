@@ -72,11 +72,11 @@ function PlansTable() {
     }
   };
 
-  const GetEditPlan = (id)=>{
-    const plan = plans.filter(plan => plan._id === id)
-    console.log(plan)
-    return navigate(ServerVariables.editPlan, {state:{planToEdit:plan}})
-  }
+  const GetEditPlan = (id) => {
+    const plan = plans.filter((plan) => plan._id === id);
+    console.log(plan);
+    return navigate(ServerVariables.editPlan, { state: { planToEdit: plan } });
+  };
 
   return (
     <>
@@ -87,7 +87,11 @@ function PlansTable() {
             <h2 className="text-3xl font-bold tracking-tight text-white">
               SUBSCRIPTION PLANS
             </h2>
-            <Search1 search='Search Plan' value={searched}  onChange={(e)=> setSearched(e.target.value)}/>
+            <Search1
+              search="Search Plan"
+              value={searched}
+              onChange={(e) => setSearched(e.target.value)}
+            />
             <Button2
               text="Add Plan"
               onClick={() => navigate(ServerVariables.AddPlan)}
@@ -112,50 +116,57 @@ function PlansTable() {
                   </tr>
                 </thead>
                 <tbody>
-                  {plans.filter((item)=>{   
-                     return searched.toLowerCase() === "" ? item
-                     : item.name.toLowerCase().includes(searched) ||  
-                       item.duration.toString().includes(searched)       ||
-                       item.amount.toString().includes(searched)       ||
-                       item.description.toLowerCase().includes(searched)
-                  }).map((plan, index) => {
-                    return (
-                      <tr key={plan._id}>
-                        <td className="border-b p-4 text-center">
-                          {index + 1}
-                        </td>
-                        <td className="border-b p-4 text-center">
-                          {plan.name}
-                        </td>
-                        <td className="border-b p-4 text-center">
-                          {plan.description}
-                        </td>
-                        <td className="border-b p-4 text-center">
-                          {plan.amount}
-                        </td>
-                        <td className="border-b p-4 text-center">
-                          {plan.duration}
-                        </td>
-                        <td className="border-b p-4 text-center">
-                          {plan.totalDays}
-                        </td>
-                        <td className="text-center">
-
-                          <button onClick={()=> GetEditPlan(plan._id)} className="text-white bg-gray-500 mr-2 mb-2 px-2 py-1 rounded-full w-20 md:w-24 h-8 md:h-10">Edit</button>
-                          <button
-                            className={`${
-                              plan.isDeleted ? "bg-red-500" : "bg-green-500"
-                            } text-white px-2 py-1 rounded-full w-20 md:w-24 h-8 md:h-10`}
-                            onClick={() => {
-                              blockPlan(plan._id);
-                            }}
-                          >
-                            {plan.isDeleted ? "Blocked" : "Block"}
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                  {plans
+                    .filter((item) => {
+                      return searched.toLowerCase() === ""
+                        ? item
+                        : item.name.toLowerCase().includes(searched) ||
+                            item.duration.toString().includes(searched) ||
+                            item.amount.toString().includes(searched) ||
+                            item.description.toLowerCase().includes(searched);
+                    })
+                    .map((plan, index) => {
+                      return (
+                        <tr key={plan._id}>
+                          <td className="border-b p-4 text-center">
+                            {index + 1}
+                          </td>
+                          <td className="border-b p-4 text-center">
+                            {plan.name}
+                          </td>
+                          <td className="border-b p-4 text-center">
+                            {plan.description}
+                          </td>
+                          <td className="border-b p-4 text-center">
+                            {plan.amount}
+                          </td>
+                          <td className="border-b p-4 text-center">
+                            {plan.duration}
+                          </td>
+                          <td className="border-b p-4 text-center">
+                            {plan.totalDays}
+                          </td>
+                          <td className="text-center">
+                            <button
+                              onClick={() => GetEditPlan(plan._id)}
+                              className="text-white bg-gray-500 mr-2 mb-2 px-2 py-1 rounded-full w-20 md:w-24 h-8 md:h-10"
+                            >
+                              Edit
+                            </button>
+                            <button
+                              className={`${
+                                plan.isDeleted ? "bg-red-500" : "bg-green-500"
+                              } text-white px-2 py-1 rounded-full w-20 md:w-24 h-8 md:h-10`}
+                              onClick={() => {
+                                blockPlan(plan._id);
+                              }}
+                            >
+                              {plan.isDeleted ? "Blocked" : "Block"}
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
                 </tbody>
               </table>
             </div>

@@ -1,6 +1,6 @@
 import React from "react";
 
-function Avatar({ userId, username, profile }) {
+function Avatar({ profile }) {
   // const colors = [
   //   "bg-red-200",
   //   "bg-green-200",
