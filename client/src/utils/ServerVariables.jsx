@@ -18,7 +18,7 @@ export const ServerVariables = {
   userVideoCallRoom:'/userRoom',
   explore:'/explore',
   searchEvent:'/searchEvent',
-   
+  userNotifications:'/userNotifications',
   
   //admin routes
   AdminLogin:'/adminLogin',

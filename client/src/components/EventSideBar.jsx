@@ -37,7 +37,7 @@ function EventSideBar() {
   useEffect(() => {
     socket.on("eventNotification", (notification) => {
       toast.success(notification.message, { duration: 5000 });
-    });  
+    });
 
     socket.on("videoCallInvite", (data) => {
       setSender(data?.sender);
@@ -137,7 +137,6 @@ function EventSideBar() {
     setCallModalOpen(false);
   };
 
-
   return (
     <>
       <div className="flex-col w-[300px] hidden md:flex min-h-screen flex-shrink-0 border-r-2 border-[#E0CDB6]">
@@ -156,7 +155,7 @@ function EventSideBar() {
             />
           ))}
         </div>
-      </div>  
+      </div>
       <Modal
         isOpen={CallModalOpen}
         onRequestClose={closeModal}

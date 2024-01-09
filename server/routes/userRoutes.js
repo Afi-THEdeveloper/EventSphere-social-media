@@ -27,11 +27,18 @@ userRouter.post('/register', userController.register)
     .post('/editUser', userAuth, uploadUserProfile, resizeUserProfile, userController.editUser)
     .post('/addJobProfile', userAuth, uploadCv, userController.addJobProfile)
     .post('/updateJobProfile', userAuth, uploadCv, userController.updateJobProfile)
+    .get('/getFollowings', userAuth, userController.getFollowings)
 
     // chats
     .get('/getContactsList', userAuth, chatController.getContactsList)
     .post('/sendNewMessage', userAuth, chatController.sendNewMessage)
     .post('/getMessages', userAuth, chatController.getMessages)
+
+    .get('/getUserNotifications', userAuth, userController.getUserNotifications)
+    .delete('/clearUserNotification', userAuth, userController.clearUserNotification)
+    .delete('/clearAllUserNotifications', userAuth, userController.clearAllUserNotifications)
+    .get('/getUserNotificationsCount', userAuth, userController.getUserNotificationsCount)
+
 
 
 module.exports = userRouter

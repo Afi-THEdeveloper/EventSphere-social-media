@@ -1,17 +1,61 @@
-import React from "react";
+import React, { useState } from "react";
 import UserSidebar from "../../components/User/UserSidebar";
 import EditIcon from "../../components/icons/EditIcon";
 import { MdAssignmentAdd } from "react-icons/md";
 import { FaFilePdf } from "react-icons/fa6";
 import Button2 from "../../components/Button2";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Modal from "react-modal";
 import { ServerVariables } from "../../utils/ServerVariables";
 import { useNavigate } from "react-router-dom";
+import { userRequest } from "../../Helper/instance";
+import { apiEndPoints } from "../../utils/api";
+import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
+import FollowerCard from "../../components/FollowerCard";
 
 function UserProfile() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.Auth);
-  const ProfileClickHandler = () => {};
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [followings, setFollowings] = useState([]);
+
+  const openModal = () => {
+    dispatch(showLoading());
+    userRequest({
+      url: apiEndPoints.getFollowings,
+      method: "get",
+    })
+      .then((res) => {
+        dispatch(hideLoading());
+        if (res.data?.success) {
+          setFollowings(res.data?.followings);
+          setIsModalOpen(true);
+        } else {
+          toast.error(res.data?.error);
+        }
+      })
+      .catch((err) => {
+        dispatch(hideLoading());
+        toast.error(err.message);
+      });
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const customStyles = {
+    content: {
+      top: "30%",
+      left: "50%",
+      right: "auto",
+      bottom: "30%",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+    },
+  };
+
   return (
     <>
       <div className="flex">
@@ -32,11 +76,16 @@ function UserProfile() {
                 </div>
                 <div className="w-full text-center mt-20">
                   <div className="flex justify-center lg:pt-4 pt-8 pb-0">
-                    <div className="p-3 text-center">
-                      <span className="text-xl font-bold block uppercase tracking-wide text-slate-400">
+                    <div
+                      onClick={openModal}
+                      className="p-3 text-center cursor-pointer"
+                    >
+                      <span className="text-xl font-bold block uppercase tracking-wide text-slate-400 hover:text-slate-200">
                         {user?.following?.length}
                       </span>
-                      <span className="text-sm text-slate-400">Following</span>
+                      <span className="text-sm text-slate-400 hover:text-slate-200">
+                        Following
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -99,7 +148,8 @@ function UserProfile() {
                           }
                         />
                         <br />
-                        Add job Profile <br /> (so that you can apply for jobs in events)
+                        Add job Profile <br /> (so that you can apply for jobs
+                        in events)
                       </a>
                     </div>
                   </div>
@@ -108,6 +158,20 @@ function UserProfile() {
             </div>
           </div>
         </div>
+        <Modal
+          isOpen={isModalOpen}
+          onRequestClose={closeModal}
+          ariaHideApp={false}
+          style={customStyles}
+        >
+          {/* Use the CommentModal component */}
+          <FollowerCard
+            isOpen={isModalOpen}
+            closeModal={closeModal}
+            items={followings}
+            role={"user"}
+          />
+        </Modal>
       </div>
     </>
   );

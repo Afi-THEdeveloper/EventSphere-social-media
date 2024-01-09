@@ -319,16 +319,14 @@ exports.updateJobProfile = CatchAsync(async (req, res) => {
   }
 });
 
-
-
 exports.getEvents = CatchAsync(async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const pageSize = 2;
   console.log(page, pageSize);
-  const totalEvents = await Event.countDocuments({isBlocked:false});
+  const totalEvents = await Event.countDocuments({ isBlocked: false });
   const totalPages = Math.ceil(totalEvents / pageSize);
 
-  const events = await Event.find({isBlocked:false})
+  const events = await Event.find({ isBlocked: false })
     .skip((page - 1) * pageSize)
     .limit(pageSize);
 
@@ -338,4 +336,48 @@ exports.getEvents = CatchAsync(async (req, res) => {
     currentPage: page,
     totalPages,
   });
+});
+
+// notifications
+exports.getUserNotificationsCount = CatchAsync(async (req, res) => {
+  const count = await Notification.countDocuments({
+    recieverId: req?.userId,
+    seen: false,
+  });
+  return res.status(200).json({ success: true, count });
+});
+
+exports.getUserNotifications = CatchAsync(async (req, res) => {
+  await Notification.updateMany(
+    { recieverId: req?.userId, seen: false },
+    { $set: { seen: true } }
+  );
+  const notifications = await Notification.find({
+    recieverId: req?.userId,
+    seen: true,
+  })
+    .sort({ date: -1 })
+    .populate("actionOn");
+  console.log(notifications);
+  return res.status(200).json({ success: true, notifications });
+});
+
+exports.clearUserNotification = CatchAsync(async (req, res) => {
+  const Id = req.body?.NotId;
+  await Notification.findByIdAndDelete(Id);
+  res.status(200).send({ success: true });
+});
+
+exports.clearAllUserNotifications = CatchAsync(async (req, res) => {
+  await Notification.deleteMany({ recieverId: req?.userId, seen: true });
+  res.status(200).send({ success: "cleared All" });
+});
+
+exports.getFollowings = CatchAsync(async (req, res) => {
+  const user = await User.findById(req?.userId).populate("following");
+  if (user) {
+    return res.status(200).json({ success: true, followings: user?.following });
+  } else {
+    return res.json({ error: "failed to fetch following evnets, try again" });
+  }
 });

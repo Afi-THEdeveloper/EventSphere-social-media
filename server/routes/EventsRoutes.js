@@ -39,6 +39,8 @@ eventRouter
     .delete('/clearNotification', eventAuth, eventController.clearNotification)
     .delete('/clearAllNotifications', eventAuth, eventController.clearAllNotifications)
 
+    .get('/getFollowers', eventAuth, eventController.getFollowers)
+
 module.exports = eventRouter   
 
 

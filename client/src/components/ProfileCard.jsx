@@ -7,17 +7,58 @@ import { PlusIcon } from "@heroicons/react/24/outline";
 import { eventRequest } from "../Helper/instance";
 import { apiEndPoints } from "../utils/api";
 import toast from "react-hot-toast";
+import Modal from "react-modal";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../Redux/slices/LoadingSlice";
+import FollowerCard from "./FollowerCard";
 
 function ProfileCard({ event, postCount, story }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [followers, setFollowers] = useState([]);
   const ProfileClickHandler = () => {
     if (story?.length) {
       navigate(ServerVariables.storyCourosel, { state: { stories: story } });
     } else {
       toast.error("no stories exists");
     }
+  };
+
+  const openModal = () => {
+    dispatch(showLoading())
+    eventRequest({
+      url: apiEndPoints.getFollowers,
+      method: "get",
+    })
+      .then((res) => {
+        dispatch(hideLoading())
+        if (res.data.success) {
+          setFollowers(res.data?.followers);
+          setIsModalOpen(true);
+        } else {
+          toast.error(res.data.error);
+        }
+      })
+      .catch((err) => {
+        dispatch(hideLoading())
+        toast.error(err.message);
+      });
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const customStyles = {
+    content: {
+      top: "30%",
+      left: "50%",
+      right: "auto",
+      bottom: "30%",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+    },
   };
 
   return (
@@ -43,11 +84,11 @@ function ProfileCard({ event, postCount, story }) {
                   </span>
                   <span className="text-sm text-slate-400">Posts</span>
                 </div>
-                <div className="p-3 text-center">
-                  <span className="text-xl font-bold block uppercase tracking-wide text-slate-400">
-                    {event?.followers.length}
+                <div className="p-3 text-center cursor-pointer" onClick={openModal}>
+                  <span className="text-xl font-bold block uppercase tracking-wide text-slate-400 hover:text-white">
+                    {event?.followers?.length}
                   </span>
-                  <span className="text-sm text-slate-400">Followers</span>
+                  <span className="text-sm text-slate-400 hover:text-white">Followers</span>
                 </div>
                 <div className="p-3 text-center">
                   <span className="text-xl font-bold block uppercase tracking-wide text-slate-400 hover:bg-slate-500">
@@ -107,6 +148,20 @@ function ProfileCard({ event, postCount, story }) {
             </div>
           </div>
         </div>
+        <Modal
+          isOpen={isModalOpen}
+          onRequestClose={closeModal}
+          ariaHideApp={false}
+          style={customStyles}
+        >
+          {/* Use the CommentModal component */}
+          <FollowerCard
+            isOpen={isModalOpen}
+            closeModal={closeModal}
+            items={followers}
+            role={'event'}
+          />
+        </Modal>
       </div>
     </>
   );

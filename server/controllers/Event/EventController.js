@@ -202,7 +202,7 @@ exports.EventReply = CatchAsync(async (req, res) => {
       repliedUser: { profile: event?.profile, id: event?._id },
       reply: req.body?.reply,
     };
-    await Comment.findByIdAndUpdate(
+    const repliedComment = await Comment.findByIdAndUpdate(
       { _id: comment_Id },
       { $push: { replies: reply } },
       { new: true }
@@ -218,6 +218,15 @@ exports.EventReply = CatchAsync(async (req, res) => {
 
     let NewComments = [...comments, replies];
     console.log(comments);
+
+    const sendNotification = new Notification({
+      recieverId: repliedComment?.userId,
+      senderId: event._id,
+      notificationMessage: `${repliedComment?.username} replied "${req.body?.reply}" to your comment "${repliedComment?.comment}"`,
+      date: new Date(),
+    });
+    await sendNotification.save();
+
     return res.status(200).json({ success: "ok", comments });
   } else {
     res.json({ message: "comment id is not found" });
@@ -288,7 +297,6 @@ exports.addStory = CatchAsync(async (req, res) => {
   return res.status(200).json({ success: "story Added Successfully", story });
 });
 
-
 exports.getEventPosts = CatchAsync(async (req, res) => {
   const posts = await EventPost.find({ postedBy: req?.body?.eventId }).sort({
     createdAt: -1,
@@ -316,9 +324,12 @@ exports.getEventStory = CatchAsync(async (req, res) => {
 // notifications
 
 exports.getNotificationsCount = CatchAsync(async (req, res) => {
-  const count  = await Notification.countDocuments({recieverId:req?.eventId, seen:false});
-  return res.status(200).json({success: true, count});
-})
+  const count = await Notification.countDocuments({
+    recieverId: req?.eventId,
+    seen: false,
+  });
+  return res.status(200).json({ success: true, count });
+});
 
 exports.getNotifications = CatchAsync(async (req, res) => {
   await Notification.updateMany(
@@ -342,7 +353,15 @@ exports.clearNotification = CatchAsync(async (req, res) => {
 });
 
 exports.clearAllNotifications = CatchAsync(async (req, res) => {
-  await Notification.deleteMany({ recieverId: req?.eventId,seen: true });
+  await Notification.deleteMany({ recieverId: req?.eventId, seen: true });
   res.status(200).send({ success: "cleared All" });
 });
 
+exports.getFollowers = CatchAsync(async (req, res) => {
+  const event = await Event.findById(req?.eventId).populate("followers");
+  if (event) {
+    return res.status(200).json({ success: true, followers:event?.followers });
+  } else {
+    return res.json({ error: "failed to find followers,try again" });
+  }
+});

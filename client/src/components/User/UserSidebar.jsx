@@ -15,11 +15,14 @@ import SidebarItem from "../SidebarItem";
 import toast from "react-hot-toast";
 import Modal from "react-modal";
 import CallRequest from "../CallRequest";
+import { userRequest } from "../../Helper/instance";
+import { apiEndPoints } from "../../utils/api";
 
 function UserSidebar() {
   const [activeItem, setActiveItem] = useState("Home");
   const [sender, setSender] = useState({});
   const [meetlink, setMeetlink] = useState("");
+  const [notificationsCount, setNotificationsCount] = useState(0);
   const [CallModalOpen, setCallModalOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,6 +31,17 @@ function UserSidebar() {
     ServerVariables.editUser,
     ServerVariables.editJobProfile,
   ];
+
+
+  useEffect(() => {
+    if (location.state) {
+      const { clicked } = location.state;
+      setActiveItem(clicked);
+    } else if (ExtraPagePaths.includes(location?.pathname)) {
+      setActiveItem("Profile");
+    }
+  }, []);
+
 
   useEffect(() => {
     // Handle the notification event
@@ -48,13 +62,19 @@ function UserSidebar() {
   }, []);
 
   useEffect(() => {
-    if (location.state) {
-      const { clicked } = location.state;
-      setActiveItem(clicked);
-    } else if (ExtraPagePaths.includes(location?.pathname)) {
-      setActiveItem("Profile");
-    }
-  }, []);
+    userRequest({
+      url: apiEndPoints.getUserNotificationsCount,
+      method: "get",
+    })
+      .then((res) => {
+        setNotificationsCount(res.data.count);
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  }, [notificationsCount]);
+
+
 
   const sideBarItems = [
     {
@@ -90,7 +110,7 @@ function UserSidebar() {
       label: "Notifications",
       icon: <NotificationIcon />,
       onclick: () => {
-        navigate(ServerVariables.UserHome, {
+        navigate(ServerVariables.userNotifications, {
           state: { clicked: "Notifications" },
         });
       },
@@ -145,6 +165,7 @@ function UserSidebar() {
               href={item.href}
               label={item.label}
               onClick={item?.onclick}
+              NotfCount={notificationsCount}
               clickedOn={activeItem}
             />
           ))}

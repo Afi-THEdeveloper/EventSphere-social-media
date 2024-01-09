@@ -18,7 +18,11 @@ export const apiEndPoints = {
     sendNewMessage:'api/user/sendNewMessage',
     getMessages:'api/user/getMessages',
     searchEvents:'api/user/searchEvents',
-    
+    getUserNotifications:'api/user/getUserNotifications',
+    clearUserNotification:'api/user/clearUserNotification',
+    clearAllUserNotifications:'api/user/clearAllUserNotifications',
+    getUserNotificationsCount:'api/user/getUserNotificationsCount',
+    getFollowings:'api/user/getFollowings',
 
     //admin end points
     postLoginAdmin: '/api/admin/verifyAdmin',
@@ -57,5 +61,6 @@ export const apiEndPoints = {
     clearNotification:'api/event/clearNotification',
     clearAllNotifications:'api/event/clearAllNotifications',
     getNotificationsCount:'api/event/getNotificationsCount',
+    getFollowers:'api/event/getFollowers',
 }
 

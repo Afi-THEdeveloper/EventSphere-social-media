@@ -142,9 +142,12 @@ function EventChats() {
     }
   }, [chatHistory]);
 
-  const handleVideoClick = useCallback((roomId,userId) => {
-    navigate(`${ServerVariables.EventVideoCallRoom}/${roomId}/${userId}`);
-  }, [navigate]);
+  const handleVideoClick = useCallback(
+    (roomId, userId) => {
+      navigate(`${ServerVariables.EventVideoCallRoom}/${roomId}/${userId}`);
+    },
+    [navigate]
+  );
 
   return (
     <div className="flex">
@@ -201,7 +204,9 @@ function EventChats() {
                   </div>
                   <FaVideo
                     className="fill-slate-800 w-8 h-8 mr-2"
-                    onClick={() => handleVideoClick(chatPartner?.eventId,chatPartner?.userId)}
+                    onClick={() =>
+                      handleVideoClick(chatPartner?.eventId, chatPartner?.userId)
+                    }
                   />
                 </div>
               ) : (
