@@ -11,7 +11,7 @@ import { logout } from "../Redux/slices/EventAuthSlice";
 import SubscribePlanIcon from "./icons/SubscribePlanIcon";
 import { eventRequest } from "../Helper/instance";
 import { apiEndPoints } from "../utils/api";
-import socket from "../components/User/SocketIo";
+import socket from "./User/SocketIo";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import CallRequest from "./CallRequest";
@@ -26,6 +26,7 @@ function EventSideBar() {
   const [sender, setSender] = useState({});
   const [meetlink, setMeetlink] = useState("");
   const [notificationsCount, setNotificationsCount] = useState(0);
+  const [msgCount, setMsgCount] = useState(0);
   const location = useLocation();
 
   useEffect(() => {
@@ -58,12 +59,15 @@ function EventSideBar() {
       method: "get",
     })
       .then((res) => {
-        setNotificationsCount(res.data.count);
+        setNotificationsCount(res.data?.count);
+        if(location.pathname !== ServerVariables.eventChats){
+          setMsgCount(res.data?.MsgCount)
+        }
       })
       .catch((err) => {
         toast.error(err.message);
       });
-  }, [notificationsCount]);
+  }, [notificationsCount,msgCount]);
 
   const sideBarItems = [
     {
@@ -159,6 +163,7 @@ function EventSideBar() {
               label={item.label}
               onClick={item?.onclick}
               NotfCount={notificationsCount}
+              MsgCount={msgCount}
               clickedOn={activeItem}
             />
           ))}

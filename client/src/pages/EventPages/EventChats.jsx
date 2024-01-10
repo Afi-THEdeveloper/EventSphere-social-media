@@ -27,6 +27,10 @@ function EventChats() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    getContactsList();
+  }, []);
+
+  const getContactsList = () => {
     eventRequest({
       url: apiEndPoints.getEventContacts,
       method: "get",
@@ -41,11 +45,12 @@ function EventChats() {
       .catch((err) => {
         console.log(err.message);
       });
-  }, []);
+  };
 
   const handleClickContact = (userId) => {
     setSelectedUserId(userId);
     fetchChatMessages(userId);
+    getContactsList()
     inputRef && inputRef.current.focus();
   };
 
@@ -107,6 +112,7 @@ function EventChats() {
           socket.emit("join", response.data.roomId);
           setChatPartner(response.data?.chatConnection);
           setChatHistory(response.data?.messages);
+          getContactsList()
         }
       })
       .catch((err) => {
@@ -123,6 +129,9 @@ function EventChats() {
     socket.on("message recieved", (message) => {
       if (message.userId === selectedUserId) {
         updateChatHistory(message);
+        fetchChatMessages(selectedUserId)
+      }else{
+        getContactsList()
       }
     });
     return () => {
@@ -171,32 +180,37 @@ function EventChats() {
                 .filter((item) => {
                   return searched?.toLowerCase() === ""
                     ? item
-                    : item?.userId?.username?.toLowerCase().includes(searched);
+                    : item?.userName?.toLowerCase().includes(searched);
                 })
                 .map((contact) => (
                   <div
-                    key={contact?.userId?._id}
-                    onClick={() => handleClickContact(contact?.userId?._id)}
+                    key={contact?.userId}
+                    onClick={() => handleClickContact(contact?.userId)}
                     className={
                       "py-2 pl-4 border-0 border-gray-100 flex items-center gap-2 cursor-pointer " +
-                      (contact?.userId?._id === selectedUserId
+                      (contact?.userId === selectedUserId
                         ? "bg-[#E0CDB6]"
                         : "")
                     }
                   >
-                    {contact?.userId?._id === selectedUserId && (
+                    {contact?.userId === selectedUserId && (
                       <div className="bg-blue-500 w-1 h-12 rounded-r-md"></div>
                     )}
 
                     <div className="flex gap-4 py-2 pl-4 items-center">
                       <Avatar
-                        username={contact?.userId?.username}
-                        profile={contact?.userId?.profile}
-                        userId={contact?.userId?._id}
+                        username={contact?.userName}
+                        profile={contact?.userImage}
+                        userId={contact?.userId}
                       />
                       <span className="text-slate-500 font-bold">
-                        {contact?.userId?.username}
+                        {contact?.userName}
                       </span>
+                      {contact?.unseenMessagesCount > 0 && (
+                        <span className="bg-green-500 text-white w-5 h-5 flex items-center justify-center rounded-full">
+                          {contact?.unseenMessagesCount}
+                        </span>
+                      )}
                     </div>
                   </div>
                 ))

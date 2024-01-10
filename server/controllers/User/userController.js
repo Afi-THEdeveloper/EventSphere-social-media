@@ -3,6 +3,7 @@ const EventPost = require("../../models/EventPostModel");
 const Event = require("../../models/EventModel");
 const Story = require("../../models/StoryModel");
 const Notification = require("../../models/NotificationModel");
+const Chats = require("../../models/ChatsModel");
 const ChatConnection = require("../../models/ChatConnection");
 const randomString = require("randomstring");
 const OtpMailer = require("../../util/OtpMailer");
@@ -350,7 +351,8 @@ exports.getUserNotificationsCount = CatchAsync(async (req, res) => {
     recieverId: req?.userId,
     seen: false,
   });
-  return res.status(200).json({ success: true, count });
+  const MsgCount = await Chats.countDocuments({userId: req?.userId,isUserSeen:false})
+  return res.status(200).json({ success: true, count,MsgCount });
 });
 
 exports.getUserNotifications = CatchAsync(async (req, res) => {

@@ -15,6 +15,7 @@ function intializeSocket(server) {
       // Data  -      userId
       socket.join(Data);
       socket.emit("connected");
+      console.log("user connected",Data);
     });
 
     socket.on("join", (room) => {

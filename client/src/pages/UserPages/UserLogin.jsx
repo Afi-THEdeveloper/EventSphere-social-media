@@ -9,9 +9,8 @@ import { ServerVariables } from "../../utils/ServerVariables";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { loginThunk } from "../../Redux/slices/AuthSlice";
-import { AuthContext } from "../../../Contexts/AuthContext";
 import Button2 from "../../components/Button2";
-import HomeIcon from "../../components/icons/HomeIcon";
+import HomeIcon from "../../components/icons/HomeIcon"; 
 
 const loginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),

@@ -19,11 +19,12 @@ import { userRequest } from "../../Helper/instance";
 import { apiEndPoints } from "../../utils/api";
 
 function UserSidebar() {
-  const {user} = useSelector(state => state.Auth)
+  const { user } = useSelector((state) => state.Auth);
   const [activeItem, setActiveItem] = useState("Home");
   const [sender, setSender] = useState({});
   const [meetlink, setMeetlink] = useState("");
   const [notificationsCount, setNotificationsCount] = useState(0);
+  const [msgCount, setMsgCount] = useState(0);
   const [CallModalOpen, setCallModalOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -43,6 +44,7 @@ function UserSidebar() {
   }, []);
 
   useEffect(() => {
+    console.log("socket", socket);
     // Handle the notification event
     socket.on("userNotification", (notification) => {
       toast.success(notification.message, { duration: 5000 });
@@ -67,11 +69,14 @@ function UserSidebar() {
     })
       .then((res) => {
         setNotificationsCount(res.data.count);
+        if (location.pathname !== ServerVariables.chatPage) {
+          setMsgCount(res.data?.MsgCount);
+        }
       })
       .catch((err) => {
         toast.error(err.message);
-      });
-  }, [notificationsCount]);
+      }); 
+  }, [notificationsCount, msgCount]);
 
   const sideBarItems = [
     {
@@ -170,6 +175,7 @@ function UserSidebar() {
               label={item.label}
               onClick={item?.onclick}
               NotfCount={notificationsCount}
+              MsgCount={msgCount}
               clickedOn={activeItem}
             />
           ))}

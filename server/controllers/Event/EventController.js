@@ -3,6 +3,7 @@ const EventPost = require("../../models/EventPostModel");
 const Comment = require("../../models/CommentModel");
 const Story = require("../../models/StoryModel");
 const Notification = require("../../models/NotificationModel");
+const Chats = require("../../models/ChatsModel");
 const ChatConnection = require("../../models/ChatConnection");
 const CatchAsync = require("../../util/CatchAsync");
 const bcrypt = require("bcrypt");
@@ -333,7 +334,8 @@ exports.getNotificationsCount = CatchAsync(async (req, res) => {
     recieverId: req?.eventId,
     seen: false,
   });
-  return res.status(200).json({ success: true, count });
+  const MsgCount = await Chats.countDocuments({eventId: req?.eventId,isEventSeen:false})
+  return res.status(200).json({ success: true, count,MsgCount });
 });
 
 exports.getNotifications = CatchAsync(async (req, res) => {

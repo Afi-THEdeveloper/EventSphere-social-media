@@ -6,7 +6,7 @@ import { userRequest } from "../Helper/instance";
 import { apiEndPoints } from "../utils/api";
 import toast from "react-hot-toast";
 import { useRef } from "react";
-import socket from "../components/User/SocketIo";
+import socket from "./User/SocketIo";
 import { formatDistanceToNow } from "date-fns";
 import { FaVideo } from "react-icons/fa";
 import { hideLoading, showLoading } from "../Redux/slices/LoadingSlice";
@@ -27,6 +27,10 @@ function Chat() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    getContactsList()
+  }, []);
+
+  const getContactsList = () => {
     userRequest({
       url: apiEndPoints.getContactsList,
       method: "get",
@@ -41,11 +45,12 @@ function Chat() {
       .catch((err) => {
         console.log(err.message);
       });
-  }, []);
+  };
 
   const handleClickContact = (eventId) => {
     setSelectedEventId(eventId);
     fetchChatMessages(eventId);
+    getContactsList();
     inputRef && inputRef.current.focus();
   };
 
@@ -100,11 +105,12 @@ function Chat() {
         dispatch(hideLoading());
         if (response.data.success) {
           setNewMessageText("");
-          socket.emit("setup", response.data.userId);
+          socket.emit("setup", response.data?.userId);
 
-          socket.emit("join", response.data.roomId);
+          socket.emit("join", response.data?.roomId);
           setChatPartner(response.data?.Data);
           setChatHistory(response.data?.mes);
+          getContactsList();
         }
       })
       .catch((err) => {
@@ -121,6 +127,9 @@ function Chat() {
     socket.on("message recieved", (message) => {
       if (message.eventId === selectedEventId) {
         updateChatHistory(message);
+        fetchChatMessages(selectedEventId)
+      }else{
+        getContactsList()
       }
     });
     return () => {
@@ -193,6 +202,11 @@ function Chat() {
                       <span className="text-slate-500 font-bold">
                         {contact.title}
                       </span>
+                      {contact?.unseenMessagesCount > 0 && (
+                        <span className="bg-green-500 text-white w-5 h-5 flex items-center justify-center rounded-full">
+                          {contact?.unseenMessagesCount}
+                        </span>
+                      )}
                     </div>
                   </div>
                 ))
