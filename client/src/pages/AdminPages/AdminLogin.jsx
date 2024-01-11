@@ -32,7 +32,7 @@ function AdminLogin() {
     },
   });
   return (
-    <div className="flex-1 flex flex-col items-center justify-center min-h-screen bg-slate-200">
+    <div className="flex-1 flex flex-col items-center justify-center min-h-screen">
       <div className="flex w-full flex-col max-w-[400px] items-center space-y-3">
         <Myh1 title="Admin Login" />
         <div className="w-full mt-8">
@@ -67,12 +67,12 @@ function AdminLogin() {
               )}
 
               <Button1 text="Login" style={{ marginTop: 8 }} />
-              <Link
+              {/* <Link
                 to={ServerVariables.Register}
                 className="mt-2 h-10 w-full rounded-full px-4 text-sm font-semibold text-[#E0CDB6] bg-[#071F48] flex items-center justify-center"
               >
                 Signup
-              </Link>
+              </Link> */}
             </form>
             <Link
               className="h-12 w-full px-4 py-8 text-[#E0CDB6] flex items-center justify-center"

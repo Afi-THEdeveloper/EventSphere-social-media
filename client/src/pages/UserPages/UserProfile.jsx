@@ -62,7 +62,7 @@ function UserProfile() {
         <UserSidebar />
 
         <div className="flex-grow flex-shrink min-h-screen">
-          <div className="relative max-w-md mx-auto md:max-w-2xl min-w-0 break-words  w-full mb-6 shadow-lg rounded-xl mt-20">
+          <div className="myDivBg relative max-w-md mx-auto md:max-w-2xl min-w-0 break-words w-full mb-6 shadow-lg rounded-xl mt-20">
             <div className="px-6">
               <div className="flex flex-wrap justify-center">
                 <div className="w-full flex justify-center">
@@ -80,10 +80,10 @@ function UserProfile() {
                       onClick={openModal}
                       className="p-3 text-center cursor-pointer"
                     >
-                      <span className="text-xl font-bold block uppercase tracking-wide text-slate-400 hover:text-slate-200">
+                      <span className="text-xl font-bold block uppercase tracking-wide myTextColor hover:text-slate-200">
                         {user?.following?.length}
                       </span>
-                      <span className="text-sm text-slate-400 hover:text-slate-200">
+                      <span className="myTextColor text-sm  hover:text-slate-200">
                         Following
                       </span>
                     </div>
@@ -91,10 +91,10 @@ function UserProfile() {
                 </div>
               </div>
               <div className="text-center mt-2">
-                <h3 className="text-2xl text-slate-400 font-bold leading-normal mb-1">
+                <h3 className="text-2xl myTextColor font-bold leading-normal mb-1">
                   {user?.username}
                 </h3>
-                <div className="text-xs mt-0 mb-2 text-slate-300 font-bold uppercase">
+                <div className="text-xs mt-0 mb-2 myTextColor font-bold uppercase">
                   <i className=" text-slate-400 opacity-75"></i>
                   {user?.phone}
                 </div>
@@ -110,13 +110,13 @@ function UserProfile() {
               </div>
 
               {user.isJobSeeker ? (
-                <div className="mt-6 py-6 border-t border-slate-200 text-center">
+                <div className="myBorder mt-6 py-6 border-t text-center">
                   <div className="flex flex-wrap justify-center">
                     <div className="w-full px-4">
-                      <h2 className="text-[#E0CDB6] font-medium">
+                      <h2 className="myTextColor font-medium">
                         Job profile and CV
                       </h2>
-                      <p className="font-light leading-relaxed text-slate-300 mb-4">
+                      <p className="font-light leading-relaxed myPara mb-4">
                         <FaFilePdf
                           onClick={() =>
                             (window.location.href = `http://localhost:5000/files/${user?.jobProfile?.CV}`)
@@ -137,7 +137,7 @@ function UserProfile() {
                   </div>
                 </div>
               ) : (
-                <div className="mt-6 py-6 border-t border-slate-200 text-center">
+                <div className="myBorder border-t mt-6 py-6 text-center">
                   <div className="flex flex-wrap justify-center">
                     <div className="w-full px-4">
                       <a className="font-normal text-[#E0CDB6]">

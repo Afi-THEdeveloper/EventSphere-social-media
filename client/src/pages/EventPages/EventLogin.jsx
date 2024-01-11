@@ -70,7 +70,7 @@ function EventLogin() {
               <Button1 text="Login" style={{ marginTop: 8 }} type="submit" />
               <Link
                 to={ServerVariables.eventRegister}
-                className="mt-2 h-10 w-full rounded-full px-4 text-sm font-semibold text-[#E0CDB6] bg-[#071F48] flex items-center justify-center"
+                className="myBorder myTextColor border-2 mt-2 h-10 w-full rounded-full px-4 text-sm font-semibold flex items-center justify-center"
               >
                 Register Event
               </Link>

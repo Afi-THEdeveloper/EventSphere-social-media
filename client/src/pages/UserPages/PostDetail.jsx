@@ -105,10 +105,10 @@ function PostDetail() {
         <div className="flex-grow flex-shrink min-h-screen">
           <div className="mx-auto flex flex-col justify-center max-w-lg mt-4">
             {/* postDetail  */}
-            <div className="container shadow-sm items-center mx-auto my-5 py-5 px-5 bg-[#E0CDB6]">
+            <div className="container shadow-sm items-center mx-auto my-5 py-5 px-5 myDivBg">
               {/* <h2 className="text-center text-3xl mb-2 mt-2">Post Comments</h2> */}
               <IoArrowBackCircleOutline
-                className="h-10 w-10"
+                className="myTextColor h-10 w-10"
                 onClick={() => window.history.back()}
               />
               <div className="">
@@ -124,27 +124,27 @@ function PostDetail() {
                   />
                 ) : (
                   <FaRegHeart
-                    className="w-7 h-7"
+                    className="myTextColor w-7 h-7"
                     onClick={() => handleLike(post._id)}
                   />
                 )}
-                <p className="font-bold">{post?.likes?.length} likes</p>
-                <div className="flex items-center mt-2 py-2 px-2">
+                <p className="myTextColor font-bold">{post?.likes?.length} likes</p>
+                <div className="myPara flex items-center mt-2 py-2 px-2">
                   <p className="font-serif mt-2 pt-3 font-medium text-xl px-2">
                     {post?.description && post?.description}
                   </p>
                 </div>
               </div>
             </div>
-            <section className="bg-white mt-4 mb-2 dark:bg-[#E0CDB6] py-8 lg:py-16">
+            <section className="myDivBg mt-4 mb-2 py-8 lg:py-16">
               <div className="max-w-2xl mx-auto px-4">
                 <div className="flex justify-between items-center mb-6">
-                  <h4 className="text-lg lg:text-2xl font-bold text-slate-900 dark:text-black">
+                  <h4 className="text-lg lg:text-2xl font-bold myTextColor">
                     Discussion ({ultimateTotal})
                   </h4>
                 </div>
                 <form onSubmit={submitHandler} class="mb-6">
-                  <div className="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+                  <div className="py-2 px-4 mb-4 rounded-lg rounded-t-lg">
                     <label for="comment" className="sr-only">
                       Your comment
                     </label>
@@ -152,7 +152,7 @@ function PostDetail() {
                       id="comment"
                       rows="6"
                       onChange={(e) => setComment(e.target.value)}
-                      className="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
+                      className="p-2 w-full text-sm activeBg border-0 focus:ring-0 focus:outline-none  dark:placeholder-gray-400"
                       placeholder="Write a comment..."
                       required
                     />

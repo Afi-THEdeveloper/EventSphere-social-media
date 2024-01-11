@@ -170,7 +170,7 @@ function EditEventForm() {
             )}
 
             <textarea
-              className="text-[#85ACEF] block w-full rounded-xl p-3 bg-[#1E1E1E] border-2  border-blue-950 mt-1"
+              className="myDivBg text-[#85ACEF] block w-full rounded-xl p-3 mt-1"
               name="services"
               type="text"
               placeholder="services"
@@ -184,7 +184,7 @@ function EditEventForm() {
               </p>
             )}
             <textarea
-              className="text-[#85ACEF] block w-full rounded-xl p-3 bg-[#1E1E1E] border-2  border-blue-950 mt-3"
+              className="myDivBg text-[#85ACEF] block w-full rounded-xl p-3  mt-3"
               name="officeAddress"
               type="text"
               placeholder="office Address"

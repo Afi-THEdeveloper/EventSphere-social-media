@@ -27,7 +27,7 @@ function Chat() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getContactsList()
+    getContactsList();
   }, []);
 
   const getContactsList = () => {
@@ -127,9 +127,9 @@ function Chat() {
     socket.on("message recieved", (message) => {
       if (message.eventId === selectedEventId) {
         updateChatHistory(message);
-        fetchChatMessages(selectedEventId)
-      }else{
-        getContactsList()
+        fetchChatMessages(selectedEventId);
+      } else {
+        getContactsList();
       }
     });
     return () => {
@@ -161,11 +161,11 @@ function Chat() {
   return (
     <div className="flex">
       <UserSidebar />
-      <div className="flex-grow flex-shrink min-h-screen">
+      <div className="flex-grow flex-shrink min-h-screen ml-4">
         <div className="flex h-screen">
           {/* contacts */}
-          <div className="w-1/3 border-r-2 border-[#E0CDB6]">
-            <div className="text-[#E0CDB6] font-bold flex gap-4 p-4 my-2 border-b-2 border-[#E0CDB6]">
+          <div className="myDivBg w-1/3">
+            <div className="myTextColor font-bold flex gap-4 p-4 my-2 border-b-2 myBorder">
               <MessageIcon />
               <Search1
                 search={"search chats..."}
@@ -186,7 +186,7 @@ function Chat() {
                     onClick={() => handleClickContact(contact._id)}
                     className={
                       "py-2 pl-4 border-0 border-gray-100 flex items-center gap-2 cursor-pointer " +
-                      (contact._id === selectedEventId ? "bg-[#E0CDB6]" : "")
+                      (contact._id === selectedEventId ? "activeBg" : "")
                     }
                   >
                     {contact._id === selectedEventId && (
@@ -194,12 +194,8 @@ function Chat() {
                     )}
 
                     <div className="flex gap-4 py-2 pl-4 items-center">
-                      <Avatar
-                        username={contact?.title}
-                        profile={contact?.profile}
-                        userId={contact?._id}
-                      />
-                      <span className="text-slate-500 font-bold">
+                      <Avatar profile={contact?.profile} />
+                      <span className="myTextColor">
                         {contact.title}
                       </span>
                       {contact?.unseenMessagesCount > 0 && (
@@ -211,18 +207,18 @@ function Chat() {
                   </div>
                 ))
             ) : (
-              <p className="text-gray-400 p-2">no following events to chat</p>
+              <p className="myTextColor p-2">no following events to chat</p>
             )}
           </div>
 
           {/*  chat header */}
 
-          <div className="flex flex-col  w-2/3 p-2">
+          <div className="flex flex-col  w-2/3 px-2">
             <div className="flex-grow">
               {selectedEventId ? (
-                <div className="py-4 pl-4 bg-[#E0CDB6] border-2 border-gray-100 flex items-center gap-4 cursor-pointer justify-between">
+                <div className="myDivBg py-4 pl-4 flex items-center gap-4 cursor-pointer justify-between">
                   <Avatar profile={chatPartner?.eventImage} />
-                  <div className="text-slate-600 font-bold text-lg">
+                  <div className="myTextColor font-bold text-lg">
                     {chatPartner?.eventName}
                   </div>
                   <FaVideo
@@ -232,12 +228,12 @@ function Chat() {
                         chatPartner?.eventId
                       )
                     }
-                    className="fill-slate-800 w-8 h-8 mr-2"
+                    className="myTextColor w-8 h-8 mr-2"
                   />
                 </div>
               ) : (
                 <div className="h-full flex items-center justify-center">
-                  <div className="text-gray-400">
+                  <div className="myTextColor">
                     &larr; select a person from sidebar
                   </div>
                 </div>
@@ -291,11 +287,11 @@ function Chat() {
                   value={newMessageText}
                   onChange={(e) => setNewMessageText(e.target.value)}
                   placeholder="message..."
-                  className="bg-[#1E1E1E] border p-2 flex-grow rounded-sm text-[#5A91E2]"
+                  className="myDivBg border p-2 flex-grow rounded-sm text-[#5A91E2]"
                 />
                 <button
                   onClick={() => sendMessage(chatPartner._id, selectedEventId)}
-                  className="bg-blue-500 p-2 text-white"
+                  className="bg-blue-700 p-2 text-white"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

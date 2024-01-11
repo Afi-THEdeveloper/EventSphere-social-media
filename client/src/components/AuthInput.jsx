@@ -5,7 +5,7 @@ function AuthInput({...props}) {
     <div className='py-2'>
         <input
             {...props}
-            className="text-[#85ACEF] block w-full rounded-xl p-3 bg-[#1E1E1E] border-2  border-blue-950"
+            className="myDivBg text-[#85ACEF] block w-full rounded-xl p-4"
         />
     </div>
   )

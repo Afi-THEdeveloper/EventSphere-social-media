@@ -49,7 +49,7 @@ const PostCard = ({ post, onDelete }) => {
     },
   };
   return (
-    <div className="bg-white shadow-lg rounded-lg overflow-hidden m-4 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5">
+    <div className="myDivBg shadow-lg rounded-lg overflow-hidden m-4 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5">
       {post?.image && (
         <img
           className="w-full h-42 object-cover"
@@ -59,12 +59,12 @@ const PostCard = ({ post, onDelete }) => {
       )}
 
       <div className="p-4">
-        <h2 className="text-xl font-semibold mb-2">
+        <h3 className="myTextColor text-xl font-semibold">
           {post?.likes?.length} likes
-        </h2>
+        </h3>
 
         <p
-          className="text-gray-900 hover:font-bold mb-2 cursor-pointer"
+          className="myPara hover:font-bold mb-2 cursor-pointer"
           onClick={() => openModal(post?._id)}
         >
           {post?.commentsCount} comments
@@ -108,7 +108,7 @@ const NewPostButton = () => {
   const navigate = useNavigate();
   return (
     <button
-      className="fixed bottom-4 right-4 bg-[#FFB992] text-white p-4 rounded-full hover:bg-[#e0b887]"
+      className="fixed bottom-4 right-4 myDivBg text-white p-4 rounded-full hover:bg-[#e0b887]"
       onClick={() => navigate(ServerVariables.addPost)}
     >
       <PlusIcon className="h-6 w-6 font-bold" />
@@ -182,9 +182,9 @@ const PostsPage = ({eventId}) => {
         </div>
       ) : (
         <div className="text-center">
-          <p className="text-white mt-10">No posts yet..</p>
+          <p className="myPara mt-10">No posts yet..</p>
           <button
-            className="bg-[#FFB992] text-white p-2 rounded-full hover:bg-[#e0b887]"
+            className="myDivBg text-white p-2 rounded-full hover:bg-[#e0b887]"
             onClick={() => navigate(ServerVariables.addPost)}
           >
             <PlusIcon className="h-6 w-6 font-bold" />

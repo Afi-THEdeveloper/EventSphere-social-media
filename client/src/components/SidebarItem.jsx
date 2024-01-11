@@ -1,6 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import Button1 from "./Button1";
+
 
 function SidebarItem({
   icon,
@@ -13,14 +12,14 @@ function SidebarItem({
 }) {
   let background = "";
   if (clickedOn === label) {
-    background = "bg-[#474440]";
+    background = "activeBg";
   }
   return (
     <>
       <button
         {...props}
         className={
-          "h-12 flex w-full px-4 py-8 hover:bg-[#474440] items-center text-[#E0CDB6] " +
+          "h-12 flex w-full px-4 py-8 hover:bg-[#0F1015] items-center myTextColor " +
           background
         }
       >

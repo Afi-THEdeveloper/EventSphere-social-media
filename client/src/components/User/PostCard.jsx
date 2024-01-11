@@ -176,7 +176,7 @@ function PostCard() {
         EventPosts.map((post) => {
           return (
             <div
-              className="flex flex-col gap-2 bg-[#E0CDB6] mt-2 mx-4 rounded-xl border border-slate-200"
+              className="myDivBg flex flex-col gap-2  mt-2 mx-4 rounded-xl p-2"
               key={post._id}
             >
               {/* top div */}
@@ -184,12 +184,12 @@ function PostCard() {
                 <div className="flex flex-row items-center gap-4">
                   <img
                     src={`http://localhost:5000/profiles/${post?.postedBy?.profile}`}
-                    className="h-10 w-10 rounded-full object-cover border-2 border-[#FFB992]"
+                    className="h-10 w-10 rounded-full object-cover border-2 myBorder"
                     alt="profile"
                   />
                   <span>
                     <h4
-                      className="font-bold cursor-pointer"
+                      className="myTextColor font-bold cursor-pointer"
                       onClick={() =>
                         navigate(ServerVariables.showEvent, {
                           state: { event: post?.postedBy },
@@ -198,17 +198,17 @@ function PostCard() {
                     >
                       {post?.postedBy?.title}
                     </h4>
-                    <small>{post?.location}</small>
+                    <small className="myPara">{post?.location}</small>
                   </span>
                 </div>
                 {user?.following?.includes(post?.postedBy?._id) ? (
                   <div>
                     <SlUserUnfollow
-                      className="w-6 h-6 mx-2 cursor-pointer"
+                      className="myTextColor w-6 h-6 mx-2 cursor-pointer"
                       onClick={() => handleUnFollow(post?.postedBy?._id)}
                     />
                     <small
-                      className="text-black font-bold mr-2 cursor-pointer"
+                      className="myTextColor font-bold mr-2 cursor-pointer"
                       onClick={() => handleUnFollow(post?.postedBy?._id)}
                     >
                       Following
@@ -217,11 +217,11 @@ function PostCard() {
                 ) : (
                   <div>
                     <SlUserFollow
-                      className="w-6 h-6 mx-2 cursor-pointer"
+                      className="myTextColor w-6 h-6 mx-2 cursor-pointer"
                       onClick={() => handleFollow(post?.postedBy?._id)}
                     />
                     <small
-                      className="text-black font-bold mr-2 cursor-pointer"
+                      className="myTextColor font-bold mr-2 cursor-pointer"
                       onClick={() => handleFollow(post?.postedBy?._id)}
                     >
                       Follow
@@ -248,12 +248,12 @@ function PostCard() {
                     />
                   ) : (
                     <FaRegHeart
-                      className="w-7 h-7"
+                      className="myTextColor w-7 h-7"
                       onClick={() => handleLike(post._id)}
                     />
                   )}
                   <FaRegComment
-                    className="w-7 h-7"
+                    className="myTextColor w-7 h-7"
                     onClick={() =>
                       navigate(ServerVariables.postDetails, {
                         state: { postDetails: post },
@@ -265,7 +265,7 @@ function PostCard() {
                 {/* <BookmarkIcon className="w-6 h-6" /> */}
               </div>
               <p
-                className="text-black font-bold mx-2 cursor-pointer"
+                className="myTextColor font-bold mx-2 cursor-pointer"
                 onClick={() =>
                   navigate(ServerVariables.postDetails, {
                     state: { postDetails: post },
@@ -273,7 +273,7 @@ function PostCard() {
                 }
               >{`${post?.likes.length} likes   ${post?.commentsCount} comments`}</p>
               <div>
-                <p>{post?.description}</p>
+                <p className="myPara">{post?.description}</p>
               </div>
             </div>
           );

@@ -108,11 +108,11 @@ exports.getMessages = CatchAsync(async (req, res) => {
 // event chats
 
 exports.getEventContacts = CatchAsync(async (req, res) => {
-  const eventContacts = await ChatConnection.find({
-    eventId: req?.eventId,
-  }).populate("userId");
   // console.log("eventContacts", eventContacts);
-  const messagesWithUsers = await ChatConnection.find({eventId:req?.eventId})
+  const messagesWithUsers = await ChatConnection.find({
+    eventId: req?.eventId,
+  });
+  console.log("messagesWithUsers", messagesWithUsers);
   const UsersAndUnseenCount = await Promise.all(
     messagesWithUsers.map(async (user) => {
       const unseenMessagesCount = await Chats.countDocuments({
@@ -126,9 +126,13 @@ exports.getEventContacts = CatchAsync(async (req, res) => {
       };
     })
   );
-   console.log("unseen",UsersAndUnseenCount );
-  return res.status(200).send({ success: true, eventContacts:UsersAndUnseenCount });
+
+  console.log("unseen", UsersAndUnseenCount);
+  return res
+    .status(200)
+    .send({ success: true, eventContacts: UsersAndUnseenCount });
 });
+
 
 exports.getEventMessages = CatchAsync(async (req, res) => {
   console.log(req.body);
@@ -149,6 +153,9 @@ exports.getEventMessages = CatchAsync(async (req, res) => {
     { roomId, isEventSeen: false },
     { $set: { isEventSeen: true } }
   );
+
+  const msg = await Chats.find({ roomId });
+  console.log("msg", msg);
 
   if (messages.length > 0) {
     return res

@@ -12,6 +12,7 @@ import { eventRequest, userRequest } from "../../Helper/instance";
 import { SlUserFollow, SlUserUnfollow } from "react-icons/sl";
 import { updateUser } from "../../Redux/slices/AuthSlice";
 import { updateEvent } from "../../Redux/slices/EventAuthSlice";
+import Myh1 from "../../components/Myh1";
 
 function ShowEvent() {
   const navigate = useNavigate();
@@ -134,14 +135,15 @@ function ShowEvent() {
 
         <div className="flex-grow flex-shrink min-h-screen">
           {/* profile card */}
-          <div className="relative max-w-md mx-auto md:max-w-2xl min-w-0 break-words  w-full mb-6 shadow-lg rounded-xl mt-20">
-            <div className="px-6">
+          
+          <div className="myDivBg relative max-w-md mx-auto md:max-w-2xl min-w-0 break-words  w-full mb-6 shadow-lg rounded-xl mt-20">
+            <div className=" px-6">
               <div className="flex flex-wrap justify-center">
                 <div className="w-full flex justify-center">
                   <div className="relative">
                     <img
                       src={`http://localhost:5000/profiles/${event.profile}`}
-                      className="shadow-xl rounded-full align-middle absolute -m-16 -ml-20 lg:-ml-16 max-w-[150px]  border-2 border-[#E0CDB6]"
+                      className="shadow-xl rounded-full align-middle absolute -m-16 -ml-20 lg:-ml-16 max-w-[150px]  border-2 myBorder"
                       alt=""
                       onClick={ProfileClickHandler}
                     />
@@ -150,33 +152,33 @@ function ShowEvent() {
                 <div className="w-full text-center mt-20">
                   <div className="flex justify-center lg:pt-4 pt-8 pb-0">
                     <div className="p-3 text-center">
-                      <span className="text-xl font-bold block uppercase tracking-wide text-slate-400">
+                      <span className="text-xl font-bold block uppercase tracking-wide myTextColor">
                         {posts?.length}
                       </span>
-                      <span className="text-sm text-slate-400">Posts</span>
+                      <span className="text-sm myTextColor">Posts</span>
                     </div>
                     <div className="p-3 text-center">
-                      <span className="text-xl font-bold block uppercase tracking-wide text-slate-400">
+                      <span className="text-xl font-bold block uppercase tracking-wide myTextColor">
                         {event?.followers?.length}
                       </span>
-                      <span className="text-sm text-slate-400">Followers</span>
+                      <span className="text-sm myTextColor">Followers</span>
                     </div>
                   </div>
                 </div>
               </div>
               <div className="text-center mt-2">
-                <h3 className="text-2xl text-slate-400 font-bold leading-normal mb-1">
+                <h3 className="text-2xl myTextColor font-bold leading-normal mb-1">
                   {event?.title}
                 </h3>
-                <div className="text-xs mt-0 mb-2 text-slate-300 font-bold uppercase">
-                  <i className="fas fa-map-marker-alt mr-2 text-slate-400 opacity-75"></i>
+                <div className="text-xs mt-0 mb-2 myPara font-bold uppercase">
+                  <i className="fas fa-map-marker-alt mr-2 opacity-75"></i>
                   {event?.place}
                 </div>
               </div>
-              <div className="mt-6 py-6 border-t border-slate-200 text-center">
+              <div className="mt-6 py-6 border-t myBorder text-center">
                 <div className="flex flex-wrap justify-center">
                   <div className="w-full px-4">
-                    <p className="font-light leading-relaxed text-slate-300 mb-4">
+                    <p className="font-light leading-relaxed myPara mb-4">
                       {`Owner:${event?.ownerName},services:${
                         event?.services
                       },phone:${event?.phone},${
@@ -189,11 +191,11 @@ function ShowEvent() {
                     {user?.following?.includes(event?._id) ? (
                       <div>
                         <SlUserUnfollow
-                          className="w-6 h-6 cursor-pointer fill-[#FFB992] mx-[48%]"
+                          className="myTextColor w-6 h-6 cursor-pointer mx-[48%]"
                           onClick={() => handleUnFollow(event?._id)}
                         />
                         <small
-                          className="text-[#FFB992] font-bold  cursor-pointer"
+                          className="myTextColor font-bold  cursor-pointer"
                           onClick={() => handleUnFollow(event?._id)}
                         >
                           Following
@@ -221,11 +223,14 @@ function ShowEvent() {
           {/* profile card end*/}
 
           {/* event posts */}
+          <div className="text-center">
+            <Myh1 title="posts" />
+          </div>
           {posts.length ? (
             <div className="min-h-screen p-8">
               <div className="flex flex-wrap justify-center">
                 {posts.map((post) => (
-                  <div className="bg-white shadow-lg rounded-lg overflow-hidden m-4 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5">
+                  <div className="myDivBg shadow-lg rounded-lg overflow-hidden m-4 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5">
                     {post?.image && (
                       <img
                         className="w-full h-42 object-cover"
@@ -235,12 +240,12 @@ function ShowEvent() {
                     )}
 
                     <div className="p-4">
-                      <h2 className="text-xl font-semibold mb-2">
+                      <h2 className="myTextColor text-xl font-semibold mb-2">
                         {post.likes.length} likes
                       </h2>
 
                       <p
-                        className="text-gray-900 hover:font-bold mb-2 cursor-pointer"
+                        className="myPara hover:font-bold mb-2 cursor-pointer"
                         onClick={() =>
                           navigate(ServerVariables.postDetails, {
                             state: { postDetails: post },
@@ -250,7 +255,7 @@ function ShowEvent() {
                         {post?.commentsCount} comments
                       </p>
                       <p
-                        className="text-slate-500 hover:font-bold  cursor-pointer"
+                        className="myPara hover:font-bold  cursor-pointer"
                         onClick={() =>
                           navigate(ServerVariables.postDetails, {
                             state: { postDetails: post },

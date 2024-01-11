@@ -177,7 +177,7 @@ function EventRegister() {
 
 
             <textarea
-              className="text-[#85ACEF] block w-full rounded-xl p-3 bg-[#1E1E1E] border-2  border-blue-950 mt-1"
+              className="myDivBg text-[#85ACEF] block w-full rounded-xl p-3 mt-1"
               name="services"
               type="text"
               placeholder="services"
@@ -191,7 +191,7 @@ function EventRegister() {
               </p>
             )}
             <textarea
-              className="text-[#85ACEF] block w-full rounded-xl p-3 bg-[#1E1E1E] border-2  border-blue-950 mt-3"
+              className="myDivBg text-[#85ACEF] block w-full rounded-xl p-3 bg-[#1E1E1E]  mt-3"
               name="officeAddress"
               type="text"
               placeholder="office Address"
@@ -223,7 +223,7 @@ function EventRegister() {
             <Button1 text="Register" style={{ marginTop: 10 }} />
             <Link
               to={ServerVariables.eventLogin}
-              className="mt-2 h-10 w-full rounded-full px-4 text-sm font-semibold text-[#E0CDB6] bg-[#071F48] flex items-center justify-center"
+              className="myBorder mt-2 h-10 w-full rounded-full px-4 text-sm font-semibold myTextColor border-2  flex items-center justify-center"
             >
               Back to login
             </Link>

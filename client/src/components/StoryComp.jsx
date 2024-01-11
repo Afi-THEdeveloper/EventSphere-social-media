@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { userRequest } from "../Helper/instance";
 import { apiEndPoints } from "../utils/api";
 import toast from "react-hot-toast";
-import StoryCourosel from "./StoryCourosel";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ServerVariables } from "../utils/ServerVariables";
 
 const StoryComp = () => {
@@ -58,12 +57,12 @@ const StoryComp = () => {
                   />
                 </p>
               </div>
-              <p className="text-[#E0CDB6]">{story?.stories[0]?.postedByDetails.title}</p>
+              <p className="myTextColor">{story?.stories[0]?.postedByDetails.title}</p>
             </li>
           );
         })
       ) : (
-        <p className="text-[#E0CDB6]">No stories posted Today</p>
+        <p className="myTextColor">No stories posted Today</p>
       )}
     </ul>
   );

@@ -72,23 +72,23 @@ function Plans() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mx-4">
             {/* current plan div */}
             {currentPlan ? (
-              <div className="text-white p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
-                <h2 className="text-xl text-[#e2c8a8] font-semibold mb-4">
+              <div className="myTextColor border border-green-900 p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
+                <h2 className="text-xl myTextColor font-semibold mb-4">
                   Current plan
                 </h2>
                 <h2 className="text-xl font-semibold mb-4">{`${currentPlan?.name} (${currentPlan?.duration})`}</h2>
-                <h1 className="text-white mb-4 font-bold">
+                <h1 className="myTextColor mb-4 font-bold">
                   ₹{currentPlan?.amount?.toFixed()}
                 </h1>
-                <small className="mb-4 max-w-10">{`${currentPlan?.totalDays} days Scheme`}</small>
+                <small className="myPara mb-4 max-w-10">{`${currentPlan?.totalDays} days Scheme`}</small>
                 <br />
 
-                <small className="mb-4 max-w-10 text-red-500">{`expires on ${currentPlan.expiresOn}`}</small>
+                <small className="mb-4 max-w-10 text-red-500">{`Expires on ${currentPlan.expiresOn}`}</small>
               </div>
             ) : (
-              <div className="text-white p-6 rounded-lg shadow-md transition-transform transform hover:scale-105 border-2">
-                <h3 className="text-[#FFB992]">- You have no plans now</h3>
-                <p className="text-[#FFB992]">- Purchase one and explore your event..</p>
+              <div className="border-red-900  p-6 rounded-lg shadow-md transition-transform transform hover:scale-105 border-2">
+                <h3 className="myPara">- You have no plans now</h3>
+                <p className="myPara">- Purchase one and explore your event..</p>
               </div>
             )}
 
@@ -96,15 +96,15 @@ function Plans() {
               plans.map((plan, index) => (
                 <div
                   key={index}
-                  className="border-4 border-[#e2c8a8] text-white p-6 rounded-lg shadow-md transition-transform transform hover:scale-105"
+                  className="myDivBg myTextColor p-6 rounded-lg shadow-md transition-transform transform hover:scale-105"
                 >
                   <h2 className="text-xl font-semibold mb-4">{`${plan.name} (${plan.duration})`}</h2>
-                  <h1 className="text-white mb-4 font-bold">
+                  <h1 className="myTextColor mb-4 font-bold">
                     ₹{plan.amount.toFixed()}
                   </h1>
-                  <small className="mb-4 max-w-10">{`available for ${plan.totalDays} days`}</small>
+                  <small className="myPara mb-4 max-w-10">{`available for ${plan.totalDays} days`}</small>
                   <br />
-                  <small className="mb-4 max-w-10">{plan.description}</small>
+                  <small className="myPara mb-4 max-w-10">{plan.description}</small>
                   <br />
 
                   <Button2
@@ -115,7 +115,7 @@ function Plans() {
               ))
             ) : (
               <div className="text-center">
-                <p className="text-[#FFB992]">No plans Available</p>
+                <p className="myPara">No plans Available</p>
               </div>
             )}
           </div>

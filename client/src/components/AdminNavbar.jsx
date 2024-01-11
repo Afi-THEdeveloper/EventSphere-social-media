@@ -48,7 +48,7 @@ const AdminNavbar = () => {
   }
 
   return (
-    <Disclosure as="nav" className="bg-gray-800">
+    <Disclosure as="nav" className="myDivBg">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -73,7 +73,7 @@ const AdminNavbar = () => {
                         }}
                         className={
                           activeItem === item.name
-                            ? "bg-blue-900 text-white rounded-md px-3 py-2 text-sm font-medium"
+                            ? "activeBg myTextColor rounded-md px-3 py-2 text-sm font-medium"
                             : "text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium cursor-pointer"
                         }
                         aria-current={activeItem ? "page" : undefined}

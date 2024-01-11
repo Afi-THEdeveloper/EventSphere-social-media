@@ -73,7 +73,7 @@ function UserLogin() {
               <Button1 text="Login" style={{ marginTop: 8 }} type="submit" />
               <Link
                 to={ServerVariables.Register}
-                className="mt-2 h-10 w-full rounded-full px-4 text-sm font-semibold text-[#E0CDB6] bg-[#071F48] flex items-center justify-center"
+                className="myTextColor myBorder border-2 mt-2 h-10 w-full rounded-full px-4 text-sm font-semibold flex items-center justify-center"
               >
                 Signup
               </Link>

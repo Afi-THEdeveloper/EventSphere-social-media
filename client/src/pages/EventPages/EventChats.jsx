@@ -50,7 +50,7 @@ function EventChats() {
   const handleClickContact = (userId) => {
     setSelectedUserId(userId);
     fetchChatMessages(userId);
-    getContactsList()
+    getContactsList();
     inputRef && inputRef.current.focus();
   };
 
@@ -112,7 +112,7 @@ function EventChats() {
           socket.emit("join", response.data.roomId);
           setChatPartner(response.data?.chatConnection);
           setChatHistory(response.data?.messages);
-          getContactsList()
+          getContactsList();
         }
       })
       .catch((err) => {
@@ -129,9 +129,9 @@ function EventChats() {
     socket.on("message recieved", (message) => {
       if (message.userId === selectedUserId) {
         updateChatHistory(message);
-        fetchChatMessages(selectedUserId)
-      }else{
-        getContactsList()
+        fetchChatMessages(selectedUserId);
+      } else {
+        getContactsList();
       }
     });
     return () => {
@@ -163,11 +163,11 @@ function EventChats() {
   return (
     <div className="flex">
       <EventSideBar />
-      <div className="flex-grow flex-shrink min-h-screen">
+      <div className="flex-grow flex-shrink min-h-screen ml-4">
         <div className="flex h-screen">
           {/* contacts */}
-          <div className="w-1/3 border-r-2 border-[#E0CDB6]">
-            <div className="text-[#E0CDB6] font-bold flex gap-4 p-4  border-b-2 border-[#E0CDB6]">
+          <div className="myDivBg w-1/3">
+            <div className="myTextColor font-bold flex gap-4 p-4 my-2 border-b-2 myBorder">
               <MessageIcon />
               <Search1
                 search={"search chats..."}
@@ -187,10 +187,8 @@ function EventChats() {
                     key={contact?.userId}
                     onClick={() => handleClickContact(contact?.userId)}
                     className={
-                      "py-2 pl-4 border-0 border-gray-100 flex items-center gap-2 cursor-pointer " +
-                      (contact?.userId === selectedUserId
-                        ? "bg-[#E0CDB6]"
-                        : "")
+                      "py-2 pl-4 flex items-center gap-2 cursor-pointer " +
+                      (contact?.userId === selectedUserId ? "activeBg" : "")
                     }
                   >
                     {contact?.userId === selectedUserId && (
@@ -198,11 +196,7 @@ function EventChats() {
                     )}
 
                     <div className="flex gap-4 py-2 pl-4 items-center">
-                      <Avatar
-                        username={contact?.userName}
-                        profile={contact?.userImage}
-                        userId={contact?.userId}
-                      />
+                      <Avatar profile={contact?.userImage} />
                       <span className="text-slate-500 font-bold">
                         {contact?.userName}
                       </span>
@@ -215,7 +209,7 @@ function EventChats() {
                   </div>
                 ))
             ) : (
-              <p className="text-gray-400 p-2">no connected users to chat</p>
+              <p className="myTextColor p-2">no connected users to chat</p>
             )}
           </div>
 
@@ -223,13 +217,13 @@ function EventChats() {
           <div className="flex flex-col  w-2/3 p-2">
             <div className="flex-grow">
               {selectedUserId ? (
-                <div className="py-4 pl-4 bg-[#E0CDB6] border-2 border-gray-100 flex items-center gap-4 cursor-pointer justify-between">
+                <div className="myDivBg py-4 pl-4  flex items-center gap-4 cursor-pointer justify-between">
                   <Avatar profile={chatPartner?.userImage} />
-                  <div className="text-slate-600 font-bold">
+                  <div className="myTextColor font-bold">
                     {chatPartner?.userName}
                   </div>
                   <FaVideo
-                    className="fill-slate-800 w-8 h-8 mr-2"
+                    className="myTextColor w-8 h-8 mr-2"
                     onClick={() =>
                       handleVideoClick(
                         chatPartner?.eventId,
@@ -240,7 +234,7 @@ function EventChats() {
                 </div>
               ) : (
                 <div className="h-full flex items-center justify-center">
-                  <div className="text-gray-400">
+                  <div className="myTextColor">
                     &larr; select a person from sidebar
                   </div>
                 </div>
@@ -295,7 +289,7 @@ function EventChats() {
                   value={newMessageText}
                   onChange={(e) => setNewMessageText(e.target.value)}
                   placeholder="message..."
-                  className="bg-[#1E1E1E] border p-2 flex-grow rounded-sm text-[#5A91E2]"
+                  className="myDivBg border p-2 flex-grow rounded-sm text-[#5A91E2]"
                 />
                 <button
                   onClick={() =>
@@ -305,7 +299,7 @@ function EventChats() {
                       chatPartner.eventId
                     )
                   }
-                  className="bg-blue-500 p-2 text-white"
+                  className="bg-blue-700  p-2 text-white"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

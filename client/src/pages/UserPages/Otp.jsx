@@ -89,10 +89,10 @@ function Otp() {
     <div className="flex-1 flex flex-col items-center justify-center min-h-screen">
       <div className="flex w-full flex-col max-w-[400px] items-center space-y-3">
         <Myh1 title="Otp Verification" />
-        <p className="text-[#E0CDB6] font-medium">
+        <p className="myPara font-medium">
           We have send an OTP to your email.
         </p>
-        <p className="text-[#E0CDB6] font-medium" style={{ marginBottom: 40 }}>
+        <p className="myPara font-medium" style={{ marginBottom: 40 }}>
           valid for 1 minute ({timer})
         </p>  
         <form onSubmit={formik.handleSubmit} noValidate>
@@ -102,7 +102,7 @@ function Otp() {
                 <input
                   type="text"
                   name={`digit${index + 1}`}
-                  className="text-white w-full p-6 border bg-[#071F48] rounded-lg"
+                  className="myTextColor w-full p-6 border myDivBg rounded-lg"
                   maxLength="1"
                   value={formik.values[`digit${index + 1}`]}
                   onChange={formik.handleChange}
@@ -112,7 +112,7 @@ function Otp() {
             ))}
           </div>
           <div className="flex-1 flex flex-col items-center justify-center">
-            {timer ?<Myh1 title={timer} /> : <p className="text-[#E0CDB6] cursor-pointer font-semibold" onClick={resendOtp}>Resend Otp</p>}
+            {timer ?<Myh1 title={timer} /> : <p className="myTextColor cursor-pointer font-semibold" onClick={resendOtp}>Resend Otp</p>}
           </div>
           <Button1 text="Verify" style={{ marginTop: 40 }} />
         </form>

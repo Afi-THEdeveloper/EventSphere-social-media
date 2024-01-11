@@ -144,14 +144,14 @@ function EventSideBar() {
 
   return (
     <>
-      <div className="flex-col w-[300px] hidden md:flex min-h-screen flex-shrink-0 border-r-2 border-[#E0CDB6]">
+      <div className="myDivBg flex-col w-[300px] hidden md:flex min-h-screen flex-shrink-0">
         <div className="flex gap-2 mt-2">
           <img
             className="w-8 h-8 rounded-full"
             src={`http://localhost:5000/profiles/${event?.profile}`}
             alt=""
           />
-          <h1 className="uppercase text-3xl font-thin text-[#FFB992] mx-2">
+          <h1 className="myTextColor uppercase text-3xl font-thin mx-2">
             EventSphere
           </h1>
         </div>

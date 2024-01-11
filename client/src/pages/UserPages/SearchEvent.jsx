@@ -118,10 +118,9 @@ function SearchEvent() {
         <UserSidebar />
 
         <div className="flex-grow flex-shrink min-h-screen">
-          <div className="max-w-full w-full h-30 border-b-[0.5px] border-[#E0CDB6] mx-auto p-4 overflow-x-auto">
+          <div className="max-w-full w-full h-30  mx-auto p-4 overflow-x-auto">
             <div className="flex justify-center gap-4">
-              <Myh1 title="search Events" />
-              <Search1 search={"search Event"} onChange={handleFilter} />
+              <Search1 search={"Search Event"} onChange={handleFilter} />
             </div>
           </div>
           {events?.length ? (
@@ -138,8 +137,8 @@ function SearchEvent() {
                     follow={() => handleFollow(event._id)}
                     unfollow={() => handleUnFollow(event._id)}
                     viewProfile={() => handleViewProfile(event)}
-                    bgColor="slate-800"
-                    textColor="slate-500"
+                    bgColor="myDivBg"
+                    textColor="myTextColor"
                     role="user"
                   />
                 );
@@ -151,16 +150,16 @@ function SearchEvent() {
             </div>
           )}
           <ReactPaginate
-            previousLabel={<i className="fas fa-chevron-left text-white"></i>}
-            nextLabel={<i className="fas fa-chevron-right text-white"></i>}
-            breakLabel={<span className="hidden sm:inline">...</span>}
+            previousLabel={<i className="fas fa-chevron-left myTextColor"></i>}
+            nextLabel={<i className="fas fa-chevron-right myTextColor"></i>}
+            breakLabel={<span className="hidden sm:inline myTextColor">...</span>}
             pageCount={pageCount}
             marginPagesDisplayed={3}
             pageRangeDisplayed={2}
             onPageChange={handlePageChange}
             containerClassName="flex justify-center mt-4"
             pageClassName="mx-2"
-            pageLinkClassName="cursor-pointer transition-colors duration-300 hover:text-blue-500 text-slate-200"
+            pageLinkClassName="myTextColor cursor-pointer transition-colors duration-300 hover:text-blue-500"
             previousClassName="mr-2"
             previousLinkClassName="cursor-pointer transition-colors duration-300 hover:text-blue-500"
             nextClassName="ml-2"

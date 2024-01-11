@@ -86,10 +86,10 @@ function UserNotifications() {
                 notifications?.map((item) => (
                   <div
                     key={item?._id}
-                    className="border-y-[0.1px] p-2 w-full rounded-lg shadow-md flex items-center justify-between space-x-4"
+                    className="myBorder border-y-[0.1px] p-2 w-full rounded-lg shadow-md flex items-center justify-between space-x-4"
                   >
                     <div className="flex-grow">
-                      <small className="text-slate-200 font-extrabold cursor-pointer">
+                      <small className="myTextColor font-extrabold cursor-pointer">
                         {item?.notificationMessage}
                         {item?.actionOn && (
                           <img
@@ -102,7 +102,7 @@ function UserNotifications() {
                       </small>
                     </div>
                     <div className="flex items-center">
-                      <small className="text-slate-200 mr-4 font-bold">
+                      <small className="myPara mr-4 font-bold">
                         {formatTime(item?.date)}
                       </small>
 

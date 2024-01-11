@@ -63,14 +63,14 @@ function ProfileCard({ event, postCount, story }) {
 
   return (
     <>
-      <div className="relative max-w-md mx-auto md:max-w-2xl min-w-0 break-words  w-full mb-6 shadow-lg rounded-xl mt-20">
+      <div className="myDivBg relative max-w-md mx-auto md:max-w-2xl min-w-0 break-words  w-full mb-6 shadow-lg rounded-xl mt-20">
         <div className="px-6">
           <div className="flex flex-wrap justify-center">
             <div className="w-full flex justify-center">
               <div className="relative">
                 <img
                   src={`http://localhost:5000/profiles/${event.profile}`}
-                  className="shadow-xl rounded-full align-middle absolute -m-16 -ml-20 lg:-ml-16 max-w-[150px]  border-2 border-[#E0CDB6]"
+                  className="shadow-xl rounded-full align-middle absolute -m-16 -ml-20 lg:-ml-16 max-w-[150px]  border-2 myBorder"
                   alt=""
                   onClick={ProfileClickHandler}
                 />
@@ -79,19 +79,19 @@ function ProfileCard({ event, postCount, story }) {
             <div className="w-full text-center mt-20">
               <div className="flex justify-center lg:pt-4 pt-8 pb-0">
                 <div className="p-3 text-center">
-                  <span className="text-xl font-bold block uppercase tracking-wide text-slate-400">
+                  <span className="text-xl font-bold block uppercase tracking-wide myTextColor">
                     {postCount}
                   </span>
-                  <span className="text-sm text-slate-400">Posts</span>
+                  <span className="text-sm myTextColor">Posts</span>
                 </div>
                 <div className="p-3 text-center cursor-pointer" onClick={openModal}>
-                  <span className="text-xl font-bold block uppercase tracking-wide text-slate-400 hover:text-white">
+                  <span className="text-xl font-bold block uppercase tracking-wide myTextColor hover:text-white">
                     {event?.followers?.length}
                   </span>
-                  <span className="text-sm text-slate-400 hover:text-white">Followers</span>
+                  <span className="text-sm myTextColor hover:text-white">Followers</span>
                 </div>
                 <div className="p-3 text-center">
-                  <span className="text-xl font-bold block uppercase tracking-wide text-slate-400 hover:bg-slate-500">
+                  <span className="text-xl font-bold block uppercase tracking-wide myTextColor hover:bg-slate-500">
                     {
                       <EditIcon
                         onClick={() =>
@@ -103,32 +103,32 @@ function ProfileCard({ event, postCount, story }) {
                 </div>
 
                 <div className="p-3 text-center">
-                  <span className="text-xl font-bold block uppercase tracking-wide text-slate-400">
+                  <span className="text-xl font-bold block uppercase tracking-wide">
                     <button
-                      className="bg-[#FFB992] text-black p-2 rounded-full hover:bg-[#e0b887]"
+                      className="border p-2 rounded-full hover:bg-[#0F1015]"
                       onClick={() => navigate(ServerVariables.addStory)}
                     >
-                      <PlusIcon className="h-3 w-3" />
+                      <PlusIcon className="myPara h-3 w-3" />
                     </button>
                   </span>
-                  <span className="text-sm text-slate-400">Add story</span>
+                  <span className="text-sm myTextColor">Add story</span>
                 </div>
               </div>
             </div>
           </div>
           <div className="text-center mt-2">
-            <h3 className="text-2xl text-slate-400 font-bold leading-normal mb-1">
+            <h3 className="text-2xl myTextColor font-bold leading-normal mb-1">
               {event.title}
             </h3>
-            <div className="text-xs mt-0 mb-2 text-slate-300 font-bold uppercase">
-              <i className="fas fa-map-marker-alt mr-2 text-slate-400 opacity-75"></i>
+            <div className="text-xs mt-0 mb-2 myPara font-bold uppercase">
+              <i className="fas fa-map-marker-alt mr-2 myPara opacity-75"></i>
               {event.place}
             </div>
           </div>
-          <div className="mt-6 py-6 border-t border-slate-200 text-center">
+          <div className="mt-6 py-6 border-t myBorder text-center">
             <div className="flex flex-wrap justify-center">
               <div className="w-full px-4">
-                <p className="font-light leading-relaxed text-slate-300 mb-4">
+                <p className="font-light leading-relaxed myPara mb-4">
                   {`Owner:${event.ownerName},services:${event.services},phone:${
                     event?.phone
                   },${event.altPhone && event.altPhone},`}{" "}

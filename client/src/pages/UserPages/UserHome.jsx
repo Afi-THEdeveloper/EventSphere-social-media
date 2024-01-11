@@ -11,7 +11,7 @@ function UserHome() {
         <UserSidebar />
 
         <div className="flex-grow flex-shrink min-h-screen">
-          <div className="max-w-full w-full h-30 border-b-[0.5px] border-[#E0CDB6] mx-auto p-2 overflow-x-auto">
+          <div className="myDivBg max-w-full w-full h-30  mx-auto p-2 overflow-x-auto">
             <StoryComp />
           </div>
           <div className="mx-auto flex flex-col justify-center max-w-lg mt-4">

@@ -4,7 +4,7 @@ import React from "react";
 
 function Button1({text,...props}) { 
   return (
-    <button {...props} className="h-10 w-full rounded-full px-4 text-sm font-semibold text-[#E0CDB6] bg-[#071F48] flex items-center justify-center hover:bg-slate-700">
+    <button {...props} className="border-2 myBorder h-10 w-full rounded-full px-4 text-sm font-semibold myTextColor flex items-center justify-center hover:bg-[#0f1015]">
       {text}
     </button>
   );
