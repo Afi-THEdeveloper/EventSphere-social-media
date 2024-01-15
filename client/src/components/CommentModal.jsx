@@ -98,7 +98,7 @@ function CommentModal({ isOpen, closeModal, Comments, post }) {
                     />
                     <div className="flex-grow">
                       <small className="text-black font-semibold">
-                        {comment?.username}
+                        {comment?.userId?.username}
                       </small>{" "}
                       <small>{comment?.comment}</small>
                       <button

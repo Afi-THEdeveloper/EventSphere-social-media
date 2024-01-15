@@ -96,11 +96,11 @@ function EventSideBar() {
       },
     },
     {
-      label: "Jobs Requests",
+      label: "Jobs & Hirings",
       icon: <ProfileIcon />,
       onclick: () => {
-        navigate(ServerVariables.eventProfile, {
-          state: { clicked: "Job Requests" },
+        navigate(ServerVariables.hirings, {
+          state: { clicked: "Jobs & Hirings" },
         });
       },
     },
@@ -116,7 +116,6 @@ function EventSideBar() {
     {
       label: "Logout",
       icon: <LogoutIcon />,
-      href: ServerVariables.eventHome,
       onclick: () => {
         dispatch(logout());
       },

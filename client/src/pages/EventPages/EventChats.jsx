@@ -180,25 +180,25 @@ function EventChats() {
                 .filter((item) => {
                   return searched?.toLowerCase() === ""
                     ? item
-                    : item?.userName?.toLowerCase().includes(searched);
+                    : item?.userId?.username?.toLowerCase().includes(searched);
                 })
                 .map((contact) => (
                   <div
-                    key={contact?.userId}
-                    onClick={() => handleClickContact(contact?.userId)}
+                    key={contact?.userId?._id}
+                    onClick={() => handleClickContact(contact?.userId?._id)}
                     className={
                       "py-2 pl-4 flex items-center gap-2 cursor-pointer " +
-                      (contact?.userId === selectedUserId ? "activeBg" : "")
+                      (contact?.userId?._id === selectedUserId ? "activeBg" : "")
                     }
                   >
-                    {contact?.userId === selectedUserId && (
+                    {contact?.userId?._id === selectedUserId && (
                       <div className="bg-blue-500 w-1 h-12 rounded-r-md"></div>
                     )}
 
                     <div className="flex gap-4 py-2 pl-4 items-center">
-                      <Avatar profile={contact?.userImage} />
-                      <span className="text-slate-500 font-bold">
-                        {contact?.userName}
+                      <Avatar profile={contact?.userId?.profile} />
+                      <span className="myTextColor">
+                        {contact?.userId?.username}
                       </span>
                       {contact?.unseenMessagesCount > 0 && (
                         <span className="bg-green-500 text-white w-5 h-5 flex items-center justify-center rounded-full">
@@ -218,16 +218,16 @@ function EventChats() {
             <div className="flex-grow">
               {selectedUserId ? (
                 <div className="myDivBg py-4 pl-4  flex items-center gap-4 cursor-pointer justify-between">
-                  <Avatar profile={chatPartner?.userImage} />
+                  <Avatar profile={chatPartner?.userId?.profile} />
                   <div className="myTextColor font-bold">
-                    {chatPartner?.userName}
+                    {chatPartner?.userId?.username}
                   </div>
                   <FaVideo
                     className="myTextColor w-8 h-8 mr-2"
                     onClick={() =>
                       handleVideoClick(
-                        chatPartner?.eventId,
-                        chatPartner?.userId
+                        chatPartner?.eventId?._id,
+                        chatPartner?.userId?._id
                       )
                     }
                   />
@@ -296,7 +296,7 @@ function EventChats() {
                     sendMessage(
                       chatPartner._id,
                       selectedUserId,
-                      chatPartner.eventId
+                      chatPartner.eventId?._id
                     )
                   }
                   className="bg-blue-700  p-2 text-white"

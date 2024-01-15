@@ -5,11 +5,13 @@ const Story = require("../../models/StoryModel");
 const Notification = require("../../models/NotificationModel");
 const Chats = require("../../models/ChatsModel");
 const ChatConnection = require("../../models/ChatConnection");
+const JobPost = require("../../models/JobPostModel");
 const CatchAsync = require("../../util/CatchAsync");
 const bcrypt = require("bcrypt");
 const randomString = require("randomstring");
 const OtpMailer = require("../../util/OtpMailer");
 const jwt = require("jsonwebtoken");
+const jobPostModel = require("../../models/JobPostModel");
 
 //hashing  password
 const securePassword = async (password) => {
@@ -334,8 +336,11 @@ exports.getNotificationsCount = CatchAsync(async (req, res) => {
     recieverId: req?.eventId,
     seen: false,
   });
-  const MsgCount = await Chats.countDocuments({eventId: req?.eventId,isEventSeen:false})
-  return res.status(200).json({ success: true, count,MsgCount });
+  const MsgCount = await Chats.countDocuments({
+    eventId: req?.eventId,
+    isEventSeen: false,
+  });
+  return res.status(200).json({ success: true, count, MsgCount });
 });
 
 exports.getNotifications = CatchAsync(async (req, res) => {
@@ -371,4 +376,93 @@ exports.getFollowers = CatchAsync(async (req, res) => {
   } else {
     return res.json({ error: "failed to find followers,try again" });
   }
+});
+
+exports.addJobPost = CatchAsync(async (req, res) => {
+  console.log(req.body);
+  const {
+    title,
+    jobType,
+    location,
+    experience,
+    JobDescription,
+    salary,
+    skills,
+    vaccancies,
+  } = req.body;
+  const newJobPost = new jobPostModel({
+    eventId: req?.eventId,
+    title,
+    jobType,
+    location,
+    experience,
+    JobDescription,
+    salary,
+    skills,
+    vaccancies,
+  });
+  await newJobPost.save();
+  if (newJobPost) {
+    return res.status(200).json({ success: "job posted successfuly" });
+  } else {
+    return res.json({ error: "failed to add post job, try again" });
+  }
+});
+
+exports.getJobPosts = CatchAsync(async (req, res) => {
+  const posts = await JobPost.find({ eventId: req?.eventId }).sort({
+    createdAt: -1,
+  });
+  return res.status(200).json({ success: true, posts });
+});
+
+exports.editJobPost = CatchAsync(async (req, res) => {
+  const {
+    id,
+    title,
+    jobType,
+    location,
+    experience,
+    JobDescription,
+    salary,
+    skills,
+    vaccancies,
+  } = req.body;
+  const updatedJobPost = await JobPost.findByIdAndUpdate(id, {
+    $set: {
+      title,
+      jobType,
+      location,
+      experience,
+      JobDescription,
+      salary,
+      skills,
+      vaccancies,
+    },
+  });
+  console.log(req.body);
+  if (updatedJobPost) {
+    return res.status(200).json({ success: true });
+  } else {
+    return res.json({ error: "failed to edit job post, try again" });
+  }
+});
+
+exports.deleteJobPost = CatchAsync(async (req, res) => {
+  const postId = req.body?.id;
+  await JobPost.findByIdAndDelete(postId);
+  return res.status(200).json({ success: "job post deleted successfully" });
+});
+
+exports.blockJobPost = CatchAsync(async (req, res) => {
+  const postId = req.body?.id;
+  const post = await JobPost.findById(postId);
+  console.log(postId);
+  const updatedPost = await JobPost.findByIdAndUpdate(postId, {
+    $set: { isBlocked: !post?.isBlocked },
+  });
+  const success = updatedPost.isBlocked
+    ? "job post unblocked"
+    : "job post blocked";
+  return res.status(200).json({ success });
 });

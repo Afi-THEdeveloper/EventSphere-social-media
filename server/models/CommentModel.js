@@ -8,10 +8,6 @@ const commentSchema = new mongoose.Schema(
       ref: "eventpost",
       required: true,
     },
-    username: {
-      type: String,
-      required: true,
-    },
     userId:{
       type: ObjectId,
       ref:'user',

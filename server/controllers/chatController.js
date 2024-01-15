@@ -60,10 +60,10 @@ exports.getMessages = CatchAsync(async (req, res) => {
     const chatConnectionData = await ChatConnection.findOne({
       userId,
       eventId,
-    });
+    }).populate('userId eventId');
     console.log("chatConnection data", chatConnectionData);
     const roomId = chatConnectionData._id;
-    const Messages = await Chats.find({ roomId }).sort({ time: 1 });
+    const Messages = await Chats.find({ roomId }).sort({ time: 1 })
     // console.log(Messages);
 
     await Chats.updateMany(
@@ -85,38 +85,32 @@ exports.getMessages = CatchAsync(async (req, res) => {
         .send({ Data: chatConnectionData, success: true, roomId, userId });
     }
   } else {
-    const event = await Event.findById(eventId);
-    const UserData = await User.findById(userId);
-
     const Data = {
       userId,
-      eventId,
-      eventImage: event?.profile,
-      eventName: event?.title,
-      userName: UserData?.username,
-      userImage: UserData?.profile,
+      eventId
     };
 
     const newChatConnection = new ChatConnection(Data);
     const savedChatConnection = await newChatConnection.save();
-
-    console.log("savedChatConnection", savedChatConnection);
-    res.status(200).send({ Data: savedChatConnection, success: true });
+    const connection = await ChatConnection.findById(savedChatConnection._id).populate('userId eventId')
+    console.log("savedChatConnection", connection);
+    res.status(200).send({ Data: connection, success: true });
   }
 });
 
-// event chats
 
+
+// event chats
 exports.getEventContacts = CatchAsync(async (req, res) => {
-  // console.log("eventContacts", eventContacts);
-  const messagesWithUsers = await ChatConnection.find({
+
+  const connectedUsers = await ChatConnection.find({
     eventId: req?.eventId,
-  });
-  console.log("messagesWithUsers", messagesWithUsers);
+  }).populate('userId eventId');
+
   const UsersAndUnseenCount = await Promise.all(
-    messagesWithUsers.map(async (user) => {
+    connectedUsers.map(async (user) => {
       const unseenMessagesCount = await Chats.countDocuments({
-        userId: user?.userId,
+        userId: user?.userId?._id,
         isEventSeen: false,
       });
 
@@ -142,7 +136,7 @@ exports.getEventMessages = CatchAsync(async (req, res) => {
   const chatConnection = await ChatConnection.findOne({
     userId,
     eventId,
-  });
+  }).populate('userId eventId');
   const roomId = chatConnection._id;
   console.log("roomId", roomId);
 

@@ -40,7 +40,11 @@ eventRouter
     .delete('/clearAllNotifications', eventAuth, eventController.clearAllNotifications)
 
     .get('/getFollowers', eventAuth, eventController.getFollowers)
-
+    .post('/addJobPost', eventAuth, eventController.addJobPost)
+    .get('/getJobPosts', eventAuth, eventController.getJobPosts)
+    .put('/editJobPost',eventAuth, eventController.editJobPost)
+    .delete('/deleteJobPost', eventAuth, eventController.deleteJobPost)
+    .patch('/blockJobPost', eventAuth, eventController.blockJobPost)
 module.exports = eventRouter   
 
 

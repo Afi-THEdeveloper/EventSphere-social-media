@@ -108,7 +108,7 @@ const NewPostButton = () => {
   const navigate = useNavigate();
   return (
     <button
-      className="fixed bottom-4 right-4 myDivBg text-white p-4 rounded-full hover:bg-[#e0b887]"
+      className="fixed bottom-4 right-4 myDivBg myTextColor p-4 rounded-full myHover border myBorder"
       onClick={() => navigate(ServerVariables.addPost)}
     >
       <PlusIcon className="h-6 w-6 font-bold" />
@@ -184,7 +184,7 @@ const PostsPage = ({eventId}) => {
         <div className="text-center">
           <p className="myPara mt-10">No posts yet..</p>
           <button
-            className="myDivBg text-white p-2 rounded-full hover:bg-[#e0b887]"
+            className="myDivBg text-white p-2 rounded-full myHover border myBorder"
             onClick={() => navigate(ServerVariables.addPost)}
           >
             <PlusIcon className="h-6 w-6 font-bold" />

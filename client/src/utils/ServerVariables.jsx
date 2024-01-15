@@ -19,6 +19,8 @@ export const ServerVariables = {
   explore:'/explore',
   searchEvent:'/searchEvent',
   userNotifications:'/userNotifications',
+  jobDetails:'/jobDetails',
+  jobStats:'/jobStats',
   
   //admin routes
   AdminLogin:'/adminLogin',
@@ -47,5 +49,8 @@ export const ServerVariables = {
   eventChats:'/eventChats',
   eventNotifications:'/eventNotifications',
   EventVideoCallRoom:'/EventRoom',
+  hirings:'/hirings',
+  postJob:'/postJob',
+  editJobPost:'/editJobPost',
 };
 

@@ -23,6 +23,12 @@ export const apiEndPoints = {
     clearAllUserNotifications:'api/user/clearAllUserNotifications',
     getUserNotificationsCount:'api/user/getUserNotificationsCount',
     getFollowings:'api/user/getFollowings',
+    getJobs:'api/user/getJobs',
+    applyJob:'api/user/applyJob',
+    getJobStats:'api/user/getJobStats',
+
+
+
 
     //admin end points
     postLoginAdmin: '/api/admin/verifyAdmin',
@@ -35,6 +41,8 @@ export const apiEndPoints = {
     getEvents:'api/admin/getEvents',
     blockEvent:'api/admin/blockEvent',
     getSubscriptionHistory:'api/admin/getSubscriptionHistory',
+
+
 
     
     //event end points
@@ -62,5 +70,10 @@ export const apiEndPoints = {
     clearAllNotifications:'api/event/clearAllNotifications',
     getNotificationsCount:'api/event/getNotificationsCount',
     getFollowers:'api/event/getFollowers',
+    addJobPost:'api/event/addJobPost',
+    getJobPosts:'api/event/getJobPosts',
+    editJobPost:'api/event/editJobPost',
+    deleteJobPost:'api/event/deleteJobPost',
+    blockJobPost:'api/event/blockJobPost',
 }
 

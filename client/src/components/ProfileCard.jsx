@@ -121,7 +121,7 @@ function ProfileCard({ event, postCount, story }) {
               {event.title}
             </h3>
             <div className="text-xs mt-0 mb-2 myPara font-bold uppercase">
-              <i className="fas fa-map-marker-alt mr-2 myPara opacity-75"></i>
+              <i className="fas fa-map-marker-alt mr-2 opacity-75"></i>
               {event.place}
             </div>
           </div>

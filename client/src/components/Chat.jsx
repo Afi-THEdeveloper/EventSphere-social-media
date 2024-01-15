@@ -217,15 +217,15 @@ function Chat() {
             <div className="flex-grow">
               {selectedEventId ? (
                 <div className="myDivBg py-4 pl-4 flex items-center gap-4 cursor-pointer justify-between">
-                  <Avatar profile={chatPartner?.eventImage} />
+                  <Avatar profile={chatPartner?.eventId?.profile} />
                   <div className="myTextColor font-bold text-lg">
-                    {chatPartner?.eventName}
+                    {chatPartner?.eventId?.title}
                   </div>
                   <FaVideo
                     onClick={() =>
                       handleVideoClick(
-                        chatPartner?.userId,
-                        chatPartner?.eventId
+                        chatPartner?.userId?._id,
+                        chatPartner?.eventId?._id
                       )
                     }
                     className="myTextColor w-8 h-8 mr-2"
@@ -239,6 +239,8 @@ function Chat() {
                 </div>
               )}
             </div>
+
+
 
             {/* chats  */}
             <div className="relative h-full">

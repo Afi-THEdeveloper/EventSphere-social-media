@@ -31,30 +31,30 @@ const Comment = ({ comment, user }) => {
   };
 
   return (
-    <article className="p-6 mb-6 text-base bg-white rounded-lg dark:bg-gray-900">
+    <article className="p-6 mb-6 text-base activeBg rounded-lg">
       <footer className="flex justify-between items-center mb-2">
         <div className="flex items-center">
-          <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
+          <p className="inline-flex items-center mr-3 text-sm myTextColor">
             <img
               className="mr-2 w-6 h-6 rounded-full"
-              src={`http://localhost:5000/profiles/${user?.profile}`}
+              src={`http://localhost:5000/profiles/${comment?.userId?.profile}`}
               alt="Michael Gough"
             />
-            {comment?.username}
+            {comment?.userId?.username}
           </p>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
+          <p className="text-sm myPara">
             <time pubdate datetime="2022-02-08" title="February 8th, 2022">
               {comment?.createdAt}
             </time>
           </p>
         </div>
       </footer>
-      <p className="text-gray-500 dark:text-gray-400">{comment?.comment}</p>
+      <p className="myPara">{comment?.comment}</p>
       <div className="flex items-center mt-4 space-x-4">
         <button
           onClick={replyButtonClicked}
           type="button"
-          className="flex items-center text-sm text-gray-500 hover:underline dark:text-gray-400"
+          className="flex items-center text-sm hover:underline myTextColor"
         >
           <svg
             aria-hidden="true"
@@ -83,7 +83,7 @@ const Comment = ({ comment, user }) => {
               placeholder="add reply..."
             />
 
-            <button className="bg-red-400 rounded-md px-2 mx-2 mt-2 mb-2">
+            <button className="myBorder myTextColor border rounded-md px-2 mx-2 mt-2 mb-2">
               Reply
             </button>
           </form>
@@ -91,7 +91,7 @@ const Comment = ({ comment, user }) => {
       </div>
 
       {comment?.replies?.length >= 0 &&
-        comment?.replies?.map((reply, i) => {
+        comment?.replies?.map((reply) => {
           return <Reply key={reply?._id} reply={reply} user={user} />;
         })}
     </article>

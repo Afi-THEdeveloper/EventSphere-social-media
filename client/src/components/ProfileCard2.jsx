@@ -58,18 +58,6 @@ function ProfileCard2({
             )}
           </dl>
         </div>
-        {/* <div>
-          <div className="-mt-px flex">
-            <div className="flex w-0 flex-1">
-              <button
-                onClick={viewProfile}
-                className={`myTextColor relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-4 text-sm font-semibold`}
-              >
-                View Profile
-              </button>
-            </div>
-          </div>
-        </div> */}
       </li>
     </>
   );

@@ -14,24 +14,25 @@ import { userRequest } from "../../Helper/instance";
 import { apiEndPoints } from "../../utils/api";
 import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
 import { ServerVariables } from "../../utils/ServerVariables";
+import Button2 from "../../components/Button2";
 
 function PostDetail() {
-  const [post,setPost]= useState({})
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const [post, setPost] = useState({});
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [comment, setComment] = useState("");
   const { user } = useSelector((state) => state.Auth);
 
   const location = useLocation();
   const Post = location.state ? location.state.postDetails : null;
 
-  useEffect(()=>{
-    if(Post){
+  useEffect(() => {
+    if (Post) {
       setPost(Post);
-    }else{
-      navigate(ServerVariables.UserHome)
+    } else {
+      navigate(ServerVariables.UserHome);
     }
-  },[])
+  }, []);
 
   const [addComment] = useAddCommentMutation() || {};
   const { data: comments } = useFetchCommentsQuery(Post?._id) || {};
@@ -128,7 +129,9 @@ function PostDetail() {
                     onClick={() => handleLike(post._id)}
                   />
                 )}
-                <p className="myTextColor font-bold">{post?.likes?.length} likes</p>
+                <p className="myTextColor font-bold">
+                  {post?.likes?.length} likes
+                </p>
                 <div className="myPara flex items-center mt-2 py-2 px-2">
                   <p className="font-serif mt-2 pt-3 font-medium text-xl px-2">
                     {post?.description && post?.description}
@@ -152,14 +155,14 @@ function PostDetail() {
                       id="comment"
                       rows="6"
                       onChange={(e) => setComment(e.target.value)}
-                      className="p-2 w-full text-sm activeBg border-0 focus:ring-0 focus:outline-none  dark:placeholder-gray-400"
+                      className="myTextColor p-2 w-full text-sm activeBg border-0 focus:ring-0 focus:outline-none  dark:placeholder-gray-400 "
                       placeholder="Write a comment..."
                       required
                     />
                   </div>
                   <button
                     type="submit"
-                    className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-gray-800 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
+                    className="rounded-md activeBg ml-4 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#0f1015] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     Post comment
                   </button>

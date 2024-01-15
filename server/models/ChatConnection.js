@@ -5,23 +5,13 @@ const ChatConnectionSchema = new mongoose.Schema(
   {
     userId: {
       type: ObjectId,
-      ref:'user'
+      ref:'user',
+      required: true
     },
     eventId: {
       type: ObjectId,
-      ref:'event'
-    },
-    eventImage: {
-      type: String,
-    },
-    eventName: {
-      type: String,
-    },
-    userName: {
-      type: String,
-    },
-    userImage: {
-      type: String,
+      ref:'event',
+      required: true
     },
   },
   {

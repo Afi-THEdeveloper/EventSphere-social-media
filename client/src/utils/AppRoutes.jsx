@@ -51,6 +51,11 @@ import UserVideoRoom from "../pages/UserPages/UserVideoRoom";
 import Explore from "../pages/UserPages/Explore";
 import SearchEvent from "../pages/UserPages/SearchEvent";
 import UserNotifications from "../pages/UserPages/UserNotifications";
+import HiringsPage from "../pages/EventPages/HiringsPage";
+import AddJobPost from "../pages/EventPages/AddJobPost";
+import EditJobPost from "../pages/EventPages/EditJobPost";
+import JobDetails from "../pages/UserPages/JobDetails";
+import JobStats from "../pages/UserPages/JobStats";
 
 function AppRoutes() {
   const { loading } = useSelector((state) => state.loadings);
@@ -116,6 +121,8 @@ function AppRoutes() {
           <Route path={ServerVariables.explore} element={<Explore/>} />
           <Route path={ServerVariables.searchEvent} element={<SearchEvent/>} />
           <Route path={ServerVariables.userNotifications} element={<UserNotifications/>} />
+          <Route path={ServerVariables.jobDetails} element={<JobDetails/>} />
+          <Route path={ServerVariables.jobStats} element={<JobStats/>} />
         </Route>
 
 
@@ -157,6 +164,9 @@ function AppRoutes() {
           <Route path={ServerVariables.eventChats} element={<EventChats />} />
           <Route path={ServerVariables.eventNotifications} element={<EventNotifications />} />
           <Route path={`${ServerVariables.EventVideoCallRoom}/:roomId/:userId`} element={<VideoRoom />} />
+          <Route path={ServerVariables.hirings} element={<HiringsPage />} />
+          <Route path={ServerVariables.postJob} element={<AddJobPost />} />
+          <Route path={ServerVariables.editJobPost} element={<EditJobPost />} />
         </Route>
 
         <Route element={<IsLoggedOutEvent />}>

@@ -5,6 +5,7 @@ const Story = require("../../models/StoryModel");
 const Notification = require("../../models/NotificationModel");
 const Chats = require("../../models/ChatsModel");
 const ChatConnection = require("../../models/ChatConnection");
+const JobPost = require("../../models/JobPostModel");
 const randomString = require("randomstring");
 const OtpMailer = require("../../util/OtpMailer");
 const CatchAsync = require("../../util/CatchAsync");
@@ -351,8 +352,11 @@ exports.getUserNotificationsCount = CatchAsync(async (req, res) => {
     recieverId: req?.userId,
     seen: false,
   });
-  const MsgCount = await Chats.countDocuments({userId: req?.userId,isUserSeen:false})
-  return res.status(200).json({ success: true, count,MsgCount });
+  const MsgCount = await Chats.countDocuments({
+    userId: req?.userId,
+    isUserSeen: false,
+  });
+  return res.status(200).json({ success: true, count, MsgCount });
 });
 
 exports.getUserNotifications = CatchAsync(async (req, res) => {
@@ -387,5 +391,56 @@ exports.getFollowings = CatchAsync(async (req, res) => {
     return res.status(200).json({ success: true, followings: user?.following });
   } else {
     return res.json({ error: "failed to fetch following evnets, try again" });
+  }
+});
+
+//jobs
+exports.getJobs = CatchAsync(async (req, res) => {
+  const posts = await JobPost.find({ isBlocked: false, vaccancies:{$gt:0} })
+    .populate("eventId")
+    .sort({
+      createdAt: -1,
+    });
+  // console.log(posts);
+  return res.status(200).json({ success: true, posts });
+});
+
+exports.applyJob = CatchAsync(async (req, res) => {
+  const post = await JobPost.findById(req?.body?.jobId);
+  post.appliedUsers.push(req?.userId);
+  post.vaccancies--;
+  await post.save();
+
+  const user = await User.findById(req?.userId);
+  const sendNotification = new Notification({
+    recieverId: post?.eventId,
+    senderId: req?.userId,
+    notificationMessage: `${user?.username} applied for the  ${post?.title} job`,
+    date: new Date(),
+  });
+  await sendNotification.save();
+  return res.status(200).json({ success: "applied" });
+});
+
+exports.getJobStats = CatchAsync(async (req, res) => {
+  const appliedJobs = await JobPost.find({
+    appliedUsers: { $in: req?.userId },
+  });
+  const invites = await JobPost.find({ acceptedUsers: { $in: req?.userId } });
+  const stats = [
+    {
+      label:'Applied Jobs',
+      data:appliedJobs,
+    },
+    {
+      label:'Invites',
+      data:invites,
+    }
+  ];
+  console.log("appliedJobs", appliedJobs, invites);
+  if(stats){
+    return res.status(200).json({success:true,stats});
+  }else{
+    return res.json({error:'failed to fetch job stats,try again'})
   }
 });

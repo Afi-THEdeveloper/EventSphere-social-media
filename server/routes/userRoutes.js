@@ -39,6 +39,10 @@ userRouter.post('/register', userController.register)
     .delete('/clearAllUserNotifications', userAuth, userController.clearAllUserNotifications)
     .get('/getUserNotificationsCount', userAuth, userController.getUserNotificationsCount)
 
+    .get('/getJobs', userAuth, userController.getJobs)
+    .post('/applyJob', userAuth, userController.applyJob)
+    .get('/getJobStats', userAuth, userController.getJobStats)
+
 
 
 module.exports = userRouter

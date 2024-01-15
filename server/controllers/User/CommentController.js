@@ -11,10 +11,9 @@ exports.createComment = CatchAsync(async (req, res) => {
     const createdComment = await Comment.create({
       postId: id,
       comment: comment,
-      username: username ? username : "event",
-      userId:req?.userId,
+      userId: req?.userId,
     });
-    
+
     const post = await EventPost.findById(id);
     const currentCommentsCount = post ? post.commentsCount : 0;
     post.commentsCount = currentCommentsCount + 1;
@@ -22,12 +21,12 @@ exports.createComment = CatchAsync(async (req, res) => {
 
     //send notification
     const sendNotification = new Notification({
-      recieverId:post.postedBy,
-      senderId:req?.userId,
-      notificationMessage:`${username} commented "${comment}" on your post`,
-      actionOn:id,
-      date:new Date(),
-    })
+      recieverId: post.postedBy,
+      senderId: req?.userId,
+      notificationMessage: `${username} commented "${comment}" on your post`,
+      actionOn: id,
+      date: new Date(),
+    });
     await sendNotification.save();
 
     return res.status(200).json({ success: "ok", createdComment });
@@ -39,9 +38,11 @@ exports.createComment = CatchAsync(async (req, res) => {
 exports.getAllComments = CatchAsync(async (req, res) => {
   const id = req?.params?.postId;
   if (id) {
-    const comments = await Comment.find({ postId: id }).sort({
-      createdAt: "desc",
-    });
+    const comments = await Comment.find({ postId: id })
+      .sort({
+        createdAt: "desc",
+      })
+      .populate("userId");
     let replies = comments.map((c) => {
       return c?.replies?.length >= 0 ? c?.replies.reverse() : [];
     });
@@ -56,13 +57,13 @@ exports.getAllComments = CatchAsync(async (req, res) => {
 exports.addReply = CatchAsync(async (req, res) => {
   console.log(req.params, req.body);
   const comment_Id = req?.params?.commentId;
-  const user = await User.findById(req?.userId)
-  console.log(user)
+  const user = await User.findById(req?.userId);
+  console.log(user);
   if (comment_Id) {
     const reply = {
       commentId: comment_Id,
       username: req.body.username,
-      repliedUser:{profile:user?.profile,id:user?._id},
+      repliedUser: { profile: user?.profile, id: user?._id },
       reply: req.body.reply,
     };
     const newComment = await Comment.findByIdAndUpdate(
