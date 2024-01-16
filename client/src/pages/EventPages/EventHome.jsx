@@ -64,12 +64,13 @@ function EventHome() {
     <>
       <div className="flex">
         <EventSideBar />
+
         <div className="flex-grow flex-shrink min-h-screen">
           <ProfileCard event={event} postCount={posts.length} story={story} />
           <div className="text-center">
             <Myh1 title="posts" />
           </div>
-          <PostsPage eventId={event._id}/>
+          <PostsPage eventId={event._id} />
         </div>
       </div>
     </>

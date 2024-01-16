@@ -12,12 +12,15 @@ import { apiEndPoints } from "../../utils/api";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
+import Modal from "react-modal";
 import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
+import FollowerCard from "../../components/FollowerCard";
 
 function HiringsPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [jobPosts, setJobPosts] = useState([]);
+
   useEffect(() => {
     getJobPosts();
   }, []);
@@ -98,46 +101,50 @@ function HiringsPage() {
     }
   };
 
+  const handleGetStatsClick = (jobId) => {
+    navigate(`${ServerVariables.eventJobStats}/${jobId}`);
+  };
+
   return (
     <>
       <div className="flex">
         <EventSideBar />
         <div className="flex-grow flex-shrink min-h-screen">
-          <div className="text-center my-2">
-            <Myh1 title={"Job posts"} />
-          </div>
-
-          {/* job cards */}
-          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6 mx-16">
-            {jobPosts.map((jobPost) => {
-              return (
-                <JobCard
-                  role="event"
-                  jobPost={jobPost}
-                  onDelete={() => deleteJobPost(jobPost?._id)}
-                  onBlock={() => blockJobPost(jobPost?._id)}
-                />
-              );
-            })}
-          </div>
-        </div>
-        <div className="myDivBg w-[360px] hidden xl:block  min-h-screen flex-shrink">
-          {/* add job post */}
-          <div className="flex justify-between">
-            <div className="p-3 text-center">
-              <span className="text-xl font-bold block uppercase tracking-wide">
+          {/* hiring page header */}
+          <div className="myDivBg flex justify-around text-center mx-16 p-2">
+            <div className="m-4">
+              <h2 className="myTextColor uppercase font-bold"> job posts</h2>
+            </div>
+            <div>
+              <span className="font-bold block uppercase tracking-wide">
                 <button
-                  className="border p-4 rounded-full myHover"
+                  className="border p-3 rounded-full myHover"
                   onClick={() => navigate(ServerVariables.postJob)}
                 >
                   <PlusIcon className="myPara h-4 w-4" />
                 </button>
               </span>
-              <span className="myTextColor">post job</span>
+              <span className="text-xs myTextColor uppercase">post job</span>
             </div>
-            <span className="text-sm myTextColor m-4">
-              <Button1 text={"Stats"} />
-            </span>
+          </div>
+
+          {/* job cards */}
+          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6 mx-16 my-4">
+            {jobPosts.length ? (
+              jobPosts.map((jobPost) => {
+                return (
+                  <JobCard
+                    role="event"
+                    jobPost={jobPost}
+                    onDelete={() => deleteJobPost(jobPost?._id)}
+                    onBlock={() => blockJobPost(jobPost?._id)}
+                    showStats={() => handleGetStatsClick(jobPost?._id)}
+                  />
+                );
+              })
+            ) : (
+              <p className="myPara text-center py-8">No jobs posted by you</p>
+            )}
           </div>
         </div>
       </div>

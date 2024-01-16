@@ -5,8 +5,19 @@ import { LiaRupeeSignSolid } from "react-icons/lia";
 import { useNavigate } from "react-router-dom";
 import { ServerVariables } from "../utils/ServerVariables";
 import ErrorStyle from "./ErrorStyle";
+import EditIcon from "./icons/EditIcon";
+import { TrashIcon } from "@heroicons/react/24/outline";
 
-const JobCard = ({ jobPost, onDelete, onBlock, handleApply, role, userId }) => {
+const JobCard = ({
+  jobPost,
+  handleApply,
+  role,
+  userId,
+  onDelete,
+  onBlock,
+  showStats,
+  handleAccept,
+}) => {
   const navigate = useNavigate();
   const formatTime = (dateString) => {
     return formatDistanceToNow(new Date(dateString), {
@@ -23,6 +34,7 @@ const JobCard = ({ jobPost, onDelete, onBlock, handleApply, role, userId }) => {
         <div className="flex justify-between">
           <h2 className="text-xl myTextColor font-semibold mb-4">
             {jobPost?.title}
+            {role === 'user' && <p className="text-sm myPara">{jobPost?.eventId?.title}</p>}
           </h2>
           <small className="myPara mb-4 max-w-10">
             Posted on: {formatTime(jobPost?.createdAt)}
@@ -67,7 +79,11 @@ const JobCard = ({ jobPost, onDelete, onBlock, handleApply, role, userId }) => {
           </p>
         </span>
         <span className="myTextColor flex justify-between">
-          {jobPost?.vaccancies > 0 ?<p>{jobPost?.vaccancies} vaccancies</p>:<ErrorStyle error={'no vaccancies'}/>}
+          {jobPost?.vaccancies > 0 ? (
+            <p>{jobPost?.vaccancies} vaccancies</p>
+          ) : (
+            <ErrorStyle error={"no vaccancies"} />
+          )}
           <p>{jobPost?.jobType}</p>
         </span>
         <p className="myTextColor">skills : {jobPost?.skills}</p>
@@ -75,9 +91,10 @@ const JobCard = ({ jobPost, onDelete, onBlock, handleApply, role, userId }) => {
           {jobPost?.JobDescription}
         </small>
 
+        {/* event side */}
         {role === "event" && (
           <span className="flex justify-between m-2">
-            <Button2 text={"edit"} onClick={handleEditClick} />
+            <EditIcon className="myTextColor" onClick={handleEditClick} />
             {!jobPost?.isBlocked ? (
               <Button2 text={"block"} onClick={onBlock} />
             ) : (
@@ -89,19 +106,26 @@ const JobCard = ({ jobPost, onDelete, onBlock, handleApply, role, userId }) => {
                 Unblock
               </button>
             )}
-            <Button2 text={"Delete"} onClick={onDelete} />
+            <Button2 text={"stats"} onClick={showStats} />
+            <TrashIcon className="myTextColor h-6 w-6" onClick={onDelete} />
           </span>
         )}
 
-
-        {role === "user" && !jobPost?.appliedUsers.includes(userId) && (
+        {/* user side  */}
+        {role === "user" && !jobPost?.appliedUsers.includes(userId) && !jobPost?.acceptedUsers.includes(userId) &&(
           <span className="flex justify-end m-2">
             <Button2 text={"Apply"} onClick={handleApply} />
           </span>
         )}
         {role === "user" && jobPost?.appliedUsers.includes(userId) && (
-          <span className="myTextColor flex justify-end m-2">
-            Applied
+          <span className="myTextColor flex justify-end m-2">Applied</span>
+        )}
+        
+
+        {/*reviewUser by event */}
+        {role === "reviewUser" && !jobPost?.acceptedUsers.includes(userId) && (
+          <span className="flex justify-end m-2">
+            <Button2 text={"Accept request"} onClick={handleAccept} />
           </span>
         )}
       </div>

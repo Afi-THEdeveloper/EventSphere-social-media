@@ -75,5 +75,9 @@ export const apiEndPoints = {
     editJobPost:'api/event/editJobPost',
     deleteJobPost:'api/event/deleteJobPost',
     blockJobPost:'api/event/blockJobPost',
+    getAppliedUsers:'api/event/getAppliedUsers',
+    userAppliedjobs:'api/event/userAppliedjobs',
+    acceptJobRequest:'api/event/acceptJobRequest',
+    getEventJobStats:'api/event/getEventJobStats',
 }
 

@@ -14,6 +14,7 @@ import AuthInput from "../../components/AuthInput";
 import Button1 from "../../components/Button1";
 import { updateUser } from "../../Redux/slices/AuthSlice";
 import Button2 from "../../components/Button2";
+import ErrorStyle from "../../components/ErrorStyle";
 
 function AddJobProfile() {
   const navigate = useNavigate();

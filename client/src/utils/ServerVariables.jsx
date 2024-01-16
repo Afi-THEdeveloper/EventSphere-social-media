@@ -52,5 +52,7 @@ export const ServerVariables = {
   hirings:'/hirings',
   postJob:'/postJob',
   editJobPost:'/editJobPost',
+  showUser:'/showUser',
+  eventJobStats:'/eventJobStats',
 };
 

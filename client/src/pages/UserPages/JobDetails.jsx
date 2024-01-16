@@ -22,7 +22,7 @@ function JobDetails() {
     })
       .then((res) => {
         toast.success(res.data.success);
-        navigate(ServerVariables.UserHome);
+        navigate(ServerVariables.jobStats);
       })
       .catch((err) => {
         toast.error(err.message);

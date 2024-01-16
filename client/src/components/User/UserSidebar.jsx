@@ -155,7 +155,7 @@ function UserSidebar() {
 
   return (
     <>
-      <div className="myDivBg flex-col w-[300px] hidden md:flex min-h-screen flex-shrink-0 ">
+      <div className="myDivBg flex-col w-[300px] hidden md:flex min-h-screen flex-shrink-0">
         <div className="flex gap-2 mt-2">
           <img
             className="w-8 h-8 rounded-full"

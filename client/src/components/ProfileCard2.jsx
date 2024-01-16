@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ServerVariables } from "../utils/ServerVariables";
 
 function ProfileCard2({
@@ -12,6 +12,8 @@ function ProfileCard2({
   bgColor,
   textColor,
 }) {
+  const navigate = useNavigate()
+
   return (
     <>
       <li
@@ -22,12 +24,16 @@ function ProfileCard2({
             className="mx-auto h-32 w-32 flex-shrink-0 rounded-full"
             src={`http://localhost:5000/profiles/${item?.profile}`}
             alt="http://localhost:5000/profiles/avatar.png"
-            onClick={viewProfile}
+            onClick={role === "user" && viewProfile}
           />
-          <h2 onClick={viewProfile} className="myTextColor mt-6 text-lg font-medium cursor-pointer">{item?.title}</h2>
+          <h2
+            onClick={role === "user" && viewProfile}
+            className="myTextColor mt-6 text-lg font-medium cursor-pointer"
+          >
+            {role === "user" && item?.title}
+          </h2>
           <dl className="mt-1 flex flex-grow flex-col justify-between">
-
-            {role === "user" ? (
+            {role === "user" && (
               <dd className="mt-3">
                 {currentUser?.following?.includes(item._id) ? (
                   <div
@@ -44,16 +50,6 @@ function ProfileCard2({
                     <small className={`${textColor}`}>Follow</small>
                   </div>
                 )}
-              </dd>
-            ) : (
-              <dd className="mt-3">
-                <span
-                  className={`inline-flex items-center rounded-full bg-${textColor} px-2 py-1 text-xs font-medium text-${
-                    textColor === "green" ? "700" : "white"
-                  } ring-1 ring-inset ring-green-600/20 cursor-pointer`}
-                >
-                  following
-                </span>
               </dd>
             )}
           </dl>

@@ -12,6 +12,10 @@ function FollowerCard({ isOpen, closeModal, items, role }) {
       navigate(ServerVariables.showEvent, {
         state: { event: person },
       });
+    } else {
+      navigate(ServerVariables.showUser, {
+        state: { user: person },
+      });
     }
   };
   return (
@@ -22,7 +26,7 @@ function FollowerCard({ isOpen, closeModal, items, role }) {
         ariaHideApp={false}
         style={{
           overlay: {
-            backgroundColor: "rgba(0, 0, 0, 0.9)",
+            backgroundColor: "rgba(0, 0, 0, 0.7)",
           },
           content: {
             top: "50%",
@@ -35,33 +39,47 @@ function FollowerCard({ isOpen, closeModal, items, role }) {
             height: "500px",
             maxHeight: "500px",
             overflowY: "auto",
+            backgroundColor: "rgb(24, 27, 35)",
           },
         }}
       >
-        <Myh1 title={role === "user" ? "following" : "followers"} />
-        {persons?.map((person) => {
-          return (
-            <div
-              onClick={() => handleClickPerson(person)}
-              className="py-2 pl-4 border-0 border-gray-100 flex items-center gap-2 cursor-pointer"
-            >
-              <div className="flex gap-4 py-2 pl-4 items-center">
+        <Myh1
+          title={
+            role === "user"
+              ? "following"
+              : role === "event"
+              ? "followers"
+              : "Requested Users"
+          }
+        />
+
+        {persons.length ? (
+          persons?.map((person) => {
+            return (
+              <div
+                onClick={() => handleClickPerson(person)}
+                className="myDivBg myBorder border-y py-2 pl-4 flex items-center gap-2 cursor-pointer"
+              >
                 <div className="flex gap-4 py-2 pl-4 items-center">
-                  <div className="w-10 h-10 bg-gray-300 rounded-full">
-                    <img
-                      className="w-full h-42 object-cover"
-                      src={`http://localhost:5000/profiles/${person?.profile}`}
-                      alt=""
-                    />
+                  <div className="flex gap-4 py-2 pl-4 items-center">
+                    <div className="w-10 h-10 rounded-full">
+                      <img
+                        className="w-full h-42 object-cover"
+                        src={`http://localhost:5000/profiles/${person?.profile}`}
+                        alt=""
+                      />
+                    </div>
+                    <span className="text-slate-500 font-bold">
+                      {role === "user" ? person?.title : person?.username}
+                    </span>
                   </div>
-                  <span className="text-slate-500 font-bold">
-                    {role === "user" ? person?.title : person?.username}
-                  </span>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })
+        ) : (
+          <p className="myPara">No results</p>
+        )}
       </Modal>
     </>
   );

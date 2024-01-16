@@ -45,6 +45,12 @@ eventRouter
     .put('/editJobPost',eventAuth, eventController.editJobPost)
     .delete('/deleteJobPost', eventAuth, eventController.deleteJobPost)
     .patch('/blockJobPost', eventAuth, eventController.blockJobPost)
+    .post('/userAppliedjobs', eventAuth, eventController.userAppliedjobs)
+    .patch('/acceptJobRequest', eventAuth, eventController.acceptJobRequest)
+    .post('/getEventJobStats', eventAuth, eventController.getEventJobStats)
+
+
+    
 module.exports = eventRouter   
 
 

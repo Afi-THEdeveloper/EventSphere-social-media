@@ -96,42 +96,6 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    posts: [
-      {
-        location: {
-          type: String,
-        },
-        Description: {
-          type: String,
-        },
-        media: {
-          type: String,
-          required: true,
-        },
-        likes: {
-          type: Number,
-          default: 0,
-        },
-      },
-    ],
-    AcceptedJobs: [
-      {
-        jobPost: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Event.jobPost",
-          required: true,
-        },
-      },
-    ],
-    appliedJobs: [
-      {
-        jobPost: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Event.jobPost",
-          required: true,
-        },
-      },
-    ],
   },
   {
     timestamps: true,

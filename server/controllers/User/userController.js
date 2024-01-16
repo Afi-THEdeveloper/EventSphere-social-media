@@ -396,7 +396,8 @@ exports.getFollowings = CatchAsync(async (req, res) => {
 
 //jobs
 exports.getJobs = CatchAsync(async (req, res) => {
-  const posts = await JobPost.find({ isBlocked: false, vaccancies:{$gt:0} })
+  const user = await User.findById(req?.userId)
+  const posts = await JobPost.find({ isBlocked: false, vaccancies:{$gt:0},eventId:{$in:user?.following}, appliedUsers:{$nin:req?.userId}, acceptedUsers:{$nin:req?.userId} })
     .populate("eventId")
     .sort({
       createdAt: -1,
@@ -425,8 +426,8 @@ exports.applyJob = CatchAsync(async (req, res) => {
 exports.getJobStats = CatchAsync(async (req, res) => {
   const appliedJobs = await JobPost.find({
     appliedUsers: { $in: req?.userId },
-  });
-  const invites = await JobPost.find({ acceptedUsers: { $in: req?.userId } });
+  }).populate('eventId');
+  const invites = await JobPost.find({ acceptedUsers: { $in: req?.userId } }).populate('eventId');
   const stats = [
     {
       label:'Applied Jobs',

@@ -56,6 +56,8 @@ import AddJobPost from "../pages/EventPages/AddJobPost";
 import EditJobPost from "../pages/EventPages/EditJobPost";
 import JobDetails from "../pages/UserPages/JobDetails";
 import JobStats from "../pages/UserPages/JobStats";
+import ShowUser from "../pages/EventPages/ShowUser";
+import EventJobStats from "../pages/EventPages/EventJobStats";
 
 function AppRoutes() {
   const { loading } = useSelector((state) => state.loadings);
@@ -167,6 +169,8 @@ function AppRoutes() {
           <Route path={ServerVariables.hirings} element={<HiringsPage />} />
           <Route path={ServerVariables.postJob} element={<AddJobPost />} />
           <Route path={ServerVariables.editJobPost} element={<EditJobPost />} />
+          <Route path={ServerVariables.showUser} element={<ShowUser />} />
+          <Route path={`${ServerVariables.eventJobStats}/:jobId`} element={<EventJobStats />} />
         </Route>
 
         <Route element={<IsLoggedOutEvent />}>

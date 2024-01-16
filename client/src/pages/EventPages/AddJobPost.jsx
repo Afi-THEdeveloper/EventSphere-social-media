@@ -92,7 +92,7 @@ function AddJobPost() {
         <div className="flex-grow flex-shrink min-h-screen">
           {/* form */}
           <div className="flex-1 flex flex-col items-center justify-center min-h-screen">
-            <div className="flex w-full flex-col max-w-[400px] items-center space-y-3">
+            <div className="flex w-full flex-col max-w-[400px] items-center space-y-3 my-4">
               <Myh1 title="Add job post" />
               <div className="w-full mt-10">
                 <form onSubmit={formik.handleSubmit} noValidate>

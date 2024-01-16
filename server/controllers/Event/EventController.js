@@ -466,3 +466,57 @@ exports.blockJobPost = CatchAsync(async (req, res) => {
     : "job post blocked";
   return res.status(200).json({ success });
 });
+
+
+exports.userAppliedjobs = CatchAsync(async (req, res) => {
+  const userId = req.body?.userId;
+  const jobs = await JobPost.find({
+    eventId: req?.eventId,
+    appliedUsers: { $in: userId },
+  }).sort({ createdAt: -1 });
+
+  return res.status(200).json({ success: true, jobs });
+});
+
+exports.acceptJobRequest = CatchAsync(async (req, res) => {
+  const post = await JobPost.findById(req?.body?.jobId);
+  post.acceptedUsers.push(req?.body?.userId);
+  post.appliedUsers.pull(req?.body?.userId)
+  await post.save();
+
+  const event = await Event.findById(req?.eventId);
+  const sendNotification = new Notification({
+    recieverId: req?.body?.userId,
+    senderId: req?.eventId,
+    notificationMessage: `${event?.title} accepted your job request for '${post?.title}'`,
+    date: new Date(),
+  });
+  await sendNotification.save();
+  return res.status(200).json({ success: "accepted" });
+});
+
+exports.getEventJobStats = CatchAsync(async (req, res) => {
+  const jobId = req?.body?.jobId;
+  const jobDetails = await JobPost.findOne({
+    _id: jobId,
+    eventId: req?.eventId,
+  }).populate("acceptedUsers appliedUsers");
+
+  const stats = [
+    {
+      label:'Applied Candidates',
+      data:jobDetails?.appliedUsers,
+    },
+    {
+      label:'selected Candidates',
+      data:jobDetails?.acceptedUsers,
+    }
+  ];
+
+  console.log(stats);
+  if (stats) {
+    return res.status(200).json({ success: "true", stats,jobDetails });
+  } else {
+    return res.json({ error: "failed to fetch job stats, try again" });
+  }
+});
