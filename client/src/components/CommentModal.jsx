@@ -85,6 +85,7 @@ function CommentModal({ isOpen, closeModal, Comments, post }) {
             src={`http://localhost:5000/Event/posts/${post?.image}`}
             alt={post?.description}
           />
+          <h2 className="text-slate-600 mb-4">{post?.likes?.length} likes</h2>
           <h2 className="text-slate-400 mb-4">Comments</h2>
           <div className="comments-container">
             {comments?.length ? (
@@ -124,7 +125,7 @@ function CommentModal({ isOpen, closeModal, Comments, post }) {
                       <button
                         className="bg-green-500 text-white p-1 rounded"
                         onClick={() =>
-                          handleReply(post._id,comment._id, reply)
+                          handleReply(post._id, comment._id, reply)
                         }
                       >
                         Reply

@@ -51,16 +51,21 @@ const BannerCourosel = ({ banners }) => {
             alt={`Banner ${index + 1}`}
             className="w-full h-screen"
           />
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-            <h2 className="text-7xl font-bold myTextColor">{banner.title}</h2>
-            <p className="text-lg myTextColor font-semibold">
-              {banner?.description}
-            </p>
+          <div className="bg-[#0f1015] bg-opacity-60 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center p-8">
+            <div>
+              <h2 className="text-7xl font-serif myTextColor">{banner.title}</h2>
+              <p className="text-lg font-serif myTextColor">{banner?.description}</p>
+            </div>
 
-
-            
             {/* who are you part */}
-            <div className="bg-[#181b23] bg-opacity-70 flex-1 flex flex-col items-center justify-center p-4 mt-[40vh]">
+
+            <div className="flex-1 flex flex-col items-center justify-center p-4 mt-8">
+              <div className="w-[110px] h-[110px] my-12">
+                <img src="/images/Es.png" alt="" />
+                <p className="text-slate-400 text-xs font-bold">
+                  Make your day with us
+                </p>
+              </div>
               <div className="flex flex-col max-w-[400px] items-center space-y-3">
                 <Myh1 title="Who are you ?" />
                 <Button1

@@ -3,6 +3,7 @@ import JobCard from "./JobCard";
 import { useSelector } from "react-redux";
 import { ServerVariables } from "../utils/ServerVariables";
 import { useNavigate } from "react-router-dom";
+import JobCard2 from "./JobCard2";
 
 const SectionTabs = ({ sections, role }) => {
   const [openTab, setOpenTab] = useState(1);

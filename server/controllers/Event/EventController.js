@@ -488,6 +488,7 @@ exports.acceptJobRequest = CatchAsync(async (req, res) => {
   post.appliedUsers.pull(req?.body?.userId);
   await post.save();
 
+  // notification
   const event = await Event.findById(req?.eventId);
   const sendNotification = new Notification({
     recieverId: req?.body?.userId,
@@ -500,6 +501,56 @@ exports.acceptJobRequest = CatchAsync(async (req, res) => {
     date: new Date(),
   });
   await sendNotification.save();
+
+  // give a message invitation to job
+  const chatConnection = await ChatConnection.findOne({
+    userId: req?.body?.userId,
+    eventId: req?.eventId,
+  }).populate("userId eventId");
+  if (chatConnection) {
+    const roomId = chatConnection._id;
+    const eventId = req?.eventId;
+    const senderId = req?.eventId;
+
+    const Data = {
+      roomId,
+      senderId,
+      userId: req?.body?.userId,
+      eventId,
+      isEventSeen: true,
+      message: `You are selected for the job -  ${post?.title}, if you are Interested lets move on to further procedures`,
+      time: new Date().toISOString(),
+    };
+
+    const newData = new Chats(Data);
+    await newData.save();
+  } else {
+    const connection = {
+      userId: req?.body?.userId,
+      eventId: req?.eventId,
+    };
+
+    const newChatConnection = new ChatConnection(connection);
+    const savedChatConnection = await newChatConnection.save();
+
+    const roomId = savedChatConnection._id;
+    const eventId = req?.eventId;
+    const senderId = req?.eventId;
+
+    const Data = {
+      roomId,
+      senderId,
+      userId: req?.body?.userId,
+      eventId,
+      isEventSeen: true,
+      message: `You are selected for the job -  ${post?.title}, if you are Interested lets move on to further procedures`,
+      time: new Date().toISOString(),
+    };
+
+    const newData = new Chats(Data);
+    await newData.save();
+  }
+
   return res.status(200).json({ success: "accepted" });
 });
 

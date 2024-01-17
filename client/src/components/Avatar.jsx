@@ -20,7 +20,7 @@ function Avatar({ profile }) {
       <div className="w-full rounded-full ">
         <img
           src={`http://localhost:5000/profiles/${profile}`}
-          className="h-10 w-10 rounded-full object-cover border-2 border-[#FFB992]"
+          className="h-10 w-10 rounded-full object-cover border-2 myBorder"
           alt="profile"
         />
       </div>

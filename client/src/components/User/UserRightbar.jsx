@@ -45,7 +45,9 @@ function UserRightbar() {
             {jobPosts.length && (
               <div className="text-center my-2">
                 <h3 className="myTextColor font-bold">JOBS</h3>
-                <small className="myPara">(follow more events to explore more jobs)</small>
+                <small className="myPara">
+                  (follow more events to explore more jobs)
+                </small>
               </div>
             )}
 
@@ -56,6 +58,9 @@ function UserRightbar() {
             ) : (
               <div className="text-center myPara">
                 <p>No jobs found</p>
+                <small className="myPara">
+                  (follow more events to explore more jobs)
+                </small>
               </div>
             )}
           </div>
