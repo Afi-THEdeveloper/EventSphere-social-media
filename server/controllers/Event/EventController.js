@@ -168,10 +168,6 @@ exports.updateEventProfile = CatchAsync(async (req, res) => {
   const event = await Event.findById(req.eventId);
   event.profile = req.body?.profile;
   await event.save();
-  await ChatConnection.updateMany(
-    { eventId: req?.eventId },
-    { $set: { eventImage: req?.body?.profile } }
-  );
   return res
     .status(200)
     .json({ success: "profile updated successfully", event });
@@ -230,7 +226,11 @@ exports.EventReply = CatchAsync(async (req, res) => {
     const sendNotification = new Notification({
       recieverId: repliedComment?.userId,
       senderId: event._id,
-      notificationMessage: `${repliedComment?.username} replied "${req.body?.reply}" to your comment "${repliedComment?.comment}"`,
+      actionOn: {
+        model: "eventPosts",
+        objectId: id,
+      },
+      notificationMessage: `${event?.title} replied "${req.body?.reply}" to your comment "${repliedComment?.comment}"`,
       date: new Date(),
     });
     await sendNotification.save();
@@ -351,10 +351,15 @@ exports.getNotifications = CatchAsync(async (req, res) => {
   const notifications = await Notification.find({
     recieverId: req?.eventId,
     seen: true,
-  })
-    .sort({ date: -1 })
-    .populate("actionOn");
-  console.log(notifications);
+  }).sort({ date: -1 });
+
+  for (const notification of notifications) {
+    await notification.populate({
+      path: "actionOn.objectId",
+      model: notification.actionOn.model, // Use the dynamic model name
+    });
+  }
+  console.log(notifications[0].actionOn);
   return res.status(200).json({ success: true, notifications });
 });
 
@@ -467,7 +472,6 @@ exports.blockJobPost = CatchAsync(async (req, res) => {
   return res.status(200).json({ success });
 });
 
-
 exports.userAppliedjobs = CatchAsync(async (req, res) => {
   const userId = req.body?.userId;
   const jobs = await JobPost.find({
@@ -481,13 +485,17 @@ exports.userAppliedjobs = CatchAsync(async (req, res) => {
 exports.acceptJobRequest = CatchAsync(async (req, res) => {
   const post = await JobPost.findById(req?.body?.jobId);
   post.acceptedUsers.push(req?.body?.userId);
-  post.appliedUsers.pull(req?.body?.userId)
+  post.appliedUsers.pull(req?.body?.userId);
   await post.save();
 
   const event = await Event.findById(req?.eventId);
   const sendNotification = new Notification({
     recieverId: req?.body?.userId,
     senderId: req?.eventId,
+    actionOn: {
+      model: "jobPost",
+      objectId: post._id,
+    },
     notificationMessage: `${event?.title} accepted your job request for '${post?.title}'`,
     date: new Date(),
   });
@@ -504,18 +512,18 @@ exports.getEventJobStats = CatchAsync(async (req, res) => {
 
   const stats = [
     {
-      label:'Applied Candidates',
-      data:jobDetails?.appliedUsers,
+      label: "Applied Candidates",
+      data: jobDetails?.appliedUsers,
     },
     {
-      label:'selected Candidates',
-      data:jobDetails?.acceptedUsers,
-    }
+      label: "selected Candidates",
+      data: jobDetails?.acceptedUsers,
+    },
   ];
 
   console.log(stats);
   if (stats) {
-    return res.status(200).json({ success: "true", stats,jobDetails });
+    return res.status(200).json({ success: "true", stats, jobDetails });
   } else {
     return res.json({ error: "failed to fetch job stats, try again" });
   }

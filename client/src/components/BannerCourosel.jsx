@@ -57,8 +57,10 @@ const BannerCourosel = ({ banners }) => {
               {banner?.description}
             </p>
 
+
+            
             {/* who are you part */}
-            <div className="bg-[#181b23] bg-opacity-70 flex-1 flex flex-col items-center justify-center p-4">
+            <div className="bg-[#181b23] bg-opacity-70 flex-1 flex flex-col items-center justify-center p-4 mt-[40vh]">
               <div className="flex flex-col max-w-[400px] items-center space-y-3">
                 <Myh1 title="Who are you ?" />
                 <Button1

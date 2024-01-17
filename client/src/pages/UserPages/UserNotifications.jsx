@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { CiCircleRemove } from "react-icons/ci";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import UserSidebar from "../../components/User/UserSidebar";
 import Myh1 from "../../components/Myh1";
@@ -10,35 +10,39 @@ import Button1 from "../../components/Button1";
 import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
 import { userRequest } from "../../Helper/instance";
 import { apiEndPoints } from "../../utils/api";
+import { ServerVariables } from "../../utils/ServerVariables";
 
 function UserNotifications() {
   const [notifications, setNotifications] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-
   const clearMessge = (NotId) => {
     userRequest({
       url: apiEndPoints.clearUserNotification,
       method: "delete",
       data: { NotId },
-    }).then((res) => {
-        getUserNotifications()
-    }).catch((err) => {
-        toast.error(err.messsage)
-    });
+    })
+      .then((res) => {
+        getUserNotifications();
+      })
+      .catch((err) => {
+        toast.error(err.messsage);
+      });
   };
 
   const clearAllNotifications = () => {
     userRequest({
-        url: apiEndPoints.clearAllUserNotifications,
-        method:'delete',
-    }).then((res) => {
-        getUserNotifications()
-        toast.success(res.data?.success)
-    }).catch((err) => {
-        toast.error(err.messsage)
-    });
+      url: apiEndPoints.clearAllUserNotifications,
+      method: "delete",
+    })
+      .then((res) => {
+        getUserNotifications();
+        toast.success(res.data?.success);
+      })
+      .catch((err) => {
+        toast.error(err.messsage);
+      });
   };
 
   useEffect(() => {
@@ -61,10 +65,20 @@ function UserNotifications() {
       });
   };
 
-  const formatTime = (dateString) => {   
+  const formatTime = (dateString) => {
     return formatDistanceToNow(new Date(dateString), {
-        addSuffix: true,
-    });  
+      addSuffix: true,
+    });
+  };
+
+  const handleNotificationClick = (notificationOn) => {
+    if (notificationOn?.model === "eventPosts") {
+      navigate(ServerVariables.postDetails, {
+        state: { postDetails: notificationOn?.objectId },
+      });
+    } else if (notificationOn?.model === "jobPost") {
+      navigate(ServerVariables.jobStats);
+    }
   };
 
   return (
@@ -87,18 +101,18 @@ function UserNotifications() {
                   <div
                     key={item?._id}
                     className="myBorder border-y-[0.1px] p-2 w-full rounded-lg shadow-md flex items-center justify-between space-x-4"
+                    onClick={() => handleNotificationClick(item?.actionOn)}
                   >
                     <div className="flex-grow">
                       <small className="myTextColor font-extrabold cursor-pointer">
                         {item?.notificationMessage}
-                        {item?.actionOn && (
+                        {item?.actionOn?.model === "eventPosts" && (
                           <img
                             className="w-10 h-10"
-                            src={`http://localhost:5000/Event/posts/${item?.actionOn?.image}`}
+                            src={`http://localhost:5000/Event/posts/${item?.actionOn?.objectId.image}`}
                             alt="post-image"
-                            onClick={()=> navigate(ServerVariables.eventHome)}
                           />
-                          )}
+                        )}
                       </small>
                     </div>
                     <div className="flex items-center">

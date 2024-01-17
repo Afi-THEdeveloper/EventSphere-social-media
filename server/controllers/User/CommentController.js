@@ -25,6 +25,10 @@ exports.createComment = CatchAsync(async (req, res) => {
       senderId: req?.userId,
       notificationMessage: `${username} commented "${comment}" on your post`,
       actionOn: id,
+      actionOn:{
+        model:'eventPosts',
+        objectId:id,
+      },
       date: new Date(),
     });
     await sendNotification.save();

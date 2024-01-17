@@ -5,23 +5,30 @@ const notificationSchema = new mongoose.Schema(
   {
     recieverId: {
       type: String,
-      required: true
+      required: true,
     },
-    senderId:{
-       type: String, 
-       required: true
+    senderId: {
+      type: String,
+      required: true,
     },
     notificationMessage: {
       type: String,
-      required: true
+      required: true,
     },
-    actionOn:{
-      type: ObjectId,
-      ref:'eventPosts'
+    actionOn: {
+      model: {
+        type: String,
+        required: true,
+      },
+      objectId: {
+        type: ObjectId,
+        required: true,
+        refPath: "$actionOn.model", // Use $actionOn.model as the ref path
+      },
     },
     date: {
       type: Date,
-      required: true
+      required: true,
     },
     seen: {
       type: Boolean,

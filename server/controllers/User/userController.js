@@ -160,7 +160,10 @@ exports.likePost = CatchAsync(async (req, res) => {
       recieverId: likedPost.postedBy,
       senderId: user._id,
       notificationMessage: `${user?.username} liked you post`,
-      actionOn: likedPost?._id,
+      actionOn: {
+        model: "eventPosts",
+        objectId: likedPost._id,
+      },
       date: new Date(),
     });
     await sendNotification.save();
@@ -196,6 +199,10 @@ exports.followEvent = CatchAsync(async (req, res) => {
       recieverId: eventId,
       senderId: user._id,
       notificationMessage: `${user?.username} started following you`,
+      actionOn: {
+        model: "user",
+        objectId: req?.userId,
+      },
       date: new Date(),
     });
     await sendNotification.save();
@@ -275,10 +282,6 @@ exports.editUser = CatchAsync(async (req, res) => {
     user.profile = req?.body?.profile;
     await user.save();
 
-    await ChatConnection.updateMany(
-      { userId: req?.userId },
-      { $set: { userImage: req?.body?.profile } }
-    );
     return res.status(200).json({ success: "profile updated", user });
   } else {
     return res.json({ error: "user not found" });
@@ -367,9 +370,14 @@ exports.getUserNotifications = CatchAsync(async (req, res) => {
   const notifications = await Notification.find({
     recieverId: req?.userId,
     seen: true,
-  })
-    .sort({ date: -1 })
-    .populate("actionOn");
+  }).sort({ date: -1 });
+
+  for (const notification of notifications) {
+    await notification.populate({
+      path: "actionOn.objectId",
+      model: notification.actionOn.model, // Use the dynamic model name
+    });
+  }
   console.log(notifications);
   return res.status(200).json({ success: true, notifications });
 });
@@ -396,8 +404,14 @@ exports.getFollowings = CatchAsync(async (req, res) => {
 
 //jobs
 exports.getJobs = CatchAsync(async (req, res) => {
-  const user = await User.findById(req?.userId)
-  const posts = await JobPost.find({ isBlocked: false, vaccancies:{$gt:0},eventId:{$in:user?.following}, appliedUsers:{$nin:req?.userId}, acceptedUsers:{$nin:req?.userId} })
+  const user = await User.findById(req?.userId);
+  const posts = await JobPost.find({
+    isBlocked: false,
+    vaccancies: { $gt: 0 },
+    eventId: { $in: user?.following },
+    appliedUsers: { $nin: req?.userId },
+    acceptedUsers: { $nin: req?.userId },
+  })
     .populate("eventId")
     .sort({
       createdAt: -1,
@@ -417,6 +431,10 @@ exports.applyJob = CatchAsync(async (req, res) => {
     recieverId: post?.eventId,
     senderId: req?.userId,
     notificationMessage: `${user?.username} applied for the  ${post?.title} job`,
+    actionOn: {
+      model: "jobPost",
+      objectId: post._id,
+    },
     date: new Date(),
   });
   await sendNotification.save();
@@ -426,25 +444,24 @@ exports.applyJob = CatchAsync(async (req, res) => {
 exports.getJobStats = CatchAsync(async (req, res) => {
   const appliedJobs = await JobPost.find({
     appliedUsers: { $in: req?.userId },
-  }).populate('eventId');
-  const invites = await JobPost.find({ acceptedUsers: { $in: req?.userId } }).populate('eventId');
+  }).populate("eventId");
+  const invites = await JobPost.find({
+    acceptedUsers: { $in: req?.userId },
+  }).populate("eventId");
   const stats = [
     {
-      label:'Applied Jobs',
-      data:appliedJobs,
+      label: "Applied Jobs",
+      data: appliedJobs,
     },
     {
-      label:'Invites',
-      data:invites,
-    }
+      label: "Invites",
+      data: invites,
+    },
   ];
   console.log("appliedJobs", appliedJobs, invites);
-  if(stats){
-    return res.status(200).json({success:true,stats});
-  }else{
-    return res.json({error:'failed to fetch job stats,try again'})
+  if (stats) {
+    return res.status(200).json({ success: true, stats });
+  } else {
+    return res.json({ error: "failed to fetch job stats,try again" });
   }
 });
-
-
-
