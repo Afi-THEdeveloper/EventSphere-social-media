@@ -14,12 +14,6 @@ const eventStorySchema = new mongoose.Schema(
     description: {
       type: String,
     },
-    likes: [
-      {
-        type: ObjectId,
-        ref: "user",
-      },
-    ],
     expiresOn: {
       type: Date,
       required: true,

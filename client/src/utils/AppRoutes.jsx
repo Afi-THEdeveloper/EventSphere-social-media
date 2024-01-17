@@ -58,6 +58,9 @@ import JobDetails from "../pages/UserPages/JobDetails";
 import JobStats from "../pages/UserPages/JobStats";
 import ShowUser from "../pages/EventPages/ShowUser";
 import EventJobStats from "../pages/EventPages/EventJobStats";
+import Banners from "../pages/AdminPages/Banners";
+import AddBanner from "../pages/AdminPages/AddBanner";
+import EditBanner from "../pages/AdminPages/EditBanner";
 
 function AppRoutes() {
   const { loading } = useSelector((state) => state.loadings);
@@ -139,6 +142,9 @@ function AppRoutes() {
           <Route path={ServerVariables.AddPlan} element={<AddPlan />} />
           <Route path={ServerVariables.editPlan} element={<EditPlan />} />
           <Route path={ServerVariables.eventsTable} element={<EventsTable />} />
+          <Route path={ServerVariables.BannersTable} element={<Banners />} />
+          <Route path={ServerVariables.addBanner} element={<AddBanner />} />
+          <Route path={ServerVariables.editBanner} element={<EditBanner />} />
         </Route>
 
         <Route element={<IsAdminLoggedOut />}>

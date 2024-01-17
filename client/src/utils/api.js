@@ -26,6 +26,7 @@ export const apiEndPoints = {
     getJobs:'api/user/getJobs',
     applyJob:'api/user/applyJob',
     getJobStats:'api/user/getJobStats',
+    
 
 
 
@@ -41,6 +42,12 @@ export const apiEndPoints = {
     getEvents:'api/admin/getEvents',
     blockEvent:'api/admin/blockEvent',
     getSubscriptionHistory:'api/admin/getSubscriptionHistory',
+    getBanners:'api/admin/getBanners',
+    getClientBanners:'api/admin/getClientBanners',
+    addBanner:'api/admin/addBanner',
+    updateBanner:'api/admin/updateBanner',
+    blockBanner:'api/admin/blockBanner',
+    getDashboardDetails:'api/admin/getDashboardDetails',
 
 
 

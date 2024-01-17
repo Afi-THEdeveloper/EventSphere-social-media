@@ -86,9 +86,9 @@ function SubscriptionHistory() {
   return (
     <>
       <div className="container mx-auto mt-8">
-        <header className="bg-black shadow">
+        <header className="shadow">
           <div className="mx-auto max-w-7xl px-4 py-6 flex items-center justify-between sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold tracking-tight text-white">
+            <h2 className="text-2xl font-bold tracking-tight text-white">
               Subscription history
             </h2>
             <div className="relative">

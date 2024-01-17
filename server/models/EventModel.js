@@ -7,9 +7,9 @@ const eventSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    role:{
+    role: {
       type: String,
-      default:'event',
+      default: "event",
     },
     email: {
       type: String,
@@ -53,15 +53,15 @@ const eventSchema = new mongoose.Schema(
     },
     profile: {
       type: String,
-      default:'avatar.png',
+      default: "avatar.png",
     },
     selectedPlan: {
       plan: {
         type: ObjectId,
         ref: "Plan",
       },
-      transactionId:{
-        type:String,
+      transactionId: {
+        type: String,
       },
       expiry: {
         type: Date,
@@ -126,6 +126,18 @@ const eventSchema = new mongoose.Schema(
     isVerified: {
       type: Boolean,
       default: false,
+    },
+    selectedPlan: {
+      plan: {
+        type: ObjectId,
+        ref: "Plan",
+      },
+      transactionId: {
+        type: String,
+      },
+      expiry: {
+        type: Date,
+      },
     },
   },
   {

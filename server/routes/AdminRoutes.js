@@ -1,6 +1,7 @@
 const express = require("express");
 const adminRouter = express.Router();
 const adminController = require("../controllers/Admin/AdminController");
+const {uploadBanner,resizeBanner} = require("../middlewares/imgUploads")
 const AdminAuth = require("../middlewares/AdminAuthMiddleware");
 
 adminRouter
@@ -14,5 +15,11 @@ adminRouter
   .get("/getEvents", AdminAuth, adminController.getEvents)
   .post("/blockEvent", AdminAuth, adminController.blockEvent)
   .get('/getSubscriptionHistory', AdminAuth, adminController.getSubscriptionHistory)
+  .get('/getBanners', AdminAuth, adminController.getBanners)
+  .get('/getClientBanners', AdminAuth, adminController.getClientBanners)
+  .post('/addBanner', AdminAuth, uploadBanner, resizeBanner,  adminController.addBanner)
+  .put('/updateBanner', AdminAuth, uploadBanner, resizeBanner,  adminController.updateBanner)
+  .patch('/blockBanner', AdminAuth, adminController.blockBanner)
+  .get('/getDashboardDetails', AdminAuth, adminController.getDashboardDetails)
 
 module.exports = adminRouter;

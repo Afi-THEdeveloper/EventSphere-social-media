@@ -2,6 +2,7 @@ const multer = require("multer");
 const sharp = require("sharp");
 const Event = require("../models/EventModel");
 const User = require("../models/UserModel");
+const Admin = require("../models/AdminModel");
 const fs = require("fs").promises;
 
 const multerStorage = multer.memoryStorage();
@@ -93,3 +94,27 @@ const Pdfstorage = multer.diskStorage({
 const PdfUpload = multer({ storage: Pdfstorage });
 
 exports.uploadCv = PdfUpload.single("file");
+
+
+//banner image uploads
+
+exports.uploadBanner = upload.single("banner");
+exports.resizeBanner = async (req, res, next) => {
+  const admin = await Admin.findById(req?.adminId);
+  try {
+    if (!req.file) return next();
+    req.file.filename = `event-${admin.email}-${Date.now()}.jpeg`;
+    req.body.image = req.file.filename;
+
+    await sharp(req.file.buffer)
+      .resize(1080, 1080)
+      .toFormat("jpeg")
+      .jpeg({ quality: 90 })
+      .toFile(`public/assets/banners/${req.file.filename}`);
+
+    next();
+  } catch (error) {
+    res.json({ error: "Error in processing file" });
+    console.error(error.message);
+  }
+};

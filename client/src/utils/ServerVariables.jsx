@@ -30,7 +30,9 @@ export const ServerVariables = {
   AddPlan:'/AddPlan',
   editPlan:'/editPlan',
   eventsTable:'/events',
-
+  BannersTable:'/banners',
+  addBanner:'/addBanner',
+  editBanner:'/editBanner',
 
 
   //event routes

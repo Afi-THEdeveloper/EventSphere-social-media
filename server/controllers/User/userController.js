@@ -445,3 +445,6 @@ exports.getJobStats = CatchAsync(async (req, res) => {
     return res.json({error:'failed to fetch job stats,try again'})
   }
 });
+
+
+
