@@ -15,6 +15,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ServerVariables } from "../../utils/ServerVariables";
 import { updateUser } from "../../Redux/slices/AuthSlice";
 import { updateEvent } from "../../Redux/slices/EventAuthSlice";
+import { motion } from "framer-motion";
 
 function PostCard() {
   const [EventPosts, setEventPosts] = useState([]);
@@ -175,107 +176,115 @@ function PostCard() {
       {EventPosts &&
         EventPosts.map((post) => {
           return (
-            <div
-              className="myDivBg flex flex-col gap-2  mt-2 mx-4 rounded-xl p-2"
-              key={post._id}
+            <motion.div
+              initial={{ opacity: 0, y: -50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              whileHover={{ scale: 1.012 }}
+              className="myDivBg rounded-md shadow-md"
             >
-              {/* top div */}
-              <div className="flex flex-row justify-between items-center">
-                <div className="flex flex-row items-center gap-4">
-                  <img
-                    src={`http://localhost:5000/profiles/${post?.postedBy?.profile}`}
-                    className="h-10 w-10 rounded-full object-cover border-2 myBorder"
-                    alt="profile"
-                  />
-                  <span>
-                    <h4
-                      className="myTextColor font-bold cursor-pointer"
-                      onClick={() =>
-                        navigate(ServerVariables.showEvent, {
-                          state: { event: post?.postedBy },
-                        })
-                      }
-                    >
-                      {post?.postedBy?.title}
-                    </h4>
-                    <small className="myPara">{post?.location}</small>
-                  </span>
-                </div>
-                {user?.following?.includes(post?.postedBy?._id) ? (
-                  <div>
-                    <SlUserUnfollow
-                      className="myTextColor w-6 h-6 mx-2 cursor-pointer"
-                      onClick={() => handleUnFollow(post?.postedBy?._id)}
+              <div
+                className="myDivBg border myBorder flex flex-col gap-2  mt-2 mx-4 rounded-xl p-[5px]"
+                key={post._id}
+              >
+                {/* top div */}
+                <div className="flex flex-row justify-between items-center">
+                  <div className="flex flex-row items-center gap-4">
+                    <img
+                      src={`http://localhost:5000/profiles/${post?.postedBy?.profile}`}
+                      className="h-10 w-10 rounded-full object-cover border-2 myBorder"
+                      alt="profile"
                     />
-                    <small
-                      className="myTextColor font-bold mr-2 cursor-pointer"
-                      onClick={() => handleUnFollow(post?.postedBy?._id)}
-                    >
-                      Following
-                    </small>
+                    <span>
+                      <h4
+                        className="myTextColor font-bold cursor-pointer"
+                        onClick={() =>
+                          navigate(ServerVariables.showEvent, {
+                            state: { event: post?.postedBy },
+                          })
+                        }
+                      >
+                        {post?.postedBy?.title}
+                      </h4>
+                      <small className="myPara">{post?.location}</small>
+                    </span>
                   </div>
-                ) : (
-                  <div>
-                    <SlUserFollow
-                      className="myTextColor w-6 h-6 mx-2 cursor-pointer"
-                      onClick={() => handleFollow(post?.postedBy?._id)}
-                    />
-                    <small
-                      className="myTextColor font-bold mr-2 cursor-pointer"
-                      onClick={() => handleFollow(post?.postedBy?._id)}
-                    >
-                      Follow
-                    </small>
-                  </div>
-                )}
-              </div>
-              {/* post */}
-              <div>
-                {post?.image && (
-                  <img
-                    src={`http://localhost:5000/Event/posts/${post?.image}`}
-                    alt="image"
-                  />
-                )}
-              </div>
-              {/* icons */}
-              <div className="my-2 mx-4 mb-2 flex flow-row justify-between">
-                <div className="flex flex-row gap-4 items-center">
-                  {post?.likes?.includes(user?._id) ? (
-                    <FaHeart
-                      className="w-7 h-7 fill-red-700"
-                      onClick={() => handleUnLike(post._id)}
-                    />
+                  {user?.following?.includes(post?.postedBy?._id) ? (
+                    <div>
+                      <SlUserUnfollow
+                        className="myTextColor w-6 h-6 mx-2 cursor-pointer"
+                        onClick={() => handleUnFollow(post?.postedBy?._id)}
+                      />
+                      <small
+                        className="myTextColor font-bold mr-2 cursor-pointer"
+                        onClick={() => handleUnFollow(post?.postedBy?._id)}
+                      >
+                        Following
+                      </small>
+                    </div>
                   ) : (
-                    <FaRegHeart
-                      className="myTextColor w-7 h-7"
-                      onClick={() => handleLike(post._id)}
+                    <div>
+                      <SlUserFollow
+                        className="myTextColor w-6 h-6 mx-2 cursor-pointer"
+                        onClick={() => handleFollow(post?.postedBy?._id)}
+                      />
+                      <small
+                        className="myTextColor font-bold mr-2 cursor-pointer"
+                        onClick={() => handleFollow(post?.postedBy?._id)}
+                      >
+                        Follow
+                      </small>
+                    </div>
+                  )}
+                </div>
+                {/* post */}
+                <div>
+                  {post?.image && (
+                    <img
+                      src={`http://localhost:5000/Event/posts/${post?.image}`}
+                      alt="image"
                     />
                   )}
-                  <FaRegComment
-                    className="myTextColor w-7 h-7"
-                    onClick={() =>
-                      navigate(ServerVariables.postDetails, {
-                        state: { postDetails: post },
-                      })
-                    }
-                  />
-                  {/* <FiSend className="w-7 h-7" /> */}
                 </div>
-                {/* <BookmarkIcon className="w-6 h-6" /> */}
+                {/* icons */}
+                <div className="my-2 mx-4 mb-2 flex flow-row justify-between">
+                  <div className="flex flex-row gap-4 items-center">
+                    {post?.likes?.includes(user?._id) ? (
+                      <FaHeart
+                        className="w-7 h-7 fill-red-700"
+                        onClick={() => handleUnLike(post._id)}
+                      />
+                    ) : (
+                      <FaRegHeart
+                        className="myTextColor w-7 h-7"
+                        onClick={() => handleLike(post._id)}
+                      />
+                    )}
+                    <FaRegComment
+                      className="myTextColor w-7 h-7"
+                      onClick={() =>
+                        navigate(ServerVariables.postDetails, {
+                          state: { postDetails: post },
+                        })
+                      }
+                    />
+                    {/* <FiSend className="w-7 h-7" /> */}
+                  </div>
+                  {/* <BookmarkIcon className="w-6 h-6" /> */}
+                </div>
+                <p
+                  className="myTextColor font-bold mx-2 cursor-pointer"
+                  onClick={() =>
+                    navigate(ServerVariables.postDetails, {
+                      state: { postDetails: post },
+                    })
+                  }
+                >{`${post?.likes.length} likes   ${post?.commentsCount} comments`}</p>
+                <div>
+                  <p className="myPara">{post?.description}</p>
+                </div>
               </div>
-              <p
-                className="myTextColor font-bold mx-2 cursor-pointer"
-                onClick={() =>
-                  navigate(ServerVariables.postDetails, {
-                    state: { postDetails: post },
-                  })
-                }
-              >{`${post?.likes.length} likes   ${post?.commentsCount} comments`}</p>
-              <div>
-                <p className="myPara">{post?.description}</p>
-              </div>
-            </div>
+            </motion.div>
           );
         })}
     </>

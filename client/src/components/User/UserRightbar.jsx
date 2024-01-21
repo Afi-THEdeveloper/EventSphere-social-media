@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { ServerVariables } from "../../utils/ServerVariables";
+import ContactCard from "../ContactCard";
 
 function UserRightbar() {
   const navigate = useNavigate();
@@ -30,55 +31,9 @@ function UserRightbar() {
 
   return (
     <>
-      {user?.isJobSeeker ? (
-        <div className="myDivBg w-[360px] hidden xl:block  min-h-screen flex-shrink">
-          <div className="text-end m-2">
-            <Button2
-              text={"Job stats"}
-              onClick={() => {
-                navigate(ServerVariables.jobStats);
-              }}
-            />
-          </div>
-
-          <div className="mt-6">
-            {jobPosts.length && (
-              <div className="text-center my-2">
-                <h3 className="myTextColor font-bold">JOBS</h3>
-                <small className="myPara">
-                  (follow more events to explore more jobs)
-                </small>
-              </div>
-            )}
-
-            {jobPosts.length ? (
-              jobPosts.map((post) => {
-                return <JobCard2 job={post} />;
-              })
-            ) : (
-              <div className="text-center myPara">
-                <p>No jobs found</p>
-                <small className="myPara">
-                  (follow more events to explore more jobs)
-                </small>
-              </div>
-            )}
-          </div>
-        </div>
-      ) : (
-        <div className="myDivBg text-center p-4">
-          <p className="myTextColor my-2">
-            Add job profile <br />
-            <small className="myPara">
-              (so that you can apply for jobs in events)
-            </small>
-          </p>{" "}
-          <Button2
-            text={"update profile"}
-            onClick={() => navigate(ServerVariables.userProfile)}
-          />
-        </div>
-      )}
+      <div className="w-[300px]  hidden lg:block  min-h-screen flex-shrink">
+        <ContactCard />
+      </div>
     </>
   );
 }

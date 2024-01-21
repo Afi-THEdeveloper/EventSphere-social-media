@@ -21,6 +21,7 @@ export const ServerVariables = {
   userNotifications:'/userNotifications',
   jobDetails:'/jobDetails',
   jobStats:'/jobStats',
+  showJobs:'/showJobs',
   
   //admin routes
   AdminLogin:'/adminLogin',

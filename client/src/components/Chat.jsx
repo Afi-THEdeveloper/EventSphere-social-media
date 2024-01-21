@@ -164,8 +164,8 @@ function Chat() {
       <div className="flex-grow flex-shrink min-h-screen ml-4">
         <div className="flex h-screen">
           {/* contacts */}
-          <div className="myDivBg w-1/3">
-            <div className="myTextColor font-bold flex gap-4 p-4 my-2 border-b-2 myBorder">
+          <div className="myDivBg w-1/3 border-r myBorder">
+            <div className="myTextColor font-bold flex gap-4 p-4 my-2">
               <MessageIcon />
               <Search1
                 search={"search chats..."}
@@ -216,7 +216,7 @@ function Chat() {
           <div className="flex flex-col  w-2/3 px-2">
             <div className="flex-grow">
               {selectedEventId ? (
-                <div className="myDivBg py-4 pl-4 flex items-center gap-4 cursor-pointer justify-between">
+                <div className="myDivBg border-b myBorder py-4 pl-4 flex items-center gap-4 cursor-pointer justify-between">
                   <Avatar profile={chatPartner?.eventId?.profile} />
                   <div className="myTextColor font-bold text-lg">
                     {chatPartner?.eventId?.title}

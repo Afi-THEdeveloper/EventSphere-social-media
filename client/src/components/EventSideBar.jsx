@@ -16,6 +16,7 @@ import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import CallRequest from "./CallRequest";
 import Modal from "react-modal";
+import UserCard from "./UserCard";
 
 function EventSideBar() {
   const { event } = useSelector((state) => state.EventAuth);
@@ -60,14 +61,14 @@ function EventSideBar() {
     })
       .then((res) => {
         setNotificationsCount(res.data?.count);
-        if(location.pathname !== ServerVariables.eventChats){
-          setMsgCount(res.data?.MsgCount)
+        if (location.pathname !== ServerVariables.eventChats) {
+          setMsgCount(res.data?.MsgCount);
         }
       })
       .catch((err) => {
         toast.error(err.message);
       });
-  }, [notificationsCount,msgCount]);
+  }, [notificationsCount, msgCount]);
 
   const sideBarItems = [
     {
@@ -143,8 +144,8 @@ function EventSideBar() {
 
   return (
     <>
-      <div className="myDivBg flex-col w-[300px] hidden md:flex min-h-screen flex-shrink-0">
-        <div className="flex gap-2 mt-2">
+      <div className="myBorder border-r flex-col w-[300px] hidden md:flex min-h-screen flex-shrink-0">
+        {/* <div className="flex gap-2 mt-2">
           <img
             className="w-8 h-8 rounded-full"
             src={`http://localhost:5000/profiles/${event?.profile}`}
@@ -153,6 +154,18 @@ function EventSideBar() {
           <h1 className="myTextColor uppercase text-3xl font-thin mx-2">
             EventSphere
           </h1>
+        </div> */}
+        <div className="flex gap-2 mt-2">
+          <h1 className="myTextColor uppercase text-2xl font-serif mx-6">
+            EventSphere
+          </h1>
+        </div>
+        <div className="flex gap-2 mt-2">
+          <UserCard
+            profile={event?.profile}
+            username={event?.title}
+            phone={event?.phone}
+          />
         </div>
         <div className="mt-8">
           {sideBarItems.map((item) => (
@@ -167,6 +180,40 @@ function EventSideBar() {
             />
           ))}
         </div>
+      </div>
+
+      {/* small screens */}
+      <div className="relative myDivBg h-screen sm:block md:hidden lg:hidden mx-[5vh]">
+        <nav className="myDivBg z-20 flex shrink-0 grow-0 justify-around gap-4 border-t  p-2.5 shadow-lg backdrop-blur-lg border-slate-600/60 fixed top-2/4 -translate-y-2/4 left-6 min-h-[auto] min-w-[64px] flex-col rounded-lg border">
+          {sideBarItems.map((item) => (
+            <div
+              key={item.label}
+              className={`myTextColor myHover cursor-pointer  flex aspect-square min-h-[32px] w-16 flex-col items-center justify-center gap-1 rounded-md p-1.5 ${
+                activeItem === item.label && "activeBg"
+              }`}
+              onClick={() => {
+                setActiveItem(item.label);
+                item.onclick();
+              }}
+            >
+              {item.label === "Notifications" && notificationsCount > 0 && (
+                <div className="text-xs absolute left-0 mb-8 ml-4 bg-red-500 myTextColor w-4 h-4 flex items-center justify-center rounded-full">
+                  {notificationsCount}
+                </div>
+              )}
+              {item.label === "Messages" && msgCount > 0 && (
+                <div className="text-xs absolute left-0 mb-8 ml-4 bg-red-500 myTextColor w-4 h-4 flex items-center justify-center rounded-full">
+                  {msgCount}
+                </div>
+              )}
+              {item.icon}
+              <small className="text-center text-xs font-medium">
+                {item.label}
+              </small>
+              <hr className="dark:border-gray-700/60" />
+            </div>
+          ))}
+        </nav>
       </div>
       <Modal
         isOpen={CallModalOpen}

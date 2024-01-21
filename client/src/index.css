@@ -6,8 +6,7 @@
 
 body {
   font-family: "Gothic A1", sans-serif;
-  background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.6)),
-    url("/images/Es.png");
+  background: #000000;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -15,8 +14,9 @@ body {
 }
 
 .myDivBg {
-  background-color: #181b23;
+  /* background-color: #181b23; */
   /* background-color: rgb(24, 27, 35); */
+  background-color: #000000;
 }
 
 .activeBg {
@@ -24,18 +24,20 @@ body {
 }
 
 .myTextColor {
-  color: #ffffff;
+  color: #F5F5F5;
 }
 
 .myPara {
-  color: #6c718f;
+  /* color: #6c718f; */
+  color: #969696;
   font-weight: 500;
-}
+}  
 
 .myBorder {
-  border-color: #6c718f;
+  border-color: #262626;
 }
 
 .myHover:hover {
   background-color: #0f1015;
 }
+

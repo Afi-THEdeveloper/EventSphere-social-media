@@ -12,8 +12,6 @@ const StoryComp = () => {
     getStories();
   }, []);
 
-
-
   const getStories = () => {
     userRequest({
       url: apiEndPoints.getStories,
@@ -32,19 +30,21 @@ const StoryComp = () => {
   };
 
   const handleStoryClick = (storiesOfEvent) => {
-   console.log(storiesOfEvent)
-   navigate(ServerVariables.storyCourosel, {state:{stories:storiesOfEvent}})
-  }
+    console.log(storiesOfEvent);
+    navigate(ServerVariables.storyCourosel, {
+      state: { stories: storiesOfEvent },
+    });
+  };
 
   return (
     <ul className="flex space-x-6 font-serif">
       {stories.length ? (
-        stories.map((story,index) => {
+        stories.map((story, index) => {
           return (
             <li
               key={index}
               className="flex flex-col items-center space-y-1 relative"
-              >
+            >
               <div className="bg-gradient-to-tr from-yellow-500 to-fuchsia-600 p-1 rounded-full">
                 <p
                   className="bg-white block rounded-full p-1 hover:-rotate-6 transform transition"
@@ -57,12 +57,16 @@ const StoryComp = () => {
                   />
                 </p>
               </div>
-              <p className="myTextColor">{story?.stories[0]?.postedByDetails.title}</p>
+              <p className="myTextColor">
+                {story?.stories[0]?.postedByDetails.title}
+              </p>
             </li>
           );
         })
       ) : (
-        <p className="myTextColor">No stories posted Today</p>
+        <div className="">
+          {/* <p className="myPara">No stories posted Today</p> */}
+        </div>
       )}
     </ul>
   );

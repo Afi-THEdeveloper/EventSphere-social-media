@@ -26,7 +26,6 @@ import IsLoggedOutEvent from "../components/IsLoggedOutEvent";
 import IsAdminLogged from "../components/IsAdminLogged";
 import IsAdminLoggedOut from "../components/IsAdminLoggedOut";
 import EventsTable from "../pages/AdminPages/EventsTable";
-import EventProfile from "../pages/EventPages/EventHome";
 import EditEventProfile from "../pages/EventPages/EditEventProfile";
 import EditEvent from "../pages/EventPages/EditEvent";
 import AddPost from "../pages/EventPages/AddPost";
@@ -42,7 +41,6 @@ import AddJobProfile from "../pages/UserPages/AddJobProfile";
 import EditJobProfile from "../pages/UserPages/EditJobProfile";
 import ShowEvent from "../pages/UserPages/ShowEvent";
 import Page404 from "../pages/Page404";
-import ChatUI from "../components/ChatUI";
 import Chat from "../components/Chat";
 import EventChats from "../pages/EventPages/EventChats";
 import EventNotifications from "../pages/EventPages/EventNotifications";
@@ -61,6 +59,8 @@ import EventJobStats from "../pages/EventPages/EventJobStats";
 import Banners from "../pages/AdminPages/Banners";
 import AddBanner from "../pages/AdminPages/AddBanner";
 import EditBanner from "../pages/AdminPages/EditBanner";
+import JobsPage from "../pages/UserPages/JobsPage";
+
 
 function AppRoutes() {
   const { loading } = useSelector((state) => state.loadings);
@@ -96,13 +96,14 @@ function AppRoutes() {
    
 
       <Toaster position="top-center" reverseOrder={false} />
+    
+
 
       <Routes>
         <Route path={ServerVariables.Landing} element={<LandingPage />} />
         <Route path='*' element={<Page404 />} />
         
-
-
+        
 
 
         {/* user routes */}
@@ -111,7 +112,7 @@ function AppRoutes() {
           <Route path={ServerVariables.Login} element={<UserLogin />} />
           <Route path={ServerVariables.Register} element={<UserRegister />} />
           <Route path={ServerVariables.Otp} element={<Otp />} />
-        </Route>
+        </Route>    
 
         <Route element={<IsLoggedInUser />}> {/* protected  */}
           <Route path={ServerVariables.UserHome} element={<UserHome />} />
@@ -126,6 +127,7 @@ function AppRoutes() {
           <Route path={ServerVariables.explore} element={<Explore/>} />
           <Route path={ServerVariables.searchEvent} element={<SearchEvent/>} />
           <Route path={ServerVariables.userNotifications} element={<UserNotifications/>} />
+          <Route path={ServerVariables.showJobs} element={<JobsPage/>} />
           <Route path={ServerVariables.jobDetails} element={<JobDetails/>} />
           <Route path={ServerVariables.jobStats} element={<JobStats/>} />
         </Route>
