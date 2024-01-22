@@ -15,11 +15,14 @@ import Swal from "sweetalert2";
 import Modal from "react-modal";
 import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
 import FollowerCard from "../../components/FollowerCard";
+import Search1 from "../../components/Search1";
 
 function HiringsPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [jobPosts, setJobPosts] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [searched, setSearched] = useState([]);
 
   useEffect(() => {
     getJobPosts();
@@ -105,15 +108,41 @@ function HiringsPage() {
     navigate(`${ServerVariables.eventJobStats}/${jobId}`);
   };
 
+  const handleSearch = (search) => {
+    setSearched(search);
+    eventRequest({
+      url: apiEndPoints.searchJob,
+      method: "post",
+      data: { search },
+    })
+      .then((res) => {
+        if (res.data.success) {
+          setFilteredData(res.data.results);
+        } else {
+        }
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  };
+
+
   return (
     <>
       <div className="flex">
         <EventSideBar />
         <div className="flex-grow flex-shrink min-h-screen">
           {/* hiring page header */}
-          <div className="myDivBg flex justify-around text-center mx-16 p-2">
+          <div className="myDivBg border-b myBorder flex justify-around text-center mx-16 p-2">
             <div className="m-4">
               <h2 className="myTextColor uppercase font-bold"> job posts</h2>
+            </div>
+            <div className="m-4">
+              <Search1
+                search={"search jobs"}
+                value={searched}
+                onChange={(e) => handleSearch(e)}
+              />
             </div>
             <div>
               <span className="font-bold block uppercase tracking-wide">
@@ -129,7 +158,7 @@ function HiringsPage() {
           </div>
 
           {/* job cards */}
-          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6 mx-16 my-4">
+          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-8 mx-16 my-4">
             {jobPosts.length ? (
               jobPosts.map((jobPost) => {
                 return (

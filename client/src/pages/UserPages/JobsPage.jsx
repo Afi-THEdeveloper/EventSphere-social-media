@@ -8,6 +8,8 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Button2 from "../../components/Button2";
 import { ServerVariables } from "../../utils/ServerVariables";
+import Search1 from "../../components/Search1";
+import Button1 from "../../components/Button1";
 
 function JobsPage() {
   const [jobPosts, setJobPosts] = useState([]);
@@ -45,7 +47,6 @@ function JobsPage() {
       });
   };
 
-  
   const showStats = () => {
     navigate(ServerVariables.jobStats);
   };
@@ -56,11 +57,14 @@ function JobsPage() {
         <UserSideBar />
         <div className="flex-grow flex-shrink min-h-screen">
           {/* hiring page header */}
-          <div className="myDivBg flex justify-around text-center mx-16 p-2">
+          <div className="myDivBg border-b myBorder flex justify-around text-center mx-16 p-2">
             <div className="m-4">
               <h2 className="myTextColor uppercase font-bold"> jobs</h2>
             </div>
-            <div>
+            <div className="m-4">
+              <Search1 search={"search jobs"} />
+            </div>
+            <div className="m-2">
               <Button2 text={"stats"} onClick={showStats} />
             </div>
           </div>
@@ -81,11 +85,11 @@ function JobsPage() {
                 );
               })
             ) : (
-              <div className="text-center myPara">
+              <div className="myPara text-center my-[40vh] ml-[10vh]">
                 <p>No jobs found</p>
-                <small className="myPara">
+                <p className="myPara text-xs">
                   (follow more events to explore more jobs)
-                </small>
+                </p>
               </div>
             )}
           </div>

@@ -14,6 +14,9 @@ import EventSideBar from "../../components/EventSideBar";
 import { ServerVariables } from "../../utils/ServerVariables";
 import { useNavigate } from "react-router-dom";
 import Search1 from "../../components/Search1";
+import Picker from "@emoji-mart/react";
+import data from "@emoji-mart/data";
+import { BsEmojiSmile } from "react-icons/bs";
 
 function EventChats() {
   const [selectedUserId, setSelectedUserId] = useState("");
@@ -25,6 +28,16 @@ function EventChats() {
   const inputRef = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // add emoji
+  const [showEmoji, setShowEmoji] = useState(false);
+  const addEmoji = (e) => {
+    const sym = e.unified.split("_");
+    const codeArray = [];
+    sym.forEach((el) => codeArray.push("0x" + el));
+    let emoji = String.fromCodePoint(...codeArray);
+    setNewMessageText(newMessageText + emoji);
+  };
 
   useEffect(() => {
     getContactsList();
@@ -76,6 +89,7 @@ function EventChats() {
         .then((response) => {
           if (response.data.success) {
             setNewMessageText("");
+            setShowEmoji(false)
             fetchChatMessages(partnerId);
 
             var obj = response.data.savedChat;
@@ -188,7 +202,9 @@ function EventChats() {
                     onClick={() => handleClickContact(contact?.userId?._id)}
                     className={
                       "py-2 pl-4 flex items-center gap-2 cursor-pointer " +
-                      (contact?.userId?._id === selectedUserId ? "activeBg" : "")
+                      (contact?.userId?._id === selectedUserId
+                        ? "activeBg"
+                        : "")
                     }
                   >
                     {contact?.userId?._id === selectedUserId && (
@@ -291,6 +307,27 @@ function EventChats() {
                   placeholder="message..."
                   className="myDivBg border p-2 flex-grow rounded-sm text-[#5A91E2]"
                 />
+
+                {/* emoji */}
+                <span
+                  onClick={() => setShowEmoji(!showEmoji)}
+                  className="myTextColor cursor-pointer hover:text-slate-300"
+                >
+                  <BsEmojiSmile />
+                </span>
+
+                {showEmoji && (
+                  <div className="absolute bottom-12">
+                    <Picker
+                      data={data}
+                      emojiSize={20}
+                      emojiButtonSize={28}
+                      onEmojiSelect={addEmoji}
+                      maxFrequentRows={0}
+                    />
+                  </div>
+                )}
+
                 <button
                   onClick={() =>
                     sendMessage(

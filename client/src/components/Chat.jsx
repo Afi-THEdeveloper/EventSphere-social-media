@@ -14,6 +14,9 @@ import UserSidebar from "./User/UserSidebar";
 import { useNavigate } from "react-router-dom";
 import { ServerVariables } from "../utils/ServerVariables";
 import Search1 from "../components/Search1";
+import Picker from "@emoji-mart/react";
+import data from "@emoji-mart/data";
+import { BsEmojiSmile } from "react-icons/bs";
 
 function Chat() {
   const [selectedEventId, setSelectedEventId] = useState("");
@@ -25,6 +28,16 @@ function Chat() {
   const inputRef = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // add emoji
+  const [showEmoji, setShowEmoji] = useState(false);
+  const addEmoji = (e) => {
+    const sym = e.unified.split("_");
+    const codeArray = [];
+    sym.forEach((el) => codeArray.push("0x" + el));
+    let emoji = String.fromCodePoint(...codeArray);
+    setNewMessageText(newMessageText + emoji);
+  };
 
   useEffect(() => {
     getContactsList();
@@ -74,6 +87,7 @@ function Chat() {
         .then((response) => {
           if (response.data.success) {
             setNewMessageText("");
+            setShowEmoji(false)
             fetchChatMessages(partnerId);
 
             var obj = response.data.savedChat;
@@ -195,9 +209,7 @@ function Chat() {
 
                     <div className="flex gap-4 py-2 pl-4 items-center">
                       <Avatar profile={contact?.profile} />
-                      <span className="myTextColor">
-                        {contact.title}
-                      </span>
+                      <span className="myTextColor">{contact.title}</span>
                       {contact?.unseenMessagesCount > 0 && (
                         <span className="bg-green-500 text-white w-5 h-5 flex items-center justify-center rounded-full">
                           {contact?.unseenMessagesCount}
@@ -239,8 +251,6 @@ function Chat() {
                 </div>
               )}
             </div>
-
-
 
             {/* chats  */}
             <div className="relative h-full">
@@ -291,6 +301,28 @@ function Chat() {
                   placeholder="message..."
                   className="myDivBg border p-2 flex-grow rounded-sm text-[#5A91E2]"
                 />
+
+                
+                {/* emoji */}
+                <span
+                  onClick={() => setShowEmoji(!showEmoji)}
+                  className="myTextColor cursor-pointer hover:text-slate-300"
+                >
+                  <BsEmojiSmile />
+                </span>
+
+                {showEmoji && (
+                  <div className="absolute bottom-12">
+                    <Picker
+                      data={data}
+                      emojiSize={20}
+                      emojiButtonSize={28}
+                      onEmojiSelect={addEmoji}
+                      maxFrequentRows={0}
+                    />
+                  </div>
+                )}
+
                 <button
                   onClick={() => sendMessage(chatPartner._id, selectedEventId)}
                   className="bg-blue-700 p-2 text-white"

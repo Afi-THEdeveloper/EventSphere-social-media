@@ -579,3 +579,14 @@ exports.getEventJobStats = CatchAsync(async (req, res) => {
     return res.json({ error: "failed to fetch job stats, try again" });
   }
 });
+
+exports.searchJob = CatchAsync(async (req, res) => {
+  const searched = req?.body?.search;
+  const regexPattern = new RegExp(searched, "i");
+  const result = await JobPost.find({
+    eventId: req?.eventId,
+    title: { $regex: regexPattern },
+  });
+
+  return console.log(result);
+});
