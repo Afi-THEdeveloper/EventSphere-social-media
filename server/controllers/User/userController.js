@@ -465,3 +465,40 @@ exports.getJobStats = CatchAsync(async (req, res) => {
     return res.json({ error: "failed to fetch job stats,try again" });
   }
 });
+
+exports.UserSearchJob = CatchAsync(async (req, res) => {
+  const searched = req?.body?.searched;
+  const regexPattern = new RegExp(searched, "i");
+
+  console.log("Search Term:", searched);
+  console.log("Event ID:", req?.eventId);
+  const user = await User.findById(req?.userId);
+  const results = await JobPost.find({
+    $and: [
+      {
+        $or: [
+          { title: { $regex: regexPattern } },
+          { location: { $regex: regexPattern } },
+        ],
+      },
+      { isBlocked: false },
+      { vaccancies: { $gt: 0 } },
+      { eventId: { $in: user?.following } },
+      { appliedUsers: { $nin: req?.userId } },
+      { acceptedUsers: { $nin: req?.userId } },
+    ],
+  });
+
+  console.log("Search Results:", results);
+
+  if (results.length) {
+    res.status(200).json({
+      success: true,
+      results,
+    });
+  } else {
+    res.status(200).json({
+      error: "no results found",
+    });
+  }
+});

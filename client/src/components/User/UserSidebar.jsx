@@ -175,7 +175,8 @@ function UserSidebar() {
           <UserCard
             profile={user?.profile}
             username={user?.username}
-            phone={user?.phone}
+            email={user?.email}
+            role={'user'}
           />
         </div>
         <div className="mt-8">

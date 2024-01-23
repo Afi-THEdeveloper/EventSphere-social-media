@@ -42,6 +42,7 @@ userRouter.post('/register', userController.register)
     .get('/getJobs', userAuth, userController.getJobs)
     .post('/applyJob', userAuth, userController.applyJob)
     .get('/getJobStats', userAuth, userController.getJobStats)
+    .post('/UserSearchJob', userAuth, userController.UserSearchJob)
 
 
 

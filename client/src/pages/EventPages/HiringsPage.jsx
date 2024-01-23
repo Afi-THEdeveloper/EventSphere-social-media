@@ -21,7 +21,6 @@ function HiringsPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [jobPosts, setJobPosts] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
   const [searched, setSearched] = useState([]);
 
   useEffect(() => {
@@ -108,24 +107,24 @@ function HiringsPage() {
     navigate(`${ServerVariables.eventJobStats}/${jobId}`);
   };
 
-  const handleSearch = (search) => {
-    setSearched(search);
+  const handleSearch = () => {
     eventRequest({
       url: apiEndPoints.searchJob,
       method: "post",
-      data: { search },
+      data: { searched },
     })
       .then((res) => {
         if (res.data.success) {
-          setFilteredData(res.data.results);
+          setJobPosts(res.data.results)
+          setSearched('')
         } else {
+          toast.error(res.data.error);
         }
       })
       .catch((err) => {
         toast.error(err.message);
       });
   };
-
 
   return (
     <>
@@ -139,15 +138,21 @@ function HiringsPage() {
             </div>
             <div className="m-4">
               <Search1
-                search={"search jobs"}
+                search={"search jobs, location"}
                 value={searched}
-                onChange={(e) => handleSearch(e)}
+                onChange={(e) => setSearched(e.target.value)}
               />
+              <span
+                onClick={handleSearch}
+                className="myTextColor cursor-pointer border myBorder p-[6px] rounded-lg"
+              >
+                Search
+              </span>
             </div>
             <div>
               <span className="font-bold block uppercase tracking-wide">
                 <button
-                  className="border p-3 rounded-full myHover"
+                  className="border p-2 rounded-full myHover"
                   onClick={() => navigate(ServerVariables.postJob)}
                 >
                   <PlusIcon className="myPara h-4 w-4" />

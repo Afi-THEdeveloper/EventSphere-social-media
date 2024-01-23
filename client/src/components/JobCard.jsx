@@ -30,7 +30,7 @@ const JobCard = ({
 
   return (
     <>
-      <div className="myDivBg p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
+      <div className="myDivBg border myBorder p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
         <div className="flex justify-between">
           <h2 className="text-xl myTextColor font-semibold mb-4">
             {jobPost?.title}

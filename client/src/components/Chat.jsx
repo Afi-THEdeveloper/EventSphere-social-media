@@ -185,7 +185,7 @@ function Chat() {
                 search={"search chats..."}
                 value={searched}
                 onChange={(e) => setSearched(e.target.value)}
-              />
+              />  
             </div>
             {contactLists.length ? (
               contactLists
@@ -302,7 +302,7 @@ function Chat() {
                   className="myDivBg border p-2 flex-grow rounded-sm text-[#5A91E2]"
                 />
 
-                
+
                 {/* emoji */}
                 <span
                   onClick={() => setShowEmoji(!showEmoji)}

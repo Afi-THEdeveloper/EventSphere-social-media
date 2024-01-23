@@ -13,6 +13,7 @@ import Button1 from "../../components/Button1";
 
 function JobsPage() {
   const [jobPosts, setJobPosts] = useState([]);
+  const [searched, setSearched] = useState([]);
   const { user } = useSelector((state) => state.Auth);
   const navigate = useNavigate();
 
@@ -51,6 +52,25 @@ function JobsPage() {
     navigate(ServerVariables.jobStats);
   };
 
+  const handleSearch = () => {
+    userRequest({
+      url: apiEndPoints.UserSearchJob,
+      method: "post",
+      data: { searched },
+    })
+      .then((res) => {
+        if (res.data.success) {
+          setJobPosts(res.data.results)
+          setSearched('')
+        } else {
+          toast.error(res.data.error);
+        }
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  };
+
   return (
     <>
       <div className="flex">
@@ -62,7 +82,17 @@ function JobsPage() {
               <h2 className="myTextColor uppercase font-bold"> jobs</h2>
             </div>
             <div className="m-4">
-              <Search1 search={"search jobs"} />
+              <Search1
+                search={"search jobs"}
+                value={searched}
+                onChange={(e) => setSearched(e.target.value)}
+              />
+              <span
+                onClick={handleSearch}
+                className="myTextColor cursor-pointer border myBorder p-[6px] rounded-lg"
+              >
+                Search
+              </span>
             </div>
             <div className="m-2">
               <Button2 text={"stats"} onClick={showStats} />

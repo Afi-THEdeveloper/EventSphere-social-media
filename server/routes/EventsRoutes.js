@@ -49,7 +49,7 @@ eventRouter
     .patch('/acceptJobRequest', eventAuth, eventController.acceptJobRequest)
     .post('/getEventJobStats', eventAuth, eventController.getEventJobStats)
 
-    .post('/searchJob', eventAuth, eventController.searchJob)
+    .post('/searchJob', eventAuth, eventController.searchJob)         
 
 
     

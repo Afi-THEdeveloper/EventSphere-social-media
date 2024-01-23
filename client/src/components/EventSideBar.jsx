@@ -145,16 +145,6 @@ function EventSideBar() {
   return (
     <>
       <div className="myBorder border-r flex-col w-[300px] hidden md:flex min-h-screen flex-shrink-0">
-        {/* <div className="flex gap-2 mt-2">
-          <img
-            className="w-8 h-8 rounded-full"
-            src={`http://localhost:5000/profiles/${event?.profile}`}
-            alt=""
-          />
-          <h1 className="myTextColor uppercase text-3xl font-thin mx-2">
-            EventSphere
-          </h1>
-        </div> */}
         <div className="flex gap-2 mt-2">
           <h1 className="myTextColor uppercase text-2xl font-serif mx-6">
             EventSphere
@@ -164,7 +154,8 @@ function EventSideBar() {
           <UserCard
             profile={event?.profile}
             username={event?.title}
-            phone={event?.phone}
+            email={event?.email}
+            role={'event'}
           />
         </div>
         <div className="mt-8">

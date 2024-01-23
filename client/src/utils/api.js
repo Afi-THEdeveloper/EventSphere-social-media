@@ -26,6 +26,7 @@ export const apiEndPoints = {
     getJobs:'api/user/getJobs',
     applyJob:'api/user/applyJob',
     getJobStats:'api/user/getJobStats',
+    UserSearchJob : 'api/user/UserSearchJob',
     
 
 

@@ -581,12 +581,34 @@ exports.getEventJobStats = CatchAsync(async (req, res) => {
 });
 
 exports.searchJob = CatchAsync(async (req, res) => {
-  const searched = req?.body?.search;
+  const searched = req?.body?.searched;
   const regexPattern = new RegExp(searched, "i");
-  const result = await JobPost.find({
-    eventId: req?.eventId,
-    title: { $regex: regexPattern },
+
+  console.log("Search Term:", searched);
+  console.log("Event ID:", req?.eventId);
+
+  const results = await JobPost.find({
+    $and: [
+      {
+        $or: [
+          { title: { $regex: regexPattern } },
+          { location: { $regex: regexPattern } },
+        ],
+      },
+      { eventId: req?.eventId },
+    ],
   });
 
-  return console.log(result);
+  console.log("Search Results:", results);
+
+  if (results.length) {
+    res.status(200).json({
+      success: true,
+      results,
+    });
+  } else {
+    res.status(200).json({
+      error: "no results found",
+    });
+  }
 });

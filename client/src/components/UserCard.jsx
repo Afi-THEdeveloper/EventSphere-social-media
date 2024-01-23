@@ -1,8 +1,21 @@
-import React from "react"; 
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { ServerVariables } from "../utils/ServerVariables";
 
-const UserCard = ({ profile, username, phone }) => {
+const UserCard = ({ profile, username, email, role }) => {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    if (role === "user") {
+      navigate(ServerVariables.userProfile);
+    } else if (role === "event") {
+      navigate(ServerVariables.eventHome);
+    }
+  };
   return (
-    <div className="flex items-center justify-between px-6 py-5">
+    <div
+      onClick={handleClick}
+      className="flex items-center justify-between px-6 py-5"
+    >
       <div className="flex items-center mr-5">
         <div className="mr-5">
           <div className="inline-block relative shrink-0 cursor-pointer rounded-[.95rem]">
@@ -21,7 +34,7 @@ const UserCard = ({ profile, username, phone }) => {
             {username}
           </a>
           <span className="myPara font-medium block text-[0.85rem]">
-            {phone}
+            {email}
           </span>
         </div>
       </div>
