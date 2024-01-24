@@ -12,9 +12,9 @@ const dbConfig = require("./config/db");
 const initializeSocket = require('./sockets/chatSocket')
 
 const cors = require("cors");
-app.use(
+app.use( 
   cors({
-    origin: [''],
+    origin: '*',
     methods: ['GET', 'post', 'put', 'delete', 'patch', ],
     credentials:true,
   })
