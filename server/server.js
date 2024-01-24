@@ -16,7 +16,6 @@ app.use(
   cors({
     origin: '*',
     methods: ['GET', 'post', 'put', 'delete', 'patch', ],
-    credentials:true,
   })
 );
 app.use(morgan("common"));

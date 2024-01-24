@@ -7,7 +7,6 @@ export const userRequest = ({ ...options }) => {
   user.defaults.headers.common.Authorization = JSON.parse(
     localStorage.getItem("UserToken")
   );
-  axios.defaults.withCredentials = true;
   const onSuccess = (response) => response;
   const onError = (error) => {
     console.log("axios interceptor", error);
@@ -20,7 +19,6 @@ export const eventRequest = ({ ...options }) => {
   user.defaults.headers.common.Authorization = JSON.parse(
     localStorage.getItem("eventToken")
   );
-  axios.defaults.withCredentials = true;
 
   const onSuccess = (response) => response;
   const onError = (error) => {
@@ -34,7 +32,6 @@ export const adminRequest = ({ ...options }) => {
   user.defaults.headers.common.Authorization = JSON.parse(
     localStorage.getItem("adminToken")
   );
-  axios.defaults.withCredentials = true;
 
   const onSuccess = (response) => response;
   const onError = (error) => {
