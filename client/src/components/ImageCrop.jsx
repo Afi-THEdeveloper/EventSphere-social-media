@@ -12,7 +12,7 @@ function ImageCrop({ onNewImageUrl }) {
   function getNewAvatarUrl(e) {
     const file = e.target.files[0];
     if (file) {
-        setNewAvatarUrl(URL.createObjectURL(file));
+      setNewAvatarUrl(URL.createObjectURL(file));
     }
   }
 
