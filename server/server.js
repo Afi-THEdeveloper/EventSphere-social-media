@@ -12,19 +12,21 @@ const dbConfig = require("./config/db");
 const initializeSocket = require('./sockets/chatSocket')
 
 const cors = require("cors");
-app.use( 
+app.use(
   cors({
-    origin: '*',
-    methods: ['GET', 'post', 'put', 'delete', 'patch', ],
+    origin: "*",
   })
 );
+
 app.use(morgan("common"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public/assets")));
 // to destructure json type data from user as request
 app.use(express.json());
 
-//routes configuration ( when ever this kind of end points come it will search in specific routes)
+
+
+
 const userRoutes = require("./routes/userRoutes");
 app.use("/api/user", userRoutes);
 const eventRoutes = require("./routes/EventsRoutes");

@@ -12,6 +12,7 @@ const CatchAsync = require("../../util/CatchAsync");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+
 //hashing  password
 const securePassword = async (password) => {
   const passwordHash = await bcrypt.hash(password, 10);
