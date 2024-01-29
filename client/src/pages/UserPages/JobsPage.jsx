@@ -4,46 +4,53 @@ import JobCard from "../../components/JobCard";
 import { userRequest } from "../../Helper/instance";
 import { apiEndPoints } from "../../utils/api";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Button2 from "../../components/Button2";
 import { ServerVariables } from "../../utils/ServerVariables";
 import Search1 from "../../components/Search1";
-import Button1 from "../../components/Button1";
+import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
 
 function JobsPage() {
   const [jobPosts, setJobPosts] = useState([]);
   const [searched, setSearched] = useState([]);
   const { user } = useSelector((state) => state.Auth);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getJobPosts();
   }, []);
   const getJobPosts = () => {
+    dispatch(showLoading())
     userRequest({
       url: apiEndPoints.getJobs,
       method: "get",
     })
       .then((res) => {
+        dispatch(hideLoading())
         setJobPosts(res.data.posts);
       })
       .catch((err) => {
+        dispatch(hideLoading())
         toast.error(err.message);
       });
   };
 
   const applyJob = (jobId) => {
+    dispatch(showLoading())
     userRequest({
       url: apiEndPoints.applyJob,
       method: "post",
       data: { jobId },
     })
       .then((res) => {
+        dispatch(hideLoading())
         toast.success(res.data.success);
         navigate(ServerVariables.jobStats);
       })
       .catch((err) => {
+        dispatch(hideLoading())
         toast.error(err.message);
       });
   };
@@ -53,17 +60,21 @@ function JobsPage() {
   };
 
   const handleSearch = () => {
+    dispatch(showLoading())
     userRequest({
       url: apiEndPoints.UserSearchJob,
       method: "post",
       data: { searched },
     })
       .then((res) => {
+        dispatch(hideLoading())
         if (res.data.success) {
           setJobPosts(res.data.results)
           setSearched('')
         } else {
+          dispatch(hideLoading())
           toast.error(res.data.error);
+          setSearched('')
         }
       })
       .catch((err) => {

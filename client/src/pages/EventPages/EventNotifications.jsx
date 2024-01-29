@@ -146,9 +146,8 @@ function EventNotifications() {
                   <div
                     key={item?._id}
                     className="myBorder border-y-[0.1px] p-2 w-full rounded-lg shadow-md flex items-center justify-between space-x-4"
-                    onClick={() => handleNotificationClick(item?.actionOn)}
                   >
-                    <div className="flex-grow">
+                    <div className="flex-grow"  onClick={() => handleNotificationClick(item?.actionOn)}>
                       <small className="myTextColor font-extrabold cursor-pointer">
                         {item?.notificationMessage}
                         {item?.actionOn?.model === "eventPosts" && (

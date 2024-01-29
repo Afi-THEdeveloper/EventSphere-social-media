@@ -25,11 +25,13 @@ function PostCard() {
   const location = useLocation();
   const { user } = useSelector((state) => state.Auth);
   const getFollowingPosts = () => {
+    dispatch(showLoading());
     userRequest({
       url: apiEndPoints.getFollowingposts,
       method: "get",
     })
       .then((res) => {
+        dispatch(hideLoading())
         if (res.data?.success) {
           console.log(res?.data);
           setEventPosts(res.data.posts);
@@ -38,16 +40,19 @@ function PostCard() {
         }
       })
       .catch((err) => {
+        dispatch(hideLoading())
         toast.error(err.message);
       });
   };
 
   const getPosts = () => {
+    dispatch(showLoading());
     userRequest({
       url: apiEndPoints.getEPosts,
       method: "get",
     })
       .then((res) => {
+        dispatch(hideLoading())
         if (res.data?.success) {
           console.log(res?.data);
           setEventPosts(res.data.posts);
@@ -56,6 +61,7 @@ function PostCard() {
         }
       })
       .catch((err) => {
+        dispatch(hideLoading())
         toast.error(err.message);
       });
   };

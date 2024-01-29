@@ -19,29 +19,35 @@ function UserNotifications() {
   const navigate = useNavigate();
 
   const clearMessge = (NotId) => {
+    dispatch(showLoading())
     userRequest({
       url: apiEndPoints.clearUserNotification,
       method: "delete",
       data: { NotId },
     })
       .then((res) => {
+        dispatch(hideLoading())
         getUserNotifications();
       })
       .catch((err) => {
+        dispatch(hideLoading())
         toast.error(err.messsage);
       });
   };
 
   const clearAllNotifications = () => {
+    dispatch(showLoading())
     userRequest({
       url: apiEndPoints.clearAllUserNotifications,
       method: "delete",
     })
       .then((res) => {
+        dispatch(hideLoading())
         getUserNotifications();
         toast.success(res.data?.success);
       })
       .catch((err) => {
+        dispatch(hideLoading())
         toast.error(err.messsage);
       });
   };
@@ -102,9 +108,8 @@ function UserNotifications() {
                   <div
                     key={item?._id}
                     className="myBorder border-y-[0.1px] p-2 w-full rounded-lg shadow-md flex items-center justify-between space-x-4"
-                    onClick={() => handleNotificationClick(item?.actionOn)}
                   >
-                    <div className="flex-grow">
+                    <div className="flex-grow" onClick={() => handleNotificationClick(item?.actionOn)}>
                       <small className="myTextColor font-extrabold cursor-pointer">
                         {item?.notificationMessage}
                         {item?.actionOn?.model === "eventPosts" && (
