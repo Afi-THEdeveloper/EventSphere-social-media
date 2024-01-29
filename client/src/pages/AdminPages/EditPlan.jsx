@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from "react";
 import AdminNavbar from "../../components/AdminNavbar";
 import { ServerVariables } from "../../utils/ServerVariables";
-import Myh1 from "../../components/Myh1";
-import AuthInput from "../../components/AuthInput";
-import Button2 from "../../components/Button2";
-import Button1 from "../../components/Button1";
 import { adminRequest } from "../../Helper/instance";
-import api from "../../config/api";
 import { apiEndPoints } from "../../utils/api";
 import toast from "react-hot-toast";
-import { AxiosError } from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 
 function EditPlan() {

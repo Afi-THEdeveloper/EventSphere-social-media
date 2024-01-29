@@ -6,6 +6,7 @@ import Button1 from "./Button1";
 import Myh1 from "./Myh1";
 import { ServerVariables } from "../utils/ServerVariables";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../config/api";
 
 const BannerCourosel = ({ banners }) => {
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ const BannerCourosel = ({ banners }) => {
       {banners.map((banner, index) => (
         <div key={index} className="relative">
           <img
-            src={`http://localhost:5000/banners/${banner?.image}`}
+            src={`${API_BASE_URL}/banners/${banner?.image}`}
             alt={`Banner ${index + 1}`}
             className="w-full h-screen"
           />

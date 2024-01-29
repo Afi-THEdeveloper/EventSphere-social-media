@@ -1,6 +1,6 @@
-import URL from "../config/api";
 import axios from "axios";
-const user = axios.create({ baseURL: URL.BASE_URL });
+import { API_BASE_URL } from "../config/api";
+const user = axios.create({ baseURL: API_BASE_URL });
 
 export const userRequest = ({ ...options }) => {
   //the Authorization header
