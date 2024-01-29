@@ -7,6 +7,7 @@ import { hideLoading, showLoading } from "../Redux/slices/LoadingSlice";
 import { FaReply } from "react-icons/fa";
 import EventReply from "./Event/EventReply";
 import toast from "react-hot-toast";
+import { API_BASE_URL } from "../config/api";
 
 function CommentModal({ isOpen, closeModal, Comments, post }) {
   const [reply, setReply] = useState("");
@@ -82,7 +83,7 @@ function CommentModal({ isOpen, closeModal, Comments, post }) {
           <img src="" alt="" />
           <img
             className="w-full h-42 object-cover"
-            src={`http://localhost:5000/Event/posts/${post?.image}`}
+            src={`${API_BASE_URL}/Event/posts/${post?.image}`}
             alt={post?.description}
           />
           <h2 className="text-slate-600 mb-4">{post?.likes?.length} likes</h2>
@@ -94,7 +95,7 @@ function CommentModal({ isOpen, closeModal, Comments, post }) {
                   <div className="flex items-center">
                     <img
                       className="h-8 w-8 rounded-full mr-2"
-                      src={`http://localhost:5000/profiles/${comment?.userId?.profile}`}
+                      src={`${API_BASE_URL}/profiles/${comment?.userId?.profile}`}
                       alt=""
                     />
                     <div className="flex-grow">

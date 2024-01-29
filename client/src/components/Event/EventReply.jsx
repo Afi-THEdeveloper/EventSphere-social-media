@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { eventRequest } from "../../Helper/instance";
 import { apiEndPoints } from "../../utils/api";
 import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
+import { API_BASE_URL } from "../../config/api";
 
 const EventReply = ({ Reply, Post, comment }) => {
   const dispatch = useDispatch();
@@ -44,7 +45,7 @@ const EventReply = ({ Reply, Post, comment }) => {
           <p className="inline-flex items-center mr-3 text-sm text-gray-950 ">
             <img
               className="mr-2 w-6 h-6 rounded-full"
-              src={`http://localhost:5000/profiles/${reply?.repliedUser?.profile}`}
+              src={`${API_BASE_URL}/profiles/${reply?.repliedUser?.profile}`}
               alt="Michael Gough"
             />
             {reply?.username}

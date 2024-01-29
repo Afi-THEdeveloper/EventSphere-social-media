@@ -1,6 +1,7 @@
 import React from "react";
 import { useDeleteReplyMutation } from "../Redux/Comments/CommentApi";
 import { MdOutlineDeleteForever } from "react-icons/md";
+import { API_BASE_URL } from "../config/api";
 
 const Reply = ({ reply, user, }) => {
   const [deleteReply, { isLoading, isSuccess }] =
@@ -22,7 +23,7 @@ const Reply = ({ reply, user, }) => {
         <p class="inline-flex items-center mr-3 text-sm myTextColor">
           <img
             class="mr-2 w-6 h-6 rounded-full"
-            src={`http://localhost:5000/profiles/${reply?.repliedUser?.profile}`}
+            src={`${API_BASE_URL}/profiles/${reply?.repliedUser?.profile}`}
             alt="Michael Gough"
           />
           {reply?.username}

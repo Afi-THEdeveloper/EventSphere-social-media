@@ -2,6 +2,7 @@ import React from "react";
 import { LiaRupeeSignSolid } from "react-icons/lia";
 import { useNavigate } from "react-router-dom";
 import { ServerVariables } from "../utils/ServerVariables";
+import { API_BASE_URL } from "../config/api";
 
 const JobCard2 = ({ job }) => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const JobCard2 = ({ job }) => {
             <div className="relative w-auto pl-4 flex-initial">
               <div className="text-center inline-flex items-center justify-center w-8 h-8 shadow-lg rounded-full">
                 <img
-                  src={`http://localhost:5000/profiles/${job?.eventId?.profile}`}
+                  src={`${API_BASE_URL}/profiles/${job?.eventId?.profile}`}
                   alt=""
                 />
               </div>

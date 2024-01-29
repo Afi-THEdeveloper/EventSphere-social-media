@@ -11,6 +11,7 @@ import Modal from "react-modal";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../Redux/slices/LoadingSlice";
 import FollowerCard from "./FollowerCard";
+import { API_BASE_URL } from "../config/api";
 
 function ProfileCard({ event, postCount, story }) {
   const navigate = useNavigate();
@@ -69,7 +70,7 @@ function ProfileCard({ event, postCount, story }) {
             <div className="w-full flex justify-center">
               <div className="relative">
                 <img
-                  src={`http://localhost:5000/profiles/${event.profile}`}
+                  src={`${API_BASE_URL}/profiles/${event.profile}`}
                   className="shadow-xl rounded-full align-middle absolute -m-16 -ml-20 lg:-ml-16 max-w-[150px]  border-2 myBorder"
                   alt=""
                   onClick={ProfileClickHandler}

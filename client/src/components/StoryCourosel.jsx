@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Courosel from "./Courosel";
 import { useLocation } from "react-router-dom";
+import { API_BASE_URL } from "../config/api";
 
 function StoryCourosel() {
   const [stories, setStories] = useState([]);
@@ -31,7 +32,7 @@ function StoryCourosel() {
             descriptions={descriptions}
           >
             {stories.map((s) => (
-              <img src={`http://localhost:5000/Event/posts/${s.image}`} />
+              <img src={`${API_BASE_URL}/Event/posts/${s.image}`} />
             ))}
           </Courosel>
         </div>

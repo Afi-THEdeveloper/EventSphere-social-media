@@ -10,6 +10,7 @@ import { adminRequest } from "../../Helper/instance";
 import { ServerVariables } from "../../utils/ServerVariables";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
+import { API_BASE_URL } from "../../config/api";
 
 function Banners() {
   const navigate = useNavigate();
@@ -134,8 +135,8 @@ function Banners() {
                           <td className="border-b p-4 text-center">
                             <img
                               className="h-10 w-10 rounded-full"
-                              src={`http://localhost:5000/banners/${banner?.image}`}
-                              alt={`http://localhost:5000/profiles/avatar.png`}
+                              src={`${API_BASE_URL}/banners/${banner?.image}`}
+                              alt={`${API_BASE_URL}/profiles/avatar.png`}
                             />
                           </td>
                           <td className="border-b p-4 text-center">

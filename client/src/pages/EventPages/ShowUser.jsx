@@ -11,6 +11,7 @@ import JobCard from "../../components/JobCard";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
+import { API_BASE_URL } from "../../config/api";
 
 function ShowUser() {
   const [user, setUser] = useState({});
@@ -85,7 +86,7 @@ function ShowUser() {
                 <div className="w-full flex justify-center">
                   <div className="relative">
                     <img
-                      src={`http://localhost:5000/profiles/${user?.profile}`}
+                      src={`${API_BASE_URL}/profiles/${user?.profile}`}
                       className="shadow-xl rounded-full align-middle absolute -m-16 -ml-20 lg:-ml-16 max-w-[150px]  border-2 border-[#E0CDB6]"
                       alt=""
                     />
@@ -124,7 +125,7 @@ function ShowUser() {
                       <p className="font-light leading-relaxed myPara mb-4">
                         <FaFilePdf
                           onClick={() =>
-                            (window.location.href = `http://localhost:5000/files/${user?.jobProfile?.CV}`)
+                            (window.location.href = `${API_BASE_URL}/files/${user?.jobProfile?.CV}`)
                           }
                           className="fill-slate-200 mx-[50%] h-8 w-8 mb-2"
                         />

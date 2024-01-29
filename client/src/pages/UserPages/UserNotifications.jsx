@@ -11,6 +11,7 @@ import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
 import { userRequest } from "../../Helper/instance";
 import { apiEndPoints } from "../../utils/api";
 import { ServerVariables } from "../../utils/ServerVariables";
+import { API_BASE_URL } from "../../config/api";
 
 function UserNotifications() {
   const [notifications, setNotifications] = useState([]);
@@ -109,7 +110,7 @@ function UserNotifications() {
                         {item?.actionOn?.model === "eventPosts" && (
                           <img
                             className="w-10 h-10"
-                            src={`http://localhost:5000/Event/posts/${item?.actionOn?.objectId.image}`}
+                            src={`${API_BASE_URL}/Event/posts/${item?.actionOn?.objectId.image}`}
                             alt="post-image"
                           />
                         )}

@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import Search1 from "../../components/Search1";
 import DataTable from "react-data-table-component";
 import ReactPaginate from "react-paginate";
+import { API_BASE_URL } from "../../config/api";
 
 function UsersTable() {
   const [users, setUsers] = useState([]);
@@ -29,7 +30,7 @@ function UsersTable() {
       selector: (row) => (
         <img
           className="h-10 w-10 rounded-full"
-          src={`http://localhost:5000/profiles/${row?.profile}`}
+          src={`${API_BASE_URL}/profiles/${row?.profile}`}
           alt="image"
         />
       ),

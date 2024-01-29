@@ -15,6 +15,7 @@ import { apiEndPoints } from "../../utils/api";
 import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
 import { ServerVariables } from "../../utils/ServerVariables";
 import Button2 from "../../components/Button2";
+import { API_BASE_URL } from "../../config/api";
 
 function PostDetail() {
   const [post, setPost] = useState({});
@@ -115,7 +116,7 @@ function PostDetail() {
               <div className="">
                 <img
                   className="mx-auto"
-                  src={`http://localhost:5000/Event/posts/${post?.image}`}
+                  src={`${API_BASE_URL}/Event/posts/${post?.image}`}
                   alt="title"
                 />
                 {post?.likes?.includes(user?._id) ? (

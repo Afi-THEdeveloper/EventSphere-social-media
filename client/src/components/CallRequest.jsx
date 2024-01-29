@@ -1,6 +1,7 @@
 import React from "react";
 import Modal from "react-modal";
 import { Link } from "react-router-dom";
+import { API_BASE_URL } from "../config/api";
 
 const CallRequest = ({ isOpen, closeModal, sender, link }) => {
   return (
@@ -33,7 +34,7 @@ const CallRequest = ({ isOpen, closeModal, sender, link }) => {
             style={{ height: "35rem" }}
           >
             <img
-              src={`http://localhost:5000/profiles/${sender?.profile}`}
+              src={`${API_BASE_URL}/profiles/${sender?.profile}`}
               className="w-full h-full object-cover rounded-3xl border-2 border-white"
               alt=""
             />

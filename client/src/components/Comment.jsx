@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAddReplyMutation } from "../Redux/Comments/CommentApi";
 import Reply from "./Reply";
+import { API_BASE_URL } from "../config/api";
 
 const Comment = ({ comment, user }) => {
   const [reply, setReply] = useState("");
@@ -37,7 +38,7 @@ const Comment = ({ comment, user }) => {
           <p className="inline-flex items-center mr-3 text-sm myTextColor">
             <img
               className="mr-2 w-6 h-6 rounded-full"
-              src={`http://localhost:5000/profiles/${comment?.userId?.profile}`}
+              src={`${API_BASE_URL}/profiles/${comment?.userId?.profile}`}
               alt="Michael Gough"
             />
             {comment?.userId?.username}

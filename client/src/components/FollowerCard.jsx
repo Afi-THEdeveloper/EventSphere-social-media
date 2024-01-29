@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import Myh1 from "./Myh1";
 import { useNavigate } from "react-router-dom";
 import { ServerVariables } from "../utils/ServerVariables";
+import { API_BASE_URL } from "../config/api";
 
 function FollowerCard({ isOpen, closeModal, items, role }) {
   const [persons, setPersons] = useState(items);
@@ -65,7 +66,7 @@ function FollowerCard({ isOpen, closeModal, items, role }) {
                     <div className="w-10 h-10 rounded-full">
                       <img
                         className="w-full h-42 object-cover"
-                        src={`http://localhost:5000/profiles/${person?.profile}`}
+                        src={`${API_BASE_URL}/profiles/${person?.profile}`}
                         alt=""
                       />
                     </div>

@@ -13,6 +13,7 @@ import { SlUserFollow, SlUserUnfollow } from "react-icons/sl";
 import { updateUser } from "../../Redux/slices/AuthSlice";
 import { updateEvent } from "../../Redux/slices/EventAuthSlice";
 import Myh1 from "../../components/Myh1";
+import { API_BASE_URL } from "../../config/api";
 
 function ShowEvent() {
   const navigate = useNavigate();
@@ -142,7 +143,7 @@ function ShowEvent() {
                 <div className="w-full flex justify-center">
                   <div className="relative">
                     <img
-                      src={`http://localhost:5000/profiles/${event.profile}`}
+                      src={`${API_BASE_URL}/profiles/${event.profile}`}
                       className="shadow-xl rounded-full align-middle absolute -m-16 -ml-20 lg:-ml-16 max-w-[150px]  border-2 myBorder"
                       alt=""
                       onClick={ProfileClickHandler}
@@ -234,7 +235,7 @@ function ShowEvent() {
                     {post?.image && (
                       <img
                         className="w-full h-42 object-cover"
-                        src={`http://localhost:5000/Event/posts/${post?.image}`}
+                        src={`${API_BASE_URL}/Event/posts/${post?.image}`}
                         alt={post.description}
                       />
                     )}

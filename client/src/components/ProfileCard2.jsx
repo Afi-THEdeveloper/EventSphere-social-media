@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ServerVariables } from "../utils/ServerVariables";
+import { API_BASE_URL } from "../config/api";
 
 function ProfileCard2({
   item,
@@ -22,8 +23,8 @@ function ProfileCard2({
         <div className="flex flex-1 flex-col p-8">
           <img
             className="mx-auto h-32 w-32 flex-shrink-0 rounded-full"
-            src={`http://localhost:5000/profiles/${item?.profile}`}
-            alt="http://localhost:5000/profiles/avatar.png"
+            src={`${API_BASE_URL}/profiles/${item?.profile}`}
+            alt="${API_BASE_URL}/profiles/avatar.png"
             onClick={role === "user" && viewProfile}
           />
           <h2

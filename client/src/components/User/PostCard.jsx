@@ -16,6 +16,7 @@ import { ServerVariables } from "../../utils/ServerVariables";
 import { updateUser } from "../../Redux/slices/AuthSlice";
 import { updateEvent } from "../../Redux/slices/EventAuthSlice";
 import { motion } from "framer-motion";
+import { API_BASE_URL } from "../../config/api";
 
 function PostCard() {
   const [EventPosts, setEventPosts] = useState([]);
@@ -191,7 +192,7 @@ function PostCard() {
                 <div className="flex flex-row justify-between items-center">
                   <div className="flex flex-row items-center gap-4">
                     <img
-                      src={`http://localhost:5000/profiles/${post?.postedBy?.profile}`}
+                      src={`${API_BASE_URL}/profiles/${post?.postedBy?.profile}`}
                       className="h-10 w-10 rounded-full object-cover border-2 myBorder"
                       alt="profile"
                     />
@@ -241,7 +242,7 @@ function PostCard() {
                 <div>
                   {post?.image && (
                     <img
-                      src={`http://localhost:5000/Event/posts/${post?.image}`}
+                      src={`${API_BASE_URL}/Event/posts/${post?.image}`}
                       alt="image"
                     />
                   )}

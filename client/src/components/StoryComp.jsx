@@ -4,6 +4,7 @@ import { apiEndPoints } from "../utils/api";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { ServerVariables } from "../utils/ServerVariables";
+import { API_BASE_URL } from "../config/api";
 
 const StoryComp = () => {
   const [stories, setStories] = useState([]);
@@ -52,7 +53,7 @@ const StoryComp = () => {
                 >
                   <img
                     className="h-16 w-16 rounded-full"
-                    src={`http://localhost:5000/profiles/${story?.stories[0]?.postedByDetails.profile}`}
+                    src={`${API_BASE_URL}/profiles/${story?.stories[0]?.postedByDetails.profile}`}
                     alt="cute kitty"
                   />
                 </p>

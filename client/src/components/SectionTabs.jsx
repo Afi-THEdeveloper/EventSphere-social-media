@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { ServerVariables } from "../utils/ServerVariables";
 import { useNavigate } from "react-router-dom";
 import JobCard2 from "./JobCard2";
+import { API_BASE_URL } from "../config/api";
 
 const SectionTabs = ({ sections, role }) => {
   const [openTab, setOpenTab] = useState(1);
@@ -102,7 +103,7 @@ const SectionTabs = ({ sections, role }) => {
                               <div className="w-10 h-10 rounded-full">
                                 <img
                                   className="w-full h-42 object-cover"
-                                  src={`http://localhost:5000/profiles/${item?.profile}`}
+                                  src={`${API_BASE_URL}/profiles/${item?.profile}`}
                                   alt=""
                                 />
                               </div>

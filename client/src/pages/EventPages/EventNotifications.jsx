@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import { ServerVariables } from "../../utils/ServerVariables";
 import CommentModal from "../../components/CommentModal";
+import { API_BASE_URL } from "../../config/api";
 
 function EventNotifications() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -153,7 +154,7 @@ function EventNotifications() {
                         {item?.actionOn?.model === "eventPosts" && (
                           <img
                             className="w-10 h-10"
-                            src={`http://localhost:5000/Event/posts/${item?.actionOn?.objectId.image}`}
+                            src={`${API_BASE_URL}/Event/posts/${item?.actionOn?.objectId.image}`}
                             alt="post-image"
                           />
                         )}

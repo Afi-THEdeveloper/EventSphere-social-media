@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import CommentModal from "./CommentModal";
 import Modal from "react-modal";
 import { hideLoading, showLoading } from "../Redux/slices/LoadingSlice";
+import { API_BASE_URL } from "../config/api";
 
 const PostCard = ({ post, onDelete }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -53,7 +54,7 @@ const PostCard = ({ post, onDelete }) => {
       {post?.image && (
         <img
           className="w-full h-42 object-cover"
-          src={`http://localhost:5000/Event/posts/${post?.image}`}
+          src={`${API_BASE_URL}/Event/posts/${post?.image}`}
           alt={post?.description}
         />
       )}

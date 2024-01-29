@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ServerVariables } from "../utils/ServerVariables";
+import { API_BASE_URL } from "../config/api";
 
 const UserCard = ({ profile, username, email, role }) => {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ const UserCard = ({ profile, username, email, role }) => {
           <div className="inline-block relative shrink-0 cursor-pointer rounded-[.95rem]">
             <img
               className="w-[40px] h-[40px] shrink-0 inline-block rounded-[.95rem]"
-              src={`http://localhost:5000/profiles/${profile}`}
+              src={`${API_BASE_URL}/profiles/${profile}`}
               alt="avatar image"
             />
           </div>
