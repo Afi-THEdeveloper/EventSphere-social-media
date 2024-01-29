@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Cropper from "react-cropper";
-import "cropperjs/dist/cropper.css";
+import "cropperjs/dist/cropper.min.css";
 import AuthInput from "./AuthInput";
 import Button2 from "./Button2";
 
