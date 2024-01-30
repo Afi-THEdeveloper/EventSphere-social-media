@@ -28,17 +28,18 @@ function ShowEvent() {
   useEffect(() => {
     if (Event !== undefined) {
       setEvent(Event);
-      getPosts(Event._id);
-      getEventStory(Event._id);
+      getPostsinUser(Event._id);
+      getEventStoryinUser(Event._id);
     } else {
       navigate(ServerVariables.UserHome);
     }
   }, []);
 
-  const getPosts = async (eventId) => {
+
+  const getPostsinUser = async (eventId) => {
     dispatch(showLoading());
     eventRequest({
-      url: apiEndPoints.getEventPosts,
+      url: apiEndPoints.getEventPostsinUser,
       method: "post",
       data: { eventId },
     })
@@ -56,16 +57,16 @@ function ShowEvent() {
       });
   };
 
-  const getEventStory = (eventId) => {
+  const getEventStoryinUser = (eventId) => {
     dispatch(showLoading());
     eventRequest({
-      url: apiEndPoints.getEventStory,
+      url: apiEndPoints.getEventStoryinUser,
       method: "post",
       data: { eventId },
     })
       .then((res) => {
         dispatch(hideLoading());
-        setStory(res.data.stories);
+        setStory(res.data?.stories);
       })
       .catch((err) => {
         dispatch(hideLoading());
@@ -136,7 +137,7 @@ function ShowEvent() {
 
         <div className="flex-grow flex-shrink min-h-screen">
           {/* profile card */}
-          
+
           <div className="myDivBg relative max-w-md mx-auto md:max-w-2xl min-w-0 break-words  w-full mb-6 shadow-lg rounded-xl mt-20">
             <div className=" px-6">
               <div className="flex flex-wrap justify-center">

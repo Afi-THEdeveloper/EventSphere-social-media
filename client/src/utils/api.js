@@ -27,6 +27,8 @@ export const apiEndPoints = {
     applyJob:'api/user/applyJob',
     getJobStats:'api/user/getJobStats',
     UserSearchJob : 'api/user/UserSearchJob',
+    getEventPostsinUser:'api/user/getEventPostsinUser',
+    getEventStoryinUser:'api/user/getEventStoryinUser',
     
 
 
@@ -88,5 +90,6 @@ export const apiEndPoints = {
     acceptJobRequest:'api/event/acceptJobRequest',
     getEventJobStats:'api/event/getEventJobStats',
     searchJob:'api/event/searchJob',
+    getlikedUsers:'api/event/getlikedUsers',
 }
 

@@ -16,6 +16,7 @@ eventRouter
     .post('/updateEvent', eventAuth, eventController.updateEvent)
     .post('/updateEventProfile', eventAuth,uploadEventProfile,resizeEventProfile, eventController.updateEventProfile)
     .post('/getEventPosts', eventAuth, eventController.getEventPosts)
+    .post('/getlikedUsers', eventAuth, eventController.getlikedUsers)
 
     .post('/addPost', eventAuth,IsPlanExpired, uploadEventPost,processEventPost, eventController.addPost)
 

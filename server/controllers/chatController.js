@@ -11,6 +11,13 @@ exports.getContactsList = CatchAsync(async (req, res) => {
   const events = user?.following;
   const EventsAndUnseenCount = await Promise.all(
     events.map(async (event) => {
+      const latestMessage = await Chats.findOne({
+        eventId: event._id,
+        userId: user?._id,
+      })
+        .sort({ time: -1 }) // Sort by time in descending order to get the latest message
+        .exec();
+
       const unseenMessagesCount = await Chats.countDocuments({
         eventId: event._id,
         isUserSeen: false,
@@ -19,6 +26,9 @@ exports.getContactsList = CatchAsync(async (req, res) => {
       return {
         ...event.toObject(),
         unseenMessagesCount,
+        latestMessage: latestMessage?.message || null,
+        time: latestMessage?.time || null,
+        latestMessageSenderId: latestMessage?.senderId || null,
       };
     })
   );
@@ -60,10 +70,10 @@ exports.getMessages = CatchAsync(async (req, res) => {
     const chatConnectionData = await ChatConnection.findOne({
       userId,
       eventId,
-    }).populate('userId eventId');
+    }).populate("userId eventId");
     console.log("chatConnection data", chatConnectionData);
     const roomId = chatConnectionData._id;
-    const Messages = await Chats.find({ roomId }).sort({ time: 1 })
+    const Messages = await Chats.find({ roomId }).sort({ time: 1 });
     // console.log(Messages);
 
     await Chats.updateMany(
@@ -87,28 +97,34 @@ exports.getMessages = CatchAsync(async (req, res) => {
   } else {
     const Data = {
       userId,
-      eventId
+      eventId,
     };
 
     const newChatConnection = new ChatConnection(Data);
     const savedChatConnection = await newChatConnection.save();
-    const connection = await ChatConnection.findById(savedChatConnection._id).populate('userId eventId')
+    const connection = await ChatConnection.findById(
+      savedChatConnection._id
+    ).populate("userId eventId");
     console.log("savedChatConnection", connection);
     res.status(200).send({ Data: connection, success: true });
   }
 });
 
-
-
 // event chats
 exports.getEventContacts = CatchAsync(async (req, res) => {
-
   const connectedUsers = await ChatConnection.find({
     eventId: req?.eventId,
-  }).populate('userId eventId');
+  }).populate("userId eventId");
 
   const UsersAndUnseenCount = await Promise.all(
     connectedUsers.map(async (user) => {
+      const latestMessage = await Chats.findOne({
+        userId: user?.userId?._id,
+        eventId: req?.eventId,
+      })
+        .sort({ time: -1 }) // Sort by time in descending order to get the latest message
+        .exec();
+
       const unseenMessagesCount = await Chats.countDocuments({
         userId: user?.userId?._id,
         isEventSeen: false,
@@ -117,6 +133,9 @@ exports.getEventContacts = CatchAsync(async (req, res) => {
       return {
         ...user.toObject(),
         unseenMessagesCount,
+        latestMessage: latestMessage?.message || null,
+        time: latestMessage?.time || null,
+        latestMessageSenderId: latestMessage?.senderId || null,
       };
     })
   );
@@ -127,7 +146,6 @@ exports.getEventContacts = CatchAsync(async (req, res) => {
     .send({ success: true, eventContacts: UsersAndUnseenCount });
 });
 
-
 exports.getEventMessages = CatchAsync(async (req, res) => {
   console.log(req.body);
   const eventId = req?.eventId;
@@ -136,7 +154,7 @@ exports.getEventMessages = CatchAsync(async (req, res) => {
   const chatConnection = await ChatConnection.findOne({
     userId,
     eventId,
-  }).populate('userId eventId');
+  }).populate("userId eventId");
   const roomId = chatConnection._id;
   console.log("roomId", roomId);
 

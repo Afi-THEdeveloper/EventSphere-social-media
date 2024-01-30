@@ -11,18 +11,24 @@ import CommentModal from "./CommentModal";
 import Modal from "react-modal";
 import { hideLoading, showLoading } from "../Redux/slices/LoadingSlice";
 import { API_BASE_URL } from "../config/api";
+import FollowerCard from "./FollowerCard";
 
 const PostCard = ({ post, onDelete }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [comments, setComments] = useState([]);
+  const [islikeModalOpen, setlikesModalOpen] = useState(false);
+  const [likedUsers, setlikedUsers] = useState([]);
+  const dispatch = useDispatch();
 
   const openModal = (id) => {
+    dispatch(showLoading());
     eventRequest({
       url: apiEndPoints.getPostComments,
       method: "post",
       data: { postId: id },
     })
       .then((res) => {
+        dispatch(hideLoading());
         if (res.data.success) {
           setComments(res.data?.comments);
           setIsModalOpen(true);
@@ -31,13 +37,41 @@ const PostCard = ({ post, onDelete }) => {
         }
       })
       .catch((err) => {
+        dispatch(hideLoading());
+        toast.error(err.message);
+      });
+  };
+
+  const openlikesModal = (id) => {
+    dispatch(showLoading());
+    eventRequest({
+      url: apiEndPoints.getlikedUsers,
+      method: "post",
+      data: { postId: id },
+    })
+      .then((res) => {
+        dispatch(hideLoading());
+        if (res.data.success) {
+          setlikedUsers(res.data?.users);
+          setlikesModalOpen(true);
+        } else {
+          toast.error(res.data.error);
+        }
+      })
+      .catch((err) => {
+        dispatch(hideLoading());
         toast.error(err.message);
       });
   };
 
   const closeModal = () => {
-    setIsModalOpen(false);
+    if (isModalOpen) {
+      setIsModalOpen(false);
+    } else if (islikeModalOpen) {
+      setlikesModalOpen(false);
+    }
   };
+
 
   const customStyles = {
     content: {
@@ -60,7 +94,10 @@ const PostCard = ({ post, onDelete }) => {
       )}
 
       <div className="p-4">
-        <h3 className="myTextColor text-xl font-semibold">
+        <h3
+          className="myTextColor text-xl font-semibold cursor-pointer"
+          onClick={() => openlikesModal(post?._id)}
+        >
           {post?.likes?.length} likes
         </h3>
 
@@ -91,6 +128,20 @@ const PostCard = ({ post, onDelete }) => {
           post={post}
         />
       </Modal>
+      <Modal
+        isOpen={islikeModalOpen}
+        onRequestClose={closeModal}
+        ariaHideApp={false}
+        style={customStyles}
+      >
+        {/* Use the CommentModal component */}
+        <FollowerCard
+          isOpen={islikeModalOpen}
+          closeModal={closeModal}
+          items={likedUsers}
+          role={'liked users'}
+        />
+      </Modal>
     </div>
   );
 };
@@ -117,7 +168,7 @@ const NewPostButton = () => {
   );
 };
 
-const PostsPage = ({eventId}) => {
+const PostsPage = ({ eventId }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [posts, setPosts] = useState([]);
@@ -126,7 +177,7 @@ const PostsPage = ({eventId}) => {
     eventRequest({
       url: apiEndPoints.getEventPosts,
       method: "post",
-      data : {eventId}
+      data: { eventId },
     })
       .then((res) => {
         if (res.data?.success) {
@@ -152,19 +203,19 @@ const PostsPage = ({eventId}) => {
       cancelButtonText: "Cancel",
     });
     if (result.isConfirmed) {
-      dispatch(showLoading())
+      dispatch(showLoading());
       eventRequest({
         url: apiEndPoints.deleteEventPost,
         method: "post",
         data: { id: PostId },
       })
         .then((res) => {
-          dispatch(hideLoading())
+          dispatch(hideLoading());
           getPosts(eventId);
           toast.success(res.data.success);
         })
         .catch((err) => {
-          dispatch(hideLoading())
+          dispatch(hideLoading());
           toast.error(err.message);
         });
     }

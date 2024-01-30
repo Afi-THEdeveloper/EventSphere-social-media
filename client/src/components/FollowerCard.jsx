@@ -50,7 +50,7 @@ function FollowerCard({ isOpen, closeModal, items, role }) {
               ? "following"
               : role === "event"
               ? "followers"
-              : "Requested Users"
+              : role
           }
         />
 

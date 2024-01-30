@@ -1,22 +1,22 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import MessageIcon from "./icons/MessageIcon";
-import Avatar from "./Avatar";
-import { userRequest } from "../Helper/instance";
-import { apiEndPoints } from "../utils/api";
+import { useDispatch } from "react-redux";
+import MessageIcon from "../../components/icons/MessageIcon";
+import Avatar from "../../components/Avatar";
+import { userRequest } from "../../Helper/instance";
+import { apiEndPoints } from "../../utils/api";
 import toast from "react-hot-toast";
 import { useRef } from "react";
-import socket from "./User/SocketIo";
+import socket from "../../components/User/SocketIo";
 import { formatDistanceToNow } from "date-fns";
 import { FaVideo } from "react-icons/fa";
-import { hideLoading, showLoading } from "../Redux/slices/LoadingSlice";
-import UserSidebar from "./User/UserSidebar";
+import UserSidebar from "../../components/User/UserSidebar";
 import { useNavigate } from "react-router-dom";
-import { ServerVariables } from "../utils/ServerVariables";
-import Search1 from "../components/Search1";
+import { ServerVariables } from "../../utils/ServerVariables";
+import Search1 from "../../components/Search1";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
 import { BsEmojiSmile } from "react-icons/bs";
+import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
 
 function Chat() {
   const [selectedEventId, setSelectedEventId] = useState("");
@@ -44,11 +44,13 @@ function Chat() {
   }, []);
 
   const getContactsList = () => {
+    dispatch(showLoading());
     userRequest({
       url: apiEndPoints.getContactsList,
       method: "get",
     })
       .then((res) => {
+        dispatch(hideLoading());
         if (res.data?.success) {
           setContactLists(res.data.followingContacts);
         } else {
@@ -56,6 +58,7 @@ function Chat() {
         }
       })
       .catch((err) => {
+        dispatch(hideLoading());
         console.log(err.message);
       });
   };
@@ -87,7 +90,7 @@ function Chat() {
         .then((response) => {
           if (response.data.success) {
             setNewMessageText("");
-            setShowEmoji(false)
+            setShowEmoji(false);
             fetchChatMessages(partnerId);
 
             var obj = response.data.savedChat;
@@ -185,7 +188,7 @@ function Chat() {
                 search={"search chats..."}
                 value={searched}
                 onChange={(e) => setSearched(e.target.value)}
-              />  
+              />
             </div>
             {contactLists.length ? (
               contactLists
@@ -199,15 +202,14 @@ function Chat() {
                     key={contact._id}
                     onClick={() => handleClickContact(contact._id)}
                     className={
-                      "py-2 pl-4 border-0 border-gray-100 flex items-center gap-2 cursor-pointer " +
+                      "py-2 pl-4 border-0 border-gray-100 flex-col items-center gap-2 cursor-pointer " +
                       (contact._id === selectedEventId ? "activeBg" : "")
                     }
                   >
-                    {contact._id === selectedEventId && (
-                      <div className="bg-blue-500 w-1 h-12 rounded-r-md"></div>
-                    )}
-
-                    <div className="flex gap-4 py-2 pl-4 items-center">
+                    <div className="flex gap-4 pl-4 items-center">
+                      {contact._id === selectedEventId && (
+                        <div className="bg-blue-500 w-1 h-12 rounded-r-md"></div>
+                      )}
                       <Avatar profile={contact?.profile} />
                       <span className="myTextColor">{contact.title}</span>
                       {contact?.unseenMessagesCount > 0 && (
@@ -216,6 +218,22 @@ function Chat() {
                         </span>
                       )}
                     </div>
+                    {contact?.latestMessage ? (
+                      <div className="flex gap-4  pl-20 items-center myPara text-xs">
+                        <span>
+                          {contact?.latestMessageSenderId !== contact?._id
+                            ? `You: ${contact?.latestMessage}`
+                            : `${contact?.title}: ${contact?.latestMessage}`}
+                        </span>
+                        <small>
+                          {formatDistanceToNow(new Date(contact?.time), {
+                            addSuffix: true,
+                          })}
+                        </small>
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 ))
             ) : (
@@ -301,7 +319,6 @@ function Chat() {
                   placeholder="message..."
                   className="myDivBg border p-2 flex-grow rounded-sm text-[#5A91E2]"
                 />
-
 
                 {/* emoji */}
                 <span

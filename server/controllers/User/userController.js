@@ -12,7 +12,6 @@ const CatchAsync = require("../../util/CatchAsync");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-
 //hashing  password
 const securePassword = async (password) => {
   const passwordHash = await bcrypt.hash(password, 10);
@@ -271,6 +270,30 @@ exports.getStories = CatchAsync(async (req, res) => {
   ]);
 
   console.log("userSide", stories[0]?.stories);
+  return res.status(200).json({ success: "ok", stories });
+});
+
+exports.getEventPostsinUser = CatchAsync(async (req, res) => {
+  const posts = await EventPost.find({ postedBy: req?.body?.eventId }).sort({
+    createdAt: -1,
+  });
+  console.log("posts", posts);
+  if (posts) {
+    return res.status(200).json({ success: "ok", posts });
+  } else {
+    return res.status(200).json({ error: "failed to fetch posts" });
+  }
+});
+
+exports.getEventStoryinUser = CatchAsync(async (req, res) => {
+  console.log(req?.body?.eventId);
+  const event = await Event.findById(req?.body?.eventId);
+  console.log(event);
+  const currentDate = new Date();
+  const deleted = await Story.deleteMany({ expiresOn: { $lt: currentDate } });
+  console.log("deleted", deleted);
+  const stories = await Story.find({ postedBy: event._id });
+  console.log("stories", stories);
   return res.status(200).json({ success: "ok", stories });
 });
 

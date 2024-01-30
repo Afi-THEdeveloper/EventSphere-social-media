@@ -18,7 +18,9 @@ userRouter.post('/register', userController.register)
     .post('/followEvent', userAuth, userController.followEvent)
     .post('/unfollowEvent', userAuth, userController.unfollowEvent)
     .get('/getStories', userAuth, userController.getStories)
-    
+    .post('/getEventPostsinUser', userAuth, userController.getEventPostsinUser)
+    .post('/getEventStoryinUser', userAuth, userController.getEventStoryinUser)
+
     .post('/comments/:postId/createComment',userAuth, commentController.createComment)
     .get('/comments/:postId/comments',userAuth, commentController.getAllComments)
     .put('/comments/:commentId/reply',userAuth, commentController.addReply)

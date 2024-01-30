@@ -89,7 +89,7 @@ function EventChats() {
         .then((response) => {
           if (response.data.success) {
             setNewMessageText("");
-            setShowEmoji(false)
+            setShowEmoji(false);
             fetchChatMessages(partnerId);
 
             var obj = response.data.savedChat;
@@ -201,17 +201,16 @@ function EventChats() {
                     key={contact?.userId?._id}
                     onClick={() => handleClickContact(contact?.userId?._id)}
                     className={
-                      "py-2 pl-4 flex items-center gap-2 cursor-pointer " +
+                      "py-2 pl-4 border-0 border-gray-100 flex-col items-center gap-2 cursor-pointer " +
                       (contact?.userId?._id === selectedUserId
                         ? "activeBg"
                         : "")
                     }
                   >
-                    {contact?.userId?._id === selectedUserId && (
-                      <div className="bg-blue-500 w-1 h-12 rounded-r-md"></div>
-                    )}
-
-                    <div className="flex gap-4 py-2 pl-4 items-center">
+                    <div className="flex gap-4 pl-4 items-center">
+                      {contact?.userId?._id === selectedUserId && (
+                        <div className="bg-blue-500 w-1 h-12 rounded-r-md"></div>
+                      )}
                       <Avatar profile={contact?.userId?.profile} />
                       <span className="myTextColor">
                         {contact?.userId?.username}
@@ -222,6 +221,22 @@ function EventChats() {
                         </span>
                       )}
                     </div>
+                    {contact?.latestMessage ? (
+                      <div className="flex gap-4  pl-20 items-center myPara text-xs">
+                        <span>
+                          {contact?.latestMessageSenderId !== contact?._id
+                            ? `You: ${contact?.latestMessage}`
+                            : `${contact?.title}: ${contact?.latestMessage}`}
+                        </span>
+                        <small>
+                          {formatDistanceToNow(new Date(contact?.time), {
+                            addSuffix: true,
+                          })}
+                        </small>
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 ))
             ) : (

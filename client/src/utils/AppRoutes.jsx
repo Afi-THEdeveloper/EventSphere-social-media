@@ -41,7 +41,7 @@ import AddJobProfile from "../pages/UserPages/AddJobProfile";
 import EditJobProfile from "../pages/UserPages/EditJobProfile";
 import ShowEvent from "../pages/UserPages/ShowEvent";
 import Page404 from "../pages/Page404";
-import Chat from "../components/Chat";
+import Chat from "../pages/UserPages/Chat";
 import EventChats from "../pages/EventPages/EventChats";
 import EventNotifications from "../pages/EventPages/EventNotifications";
 import VideoRoom from "../pages/EventPages/VideoRoom";

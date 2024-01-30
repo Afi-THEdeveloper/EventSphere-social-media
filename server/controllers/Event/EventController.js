@@ -329,6 +329,14 @@ exports.getEventStory = CatchAsync(async (req, res) => {
   return res.status(200).json({ success: "ok", stories });
 });
 
+exports.getlikedUsers = CatchAsync(async (req, res) => {
+  const postId = req?.body?.postId;
+  const post = await EventPost.findById(postId).populate('likes')
+  const users = post?.likes
+  return res.status(200).json({ success: "ok", users });
+});
+
+
 // notifications
 
 exports.getNotificationsCount = CatchAsync(async (req, res) => {
