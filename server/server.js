@@ -5,11 +5,10 @@ const path = require("path");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 
-
 // to use (.env file access)
 require("dotenv").config();
 const dbConfig = require("./config/db");
-const initializeSocket = require('./sockets/chatSocket')
+const initializeSocket = require("./sockets/chatSocket");
 
 const cors = require("cors");
 app.use(
@@ -24,9 +23,6 @@ app.use(express.static(path.join(__dirname, "public/assets")));
 // to destructure json type data from user as request
 app.use(express.json());
 
-
-
-
 const userRoutes = require("./routes/userRoutes");
 app.use("/api/user", userRoutes);
 const eventRoutes = require("./routes/EventsRoutes");
@@ -38,6 +34,5 @@ const port = process.env.PORT || 5000;
 const server = app.listen(port, () => {
   console.log("server running on " + port);
 });
-
 
 initializeSocket(server);
