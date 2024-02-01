@@ -2,7 +2,7 @@ const paypal = require("paypal-rest-sdk");
 const CatchAsync = require("../../util/CatchAsync");
 const Plan = require("../../models/PlanModel");
 const Event = require("../../models/EventModel");
-const PurchaseHistory = require('../../models/PurchaseHistory') 
+const PurchaseHistory = require('../../models/PurchaseHistory'); 
 const { PAYPAL_MODE, PAYPAL_CLIENT_ID, PAYPAL_SECRET_KEY } = process.env;
 
 paypal.configure({
@@ -38,8 +38,8 @@ exports.buyPlan = CatchAsync(async (req, res) => {
       payment_method: "paypal",
     },
     redirect_urls: {
-      return_url: `http://localhost:5000/api/event/PaymentSuccess?planId=${selectedPlan._id}&eventId=${event._id}`,
-      cancel_url: "http://localhost:5000/api/event/PaymentError",
+      return_url: `https://eventsphere.online/api/event/PaymentSuccess?planId=${selectedPlan._id}&eventId=${event._id}`,
+      cancel_url: "https://eventsphere.online/api/event/PaymentError",
     },
     transactions: [
       {
@@ -130,7 +130,7 @@ exports.getSuccessPage = CatchAsync(async (req, res) => {
           startDate:createdOn,
           expireDate:new Date(createdOn.getTime() + 10 * 60 * 1000)
         })
-        return res.redirect("http://localhost:5173/PaymentSuccess");
+        return res.redirect("https://eventsphere.netlify.app/PaymentSuccess");
       }
     }
   );
@@ -139,5 +139,5 @@ exports.getSuccessPage = CatchAsync(async (req, res) => {
 
 exports.getErrorPage = CatchAsync(async (req, res) => {
   console.log("payment failed");
-  return res.redirect("http://localhost:5173/PaymentError");
+  return res.redirect("https://eventsphere.netlify.app/PaymentError");
 });
