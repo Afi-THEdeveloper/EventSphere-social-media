@@ -131,20 +131,43 @@ exports.ResendOtp = CatchAsync(async (req, res) => {
 });
 
 exports.getFollowingposts = CatchAsync(async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const pageSize = 3;
+  console.log(page, pageSize);
   const user = await User.findById(req?.userId);
   const followingEventIds = user.following;
   console.log(followingEventIds);
+  const totalPosts = await EventPost.find({
+    postedBy: { $in: followingEventIds },
+  }).countDocuments();
+  console.log("totalPosts", totalPosts);
+  const totalPages = Math.ceil(totalPosts / pageSize);
+
   const posts = await EventPost.find({ postedBy: { $in: followingEventIds } })
+    .skip((page - 1) * pageSize)
+    .limit(pageSize)
     .sort({ createdAt: -1 })
     .populate("postedBy");
-  return res.status(200).json({ success: "ok", posts });
+  return res
+    .status(200)
+    .json({ success: "ok", posts, currentPage: page, totalPosts });
 });
 
 exports.getEventPosts = CatchAsync(async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const pageSize = 3;
+  console.log(page, pageSize);
+  const totalPosts = await EventPost.find({}).countDocuments();
+  console.log("totalPosts", totalPosts);
+  const totalPages = Math.ceil(totalPosts / pageSize);
   const posts = await EventPost.find({})
+    .skip((page - 1) * pageSize)
+    .limit(pageSize)
     .sort({ createdAt: -1 })
     .populate("postedBy");
-  return res.status(200).json({ success: "ok", posts });
+  return res
+    .status(200)
+    .json({ success: "ok", posts, currentPage: page, totalPosts });
 });
 
 exports.likePost = CatchAsync(async (req, res) => {

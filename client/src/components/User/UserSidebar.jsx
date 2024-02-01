@@ -167,7 +167,7 @@ function UserSidebar() {
     <>
       <div className="border-r myBorder flex-col w-[300px] hidden md:flex min-h-screen flex-shrink-0">
         <div className="flex gap-2 mt-2">
-          <h1 className="myTextColor uppercase text-2xl font-serif mx-6">
+          <h1 className="myTextColor uppercase text-2xl font-serif mx-6 cursor-pointer" onClick={()=> navigate(ServerVariables.UserHome)}>
             EventSphere
           </h1>
         </div>

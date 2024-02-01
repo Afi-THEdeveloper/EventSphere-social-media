@@ -22,35 +22,35 @@ function JobsPage() {
     getJobPosts();
   }, []);
   const getJobPosts = () => {
-    dispatch(showLoading())
+    dispatch(showLoading());
     userRequest({
       url: apiEndPoints.getJobs,
       method: "get",
     })
       .then((res) => {
-        dispatch(hideLoading())
+        dispatch(hideLoading());
         setJobPosts(res.data.posts);
       })
       .catch((err) => {
-        dispatch(hideLoading())
+        dispatch(hideLoading());
         toast.error(err.message);
       });
   };
 
   const applyJob = (jobId) => {
-    dispatch(showLoading())
+    dispatch(showLoading());
     userRequest({
       url: apiEndPoints.applyJob,
       method: "post",
       data: { jobId },
     })
       .then((res) => {
-        dispatch(hideLoading())
+        dispatch(hideLoading());
         toast.success(res.data.success);
         navigate(ServerVariables.jobStats);
       })
       .catch((err) => {
-        dispatch(hideLoading())
+        dispatch(hideLoading());
         toast.error(err.message);
       });
   };
@@ -60,21 +60,21 @@ function JobsPage() {
   };
 
   const handleSearch = () => {
-    dispatch(showLoading())
+    dispatch(showLoading());
     userRequest({
       url: apiEndPoints.UserSearchJob,
       method: "post",
       data: { searched },
     })
       .then((res) => {
-        dispatch(hideLoading())
+        dispatch(hideLoading());
         if (res.data.success) {
-          setJobPosts(res.data.results)
-          setSearched('')
+          setJobPosts(res.data.results);
+          setSearched("");
         } else {
-          dispatch(hideLoading())
+          dispatch(hideLoading());
           toast.error(res.data.error);
-          setSearched('')
+          setSearched("");
         }
       })
       .catch((err) => {

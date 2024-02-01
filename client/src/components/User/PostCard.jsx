@@ -3,7 +3,7 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { FaRegComment } from "react-icons/fa";
 import { FiSend } from "react-icons/fi";
 import { BsBookmark } from "react-icons/bs";
-import { BookmarkIcon } from "@heroicons/react/24/outline";
+import { BookmarkIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { SlUserFollow } from "react-icons/sl";
 import { SlUserUnfollow } from "react-icons/sl";
 import { userRequest } from "../../Helper/instance";
@@ -17,9 +17,13 @@ import { updateUser } from "../../Redux/slices/AuthSlice";
 import { updateEvent } from "../../Redux/slices/EventAuthSlice";
 import { motion } from "framer-motion";
 import { API_BASE_URL } from "../../config/api";
+import ReactPaginate from "react-paginate";
 
 function PostCard() {
   const [EventPosts, setEventPosts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
+  const [totalPosts, setTotalPosts] = useState(0);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -27,20 +31,22 @@ function PostCard() {
   const getFollowingPosts = () => {
     dispatch(showLoading());
     userRequest({
-      url: apiEndPoints.getFollowingposts,
+      url: `${apiEndPoints.getFollowingposts}?page=${currentPage + 1}`,
       method: "get",
     })
       .then((res) => {
-        dispatch(hideLoading())
+        dispatch(hideLoading());
         if (res.data?.success) {
           console.log(res?.data);
           setEventPosts(res.data.posts);
+          setTotalPosts(res?.data?.totalPosts);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
           toast.error(res.data.error);
         }
       })
       .catch((err) => {
-        dispatch(hideLoading())
+        dispatch(hideLoading());
         toast.error(err.message);
       });
   };
@@ -48,20 +54,22 @@ function PostCard() {
   const getPosts = () => {
     dispatch(showLoading());
     userRequest({
-      url: apiEndPoints.getEPosts,
+      url: `${apiEndPoints.getEPosts}?page=${currentPage + 1}`,
       method: "get",
     })
       .then((res) => {
-        dispatch(hideLoading())
+        dispatch(hideLoading());
         if (res.data?.success) {
           console.log(res?.data);
           setEventPosts(res.data.posts);
+          setTotalPosts(res?.data?.totalPosts);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
           toast.error(res.data.error);
         }
       })
       .catch((err) => {
-        dispatch(hideLoading())
+        dispatch(hideLoading());
         toast.error(err.message);
       });
   };
@@ -72,7 +80,13 @@ function PostCard() {
     } else {
       getPosts();
     }
-  }, []);
+  }, [currentPage]);
+
+  const handleNextSetClick = () => {
+    const newPageCount = pageCount + 1;
+    setCurrentPage(newPageCount);
+    setPageCount(newPageCount);
+  };
 
   const handleLike = (postId) => {
     dispatch(showLoading());
@@ -294,6 +308,26 @@ function PostCard() {
             </motion.div>
           );
         })}
+      <ReactPaginate
+        nextLabel={
+          (currentPage + 1) * 3 < totalPosts ? (
+            <div className="p-3 text-center">
+              <span className="text-xl font-bold block uppercase tracking-wide">
+                <button
+                  className="border p-2 rounded-full hover:bg-[#0F1015]"
+                  onClick={handleNextSetClick}
+                >
+                  <PlusIcon className="myPara h-3 w-3" />
+                </button>
+              </span>
+            </div>
+          ) : (
+            <p className="myPara">No more posts</p>
+          )
+        }
+        pageCount={pageCount}
+        containerClassName="flex justify-center mt-4"
+      />
     </>
   );
 }
