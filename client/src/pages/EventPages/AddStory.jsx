@@ -47,10 +47,10 @@ function AddStory() {
       .then((res) => {
         dispatch(hideLoading());
         if (res.data.success) {
-          toast.success(res.data.success);
+          toast.success(res.data?.success);
           navigate(ServerVariables.eventHome);
         } else {
-          toast.error(res.data.error);
+          toast.error(res.data?.error);
           navigate(ServerVariables.PlansAvailable)
         }
       })

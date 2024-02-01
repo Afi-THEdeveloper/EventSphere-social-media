@@ -6,9 +6,7 @@ import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
 import { apiEndPoints } from "../../utils/api";
 import toast from "react-hot-toast";
 import { ServerVariables } from "../../utils/ServerVariables";
-import Button2 from "../../components/Button2";
-import EditIcon from "../../components/icons/EditIcon";
-import { eventRequest, userRequest } from "../../Helper/instance";
+import {  userRequest } from "../../Helper/instance";
 import { SlUserFollow, SlUserUnfollow } from "react-icons/sl";
 import { updateUser } from "../../Redux/slices/AuthSlice";
 import { updateEvent } from "../../Redux/slices/EventAuthSlice";
@@ -38,7 +36,7 @@ function ShowEvent() {
 
   const getPostsinUser = async (eventId) => {
     dispatch(showLoading());
-    eventRequest({
+    userRequest({
       url: apiEndPoints.getEventPostsinUser,
       method: "post",
       data: { eventId },
@@ -59,7 +57,7 @@ function ShowEvent() {
 
   const getEventStoryinUser = (eventId) => {
     dispatch(showLoading());
-    eventRequest({
+    userRequest({
       url: apiEndPoints.getEventStoryinUser,
       method: "post",
       data: { eventId },
@@ -94,8 +92,7 @@ function ShowEvent() {
         if (res.data.success) {
           dispatch(updateUser(res.data.user));
           dispatch(updateEvent(res.data.event));
-          getPosts(eventId);
-          getEventStory(eventId);
+          getEventStoryinUser(eventId);
         } else {
           toast.error(res.data.error);
         }
@@ -118,8 +115,8 @@ function ShowEvent() {
         if (res.data.success) {
           dispatch(updateUser(res.data.user));
           dispatch(updateEvent(res.data.event));
-          getPosts(eventId);
-          getEventStory(eventId);
+          getPostsinUser(eventId);
+          getEventStoryinUser(eventId);
         } else {
           toast.error(res.data.error);
         }

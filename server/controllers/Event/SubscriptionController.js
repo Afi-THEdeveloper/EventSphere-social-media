@@ -2,7 +2,7 @@ const paypal = require("paypal-rest-sdk");
 const CatchAsync = require("../../util/CatchAsync");
 const Plan = require("../../models/PlanModel");
 const Event = require("../../models/EventModel");
-const PurchaseHistory = require('../../models/PurchaseHistory'); 
+const PurchaseHistory = require("../../models/PurchaseHistory");
 const { PAYPAL_MODE, PAYPAL_CLIENT_ID, PAYPAL_SECRET_KEY } = process.env;
 
 paypal.configure({
@@ -15,15 +15,15 @@ exports.availablePlans = CatchAsync(async (req, res) => {
   const plans = await Plan.find({ isDeleted: false });
   const event = await Event.findById(req?.eventId);
 
-  let currentPlan = null
-  if(event.selectedPlan.transactionId){
-    currentPlan = await Plan.findById(event.selectedPlan.plan) 
+  let currentPlan = null;
+  if (event.selectedPlan.transactionId) {
+    currentPlan = await Plan.findById(event.selectedPlan.plan);
     if (currentPlan) {
       currentPlan = currentPlan.toObject();
-      currentPlan.expiresOn = event.selectedPlan.expiry.toDateString()
+      currentPlan.expiresOn = event.selectedPlan.expiry.toDateString();
     }
   }
-  console.log(currentPlan)
+  console.log(currentPlan);
   return res.status(200).json({ success: "ok", plans, currentPlan });
 });
 
@@ -37,6 +37,8 @@ exports.buyPlan = CatchAsync(async (req, res) => {
     payer: {
       payment_method: "paypal",
     },
+    // http://localhost:5000
+    // https://eventsphere.online
     redirect_urls: {
       return_url: `https://eventsphere.online/api/event/PaymentSuccess?planId=${selectedPlan._id}&eventId=${event._id}`,
       cancel_url: "https://eventsphere.online/api/event/PaymentError",
@@ -114,28 +116,32 @@ exports.getSuccessPage = CatchAsync(async (req, res) => {
         const response = JSON.stringify(payment);
         const parsedResponse = JSON.parse(response);
 
-        const transactionId = parsedResponse.transactions[0].related_resources[0].sale.id;
+        const transactionId =
+          parsedResponse.transactions[0].related_resources[0].sale.id;
         const createdOn = new Date();
-        console.log(transactionId)
+        console.log(transactionId);
 
-        event.selectedPlan.plan = plan._id
+        event.selectedPlan.plan = plan._id;
         event.selectedPlan.transactionId = transactionId;
-        event.selectedPlan.expiry = new Date(createdOn.getTime() + 10 * 60 * 1000); // 10 min valid for test case
+        event.selectedPlan.expiry = new Date(
+          createdOn.getTime() + 10 * 60 * 1000
+        ); // 10 min valid for test case
         await event.save();
 
         await PurchaseHistory.create({
-          plan:plan._id,
-          event:eventId,
-          transactionId:transactionId,
-          startDate:createdOn,
-          expireDate:new Date(createdOn.getTime() + 10 * 60 * 1000)
-        })
+          plan: plan._id,
+          event: eventId,
+          transactionId: transactionId,
+          startDate: createdOn,
+          expireDate: new Date(createdOn.getTime() + 10 * 60 * 1000),
+        });
+        // http://localhost:5173
+        // https://eventsphere.netlify.app
         return res.redirect("https://eventsphere.netlify.app/PaymentSuccess");
       }
     }
   );
 });
-
 
 exports.getErrorPage = CatchAsync(async (req, res) => {
   console.log("payment failed");

@@ -292,7 +292,7 @@ exports.getStories = CatchAsync(async (req, res) => {
     },
   ]);
 
-  console.log("userSide", stories[0]?.stories);
+  console.log("userSide stories", stories[0]?.stories);
   return res.status(200).json({ success: "ok", stories });
 });
 

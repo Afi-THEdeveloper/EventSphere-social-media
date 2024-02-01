@@ -122,6 +122,7 @@ function AppRoutes() {
           <Route path={ServerVariables.addJobProfile} element={<AddJobProfile />} />
           <Route path={ServerVariables.editJobProfile} element={<EditJobProfile />} />
           <Route path={ServerVariables.showEvent} element={<ShowEvent />} />
+          <Route path={ServerVariables.storyCourosel} element={<StoryCourosel />} />
           <Route path={ServerVariables.chatPage} element={<Chat />} />
           <Route path={`${ServerVariables.userVideoCallRoom}/:roomId/:eventId`} element={<UserVideoRoom/>} />
           <Route path={ServerVariables.explore} element={<Explore/>} />
