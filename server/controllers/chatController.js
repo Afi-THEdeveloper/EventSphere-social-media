@@ -20,6 +20,7 @@ exports.getContactsList = CatchAsync(async (req, res) => {
 
       const unseenMessagesCount = await Chats.countDocuments({
         eventId: event._id,
+        userId: user?._id,
         isUserSeen: false,
       });
 
@@ -127,6 +128,7 @@ exports.getEventContacts = CatchAsync(async (req, res) => {
 
       const unseenMessagesCount = await Chats.countDocuments({
         userId: user?.userId?._id,
+        eventId: req?.eventId,
         isEventSeen: false,
       });
 
