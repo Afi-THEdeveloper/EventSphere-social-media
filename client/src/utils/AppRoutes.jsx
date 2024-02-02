@@ -102,8 +102,8 @@ function AppRoutes() {
       <Routes>
         <Route path={ServerVariables.Landing} element={<LandingPage />} />
         <Route path={ServerVariables.storyCourosel} element={<StoryCourosel />} />
-        <Route path={`${ServerVariables.userVideoCallRoom}/:roomId/:eventId`} element={<UserVideoRoom/>} />
-        <Route path={`${ServerVariables.EventVideoCallRoom}/:roomId/:userId`} element={<VideoRoom />} />
+        {/* <Route path={`${ServerVariables.userVideoCallRoom}/:roomId/:eventId`} element={<UserVideoRoom/>} />
+        <Route path={`${ServerVariables.EventVideoCallRoom}/:roomId/:userId`} element={<VideoRoom />} /> */}
         <Route path='*' element={<Page404 />} />
         
         
@@ -126,7 +126,7 @@ function AppRoutes() {
           <Route path={ServerVariables.editJobProfile} element={<EditJobProfile />} />
           <Route path={ServerVariables.showEvent} element={<ShowEvent />} />
           {/* <Route path={ServerVariables.storyCourosel} element={<StoryCourosel />} /> */}
-          {/* <Route path={`${ServerVariables.userVideoCallRoom}/:roomId/:eventId`} element={<UserVideoRoom/>} /> */}
+          <Route path={`${ServerVariables.userVideoCallRoom}/:roomId/:eventId`} element={<UserVideoRoom/>} />
           <Route path={ServerVariables.chatPage} element={<Chat />} />
           <Route path={ServerVariables.explore} element={<Explore/>} />
           <Route path={ServerVariables.searchEvent} element={<SearchEvent/>} />
@@ -172,7 +172,7 @@ function AppRoutes() {
           <Route path={ServerVariables.addPost} element={<AddPost />} />
           <Route path={ServerVariables.addStory} element={<AddStory />} />
           {/* <Route path={ServerVariables.storyCourosel} element={<StoryCourosel />} /> */}
-          {/* <Route path={`${ServerVariables.EventVideoCallRoom}/:roomId/:userId`} element={<VideoRoom />} /> */}
+          <Route path={`${ServerVariables.EventVideoCallRoom}/:roomId/:userId`} element={<VideoRoom />} />
           <Route path={ServerVariables.PlansAvailable} element={<Plans />} />
           <Route path={ServerVariables.success} element={<PaymentSuccess />} />
           <Route path={ServerVariables.error} element={<PaymentError />} />
