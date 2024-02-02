@@ -13,7 +13,7 @@ import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
 function EventOtp() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [timer, setTimer] = useState(30);
+  const [timer, setTimer] = useState(60);
   const [email,setEmail] = useState(location.state.email)
   const dispatch = useDispatch()
   const timerIntervalRef = useRef(null)
@@ -22,7 +22,7 @@ function EventOtp() {
   }, []);
   
   const startTimer = () => {
-    setTimer(30); 
+    setTimer(60); 
     clearInterval(timerIntervalRef.current); // Clear any existing interval before starting a new one
     const countdown = setInterval(() => {
       setTimer((prevTimer) => (prevTimer > 0 ? prevTimer - 1 : 0));

@@ -88,7 +88,7 @@ exports.VerifyOtp = CatchAsync(async (req, res) => {
   const generatedAt = new Date(user.otp.generatedAt).getTime();
   console.log(Date.now());
   console.log(generatedAt);
-  if (Date.now() - generatedAt <= 30 * 1000) {
+  if (Date.now() - generatedAt <= 60 * 1000) {
     if (otp === user.otp.code) {
       user.isVerified = true;
       user.otp.code = "";
@@ -131,26 +131,35 @@ exports.ResendOtp = CatchAsync(async (req, res) => {
 });
 
 exports.getFollowingposts = CatchAsync(async (req, res) => {
-  const page = parseInt(req.query.page) || 1;
-  const pageSize = 3;
-  console.log(page, pageSize);
   const user = await User.findById(req?.userId);
-  const followingEventIds = user.following;
-  console.log(followingEventIds);
-  const totalPosts = await EventPost.find({
-    postedBy: { $in: followingEventIds },
-  }).countDocuments();
-  console.log("totalPosts", totalPosts);
-  const totalPages = Math.ceil(totalPosts / pageSize);
+  if (user?.following.length === 0) {
+    const posts = await EventPost.find({})
+      .sort({ likes: -1, createdAt: -1 })
+      .limit(3) // You can adjust the limit as needed
+      .populate("postedBy");
 
-  const posts = await EventPost.find({ postedBy: { $in: followingEventIds } })
-    .skip((page - 1) * pageSize)
-    .limit(pageSize)
-    .sort({ createdAt: -1 })
-    .populate("postedBy");
-  return res
-    .status(200)
-    .json({ success: "ok", posts, currentPage: page, totalPosts });
+    return res.status(200).json({ success: "ok", posts });
+  } else {
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = 3;
+    console.log(page, pageSize);
+    const followingEventIds = user.following;
+    console.log(followingEventIds);
+    const totalPosts = await EventPost.find({
+      postedBy: { $in: followingEventIds },
+    }).countDocuments();
+    console.log("totalPosts", totalPosts);
+    const totalPages = Math.ceil(totalPosts / pageSize);
+
+    const posts = await EventPost.find({ postedBy: { $in: followingEventIds } })
+      .skip((page - 1) * pageSize)
+      .limit(pageSize)
+      .sort({ likes: -1, createdAt: -1 })
+      .populate("postedBy");
+    return res
+      .status(200)
+      .json({ success: "ok", posts, currentPage: page, totalPosts });
+  }
 });
 
 exports.getEventPosts = CatchAsync(async (req, res) => {
@@ -163,7 +172,7 @@ exports.getEventPosts = CatchAsync(async (req, res) => {
   const posts = await EventPost.find({})
     .skip((page - 1) * pageSize)
     .limit(pageSize)
-    .sort({ createdAt: -1 })
+    .sort({ createdAt: -1, likes: -1 })
     .populate("postedBy");
   return res
     .status(200)

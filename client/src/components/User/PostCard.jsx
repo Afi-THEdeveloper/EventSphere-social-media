@@ -18,6 +18,7 @@ import { updateEvent } from "../../Redux/slices/EventAuthSlice";
 import { motion } from "framer-motion";
 import { API_BASE_URL } from "../../config/api";
 import ReactPaginate from "react-paginate";
+import { formatDistanceToNow } from "date-fns";
 
 function PostCard() {
   const [EventPosts, setEventPosts] = useState([]);
@@ -40,7 +41,7 @@ function PostCard() {
           console.log(res?.data);
           setEventPosts(res.data.posts);
           setTotalPosts(res?.data?.totalPosts);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          window.scrollTo({ top: 0, behavior: "smooth" });
         } else {
           toast.error(res.data.error);
         }
@@ -63,7 +64,7 @@ function PostCard() {
           console.log(res?.data);
           setEventPosts(res.data.posts);
           setTotalPosts(res?.data?.totalPosts);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          window.scrollTo({ top: 0, behavior: "smooth" });
         } else {
           toast.error(res.data.error);
         }
@@ -303,6 +304,11 @@ function PostCard() {
                 >{`${post?.likes.length} likes   ${post?.commentsCount} comments`}</p>
                 <div>
                   <p className="myPara">{post?.description}</p>
+                  <small className="myPara text-xs">
+                    {formatDistanceToNow(new Date(post?.createdAt), {
+                      addSuffix: true,
+                    })}
+                  </small>
                 </div>
               </div>
             </motion.div>

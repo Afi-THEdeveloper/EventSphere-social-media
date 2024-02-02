@@ -21,8 +21,11 @@ function UserRegister() {
       .required("username is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
     phone: Yup.number()
-      .min(10, "invalid number")
-      .required("Phone number is required"),
+    .typeError('Invalid number') // Handles non-numeric input
+    .positive('Phone number must be a positive number') // Handles negative numbers
+    .integer('Phone number must be an integer') // Handles non-integer input
+    .test('len', 'Phone number must be exactly 10 characters', (val) => val && val.toString().length === 10)
+    .required('Phone number is required'),
     password: Yup.string()
       .min(6, "Password must be atleast 6 characters")
       .required("Password is required"),

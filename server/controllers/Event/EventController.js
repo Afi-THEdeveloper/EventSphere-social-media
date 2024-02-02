@@ -65,7 +65,7 @@ exports.verifyEventOtp = CatchAsync(async (req, res) => {
   const { otp, email } = req.body;
   const event = await Event.findOne({ email: email });
   const generatedAt = new Date(event.otp.generatedAt).getTime();
-  if (Date.now() - generatedAt <= 30 * 1000) {
+  if (Date.now() - generatedAt <= 60 * 1000) {
     if (otp === event.otp.code) {
       event.isVerified = true;
       event.otp.code = "";

@@ -40,8 +40,8 @@ exports.buyPlan = CatchAsync(async (req, res) => {
     // http://localhost:5000
     // https://eventsphere.online
     redirect_urls: {
-      return_url: `http://localhost:5000/api/event/PaymentSuccess?planId=${selectedPlan._id}&eventId=${event._id}`,
-      cancel_url: "http://localhost:5000/api/event/PaymentError",
+      return_url: `https://eventsphere.online/api/event/PaymentSuccess?planId=${selectedPlan._id}&eventId=${event._id}`,
+      cancel_url: "https://eventsphere.online/api/event/PaymentError",
     },
     transactions: [
       {
@@ -137,7 +137,7 @@ exports.getSuccessPage = CatchAsync(async (req, res) => {
         });
         // http://localhost:5173
         // https://eventsphere.netlify.app
-        return res.redirect("http://localhost:5173/PaymentSuccess");
+        return res.redirect("https://eventsphere.netlify.app/PaymentSuccess");
       }
     }
   );
@@ -145,5 +145,5 @@ exports.getSuccessPage = CatchAsync(async (req, res) => {
 
 exports.getErrorPage = CatchAsync(async (req, res) => {
   console.log("payment failed");
-  return res.redirect("http://localhost:5173/PaymentError");
+  return res.redirect("https://eventsphere.netlify.app/PaymentError");
 });
