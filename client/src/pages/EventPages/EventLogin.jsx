@@ -37,7 +37,7 @@ function EventLogin() {
     <div className="flex-1 flex flex-col items-center justify-center min-h-screen">
       <div className="flex w-full flex-col max-w-[400px] items-center space-y-3">
         <Myh1 title="Event Login" />
-        <div className="w-full mt-8">
+        <div className="w-[270px] sm:w-full mt-8">
           <div className="mt-2">
             <form onSubmit={formik.handleSubmit} noValidate>
               <AuthInput
@@ -70,7 +70,7 @@ function EventLogin() {
               <Button1 text="Login" style={{ marginTop: 8 }} type="submit" />
               <Link
                 to={ServerVariables.eventRegister}
-                className="myBorder myTextColor border-2 mt-2 h-10 w-full rounded-full px-4 text-sm font-semibold flex items-center justify-center"
+                className="myBorder myTextColor text-[10px] sm:text-sm  h-8 md:h-10  border-2 mt-2  w-full rounded-full px-4 font-semibold flex items-center justify-center"
               >
                 Register Event
               </Link>

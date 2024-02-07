@@ -7,6 +7,7 @@ import { apiEndPoints } from "../../utils/api";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
+import UserNavbar from "../../components/User/UserNavbar";
 
 function jobStats() {
   const [jobStats, setJobStats] = useState([]);
@@ -36,10 +37,11 @@ function jobStats() {
   };
   return (
     <>
+      <UserNavbar />
       <div className="flex">
         <UserSidebar />
 
-        <div className="flex-grow flex-shrink min-h-screen mx-4 text-center">
+        <div className="flex-grow flex-shrink min-h-screen text-center">
           <SectionTabs sections={jobStats} />
         </div>
 

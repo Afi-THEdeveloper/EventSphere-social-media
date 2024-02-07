@@ -10,7 +10,8 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { loginThunk } from "../../Redux/slices/AuthSlice";
 import Button2 from "../../components/Button2";
-import HomeIcon from "../../components/icons/HomeIcon"; 
+import HomeIcon from "../../components/icons/HomeIcon";
+import ErrorStyle from "../../components/ErrorStyle";
 
 const loginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -40,7 +41,7 @@ function UserLogin() {
     <div className="flex-1 flex flex-col items-center justify-center min-h-screen">
       <div className="flex w-full flex-col max-w-[400px] items-center space-y-3">
         <Myh1 title="User Login" />
-        <div className="w-full mt-8">
+        <div className="w-[270px] sm:w-full mt-8">
           <div className="mt-2">
             <form onSubmit={formik.handleSubmit} noValidate>
               <AuthInput
@@ -52,7 +53,7 @@ function UserLogin() {
                 onBlur={formik.handleBlur}
               />
               {formik.errors.email && formik.touched.email && (
-                <p className="text-sm font-bold text-red-600">
+                <p className="text-xs sm:text-sm font-bold text-red-600">
                   {formik.errors.email}
                 </p>
               )}
@@ -65,15 +66,13 @@ function UserLogin() {
                 onBlur={formik.handleBlur}
               />
               {formik.errors.password && formik.touched.password && (
-                <p className="text-sm font-bold text-red-500">
-                  {formik.errors.password}
-                </p>
+                <ErrorStyle error={formik.errors.password} />
               )}
 
               <Button1 text="Login" style={{ marginTop: 8 }} type="submit" />
               <Link
                 to={ServerVariables.Register}
-                className="myTextColor myBorder border-2 mt-2 h-10 w-full rounded-full px-4 text-sm font-semibold flex items-center justify-center"
+                className="myTextColor myBorder text-[10px] sm:text-sm h-8 md:h-10 border-2 mt-2 w-full rounded-full px-4 text-sm font-semibold flex items-center justify-center"
               >
                 Signup
               </Link>

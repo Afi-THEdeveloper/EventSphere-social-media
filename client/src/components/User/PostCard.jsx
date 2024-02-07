@@ -206,11 +206,11 @@ function PostCard() {
               className="myDivBg rounded-md shadow-md"
             >
               <div
-                className="myDivBg border myBorder flex flex-col gap-2  mt-2 mx-4 rounded-xl p-[5px]"
+                className="myDivBg border myBorder flex flex-col gap-2 mt-2 sm:mx-4 rounded-xl p-[5px]"
                 key={post._id}
               >
                 {/* top div */}
-                <div className="flex flex-row justify-between items-center">
+                <div className="text-xs sm:text-sm flex flex-row justify-between items-center">
                   <div className="flex flex-row items-center gap-4">
                     <img
                       src={`${API_BASE_URL}/profiles/${post?.postedBy?.profile}`}
@@ -269,7 +269,7 @@ function PostCard() {
                   )}
                 </div>
                 {/* icons */}
-                <div className="my-2 mx-4 mb-2 flex flow-row justify-between">
+                <div className="my-2 mx-2 mb-2 flex flow-row justify-between">
                   <div className="flex flex-row gap-4 items-center">
                     {post?.likes?.includes(user?._id) ? (
                       <FaHeart
@@ -295,7 +295,7 @@ function PostCard() {
                   {/* <BookmarkIcon className="w-6 h-6" /> */}
                 </div>
                 <p
-                  className="myTextColor font-bold mx-2 cursor-pointer"
+                  className="myTextColor text-xs sm:text-sm font-semibold  cursor-pointer"
                   onClick={() =>
                     navigate(ServerVariables.postDetails, {
                       state: { postDetails: post },
@@ -303,7 +303,7 @@ function PostCard() {
                   }
                 >{`${post?.likes.length} likes   ${post?.commentsCount} comments`}</p>
                 <div>
-                  <p className="myPara">{post?.description}</p>
+                  <p className="myPara text-xs sm:text-sm">{post?.description}</p>
                   <small className="myPara text-xs">
                     {formatDistanceToNow(new Date(post?.createdAt), {
                       addSuffix: true,

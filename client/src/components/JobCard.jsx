@@ -30,17 +30,17 @@ const JobCard = ({
 
   return (
     <>
-      <div className="myDivBg border myBorder p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
+      <div className="myDivBg sm:max-w-2xl lg:max-w-5xl xl:max-w-7xl border myBorder sm:text-xs lg:text-lg  p-2 lg:p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
         <div className="flex justify-between">
-          <h2 className="text-xl myTextColor font-semibold mb-4">
+          <h2 className="text-xs lg:text-xl myTextColor font-semibold mb-4">
             {jobPost?.title}
             {role === 'user' && <p className="text-sm myPara">{jobPost?.eventId?.title}</p>}
           </h2>
-          <small className="myPara mb-4 max-w-10">
+          <small className="myPara mb-4 max-w-10 text-xs">
             Posted on: {formatTime(jobPost?.createdAt)}
           </small>
         </div>
-        <span className="myTextColor flex justify-between">
+        <span className="myTextColor text-xs lg:text-lg flex justify-between">
           <p className="flex">
             <svg
               className="w-5 h-5 mr-2"
@@ -78,7 +78,7 @@ const JobCard = ({
             {jobPost?.location}
           </p>
         </span>
-        <span className="myTextColor flex justify-between">
+        <span className="myTextColor text-xs lg:text-lg flex justify-between">
           {jobPost?.vaccancies > 0 ? (
             <p>{jobPost?.vaccancies} vaccancies</p>
           ) : (
@@ -86,8 +86,8 @@ const JobCard = ({
           )}
           <p>{jobPost?.jobType}</p>
         </span>
-        <p className="myTextColor">skills : {jobPost?.skills}</p>
-        <small className="myPara mb-2 max-w-10">
+        <p className="myTextColor text-xs lg:text-lg">skills : {jobPost?.skills}</p>
+        <small className="myPara text-[0.5rem] lg:text-xs">
           {jobPost?.JobDescription}
         </small>
 

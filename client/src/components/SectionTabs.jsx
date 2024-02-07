@@ -21,17 +21,17 @@ const SectionTabs = ({ sections, role }) => {
 
   return (
     <>
-      <div className="font-sans flex h-screen items-center justify-center">
+      <div className="flex h-screen items-center justify-center">
         <div className="myDivBg p-12">
           <h1 className="myTextColor uppercase my-4">Job Stats</h1>
 
-          <div className="max-w-md mx-auto">
+          <div className="max mx-auto">
             <div className="myDivBg mb-4 flex space-x-4 p-2 rounded-lg shadow-md">
               {sections.map((section, index) => (
                 <button
                   key={index}
                   onClick={() => setOpenTab(index + 1)}
-                  className={`flex-1 py-2 px-4 rounded-md focus:outline-none focus:shadow-outline-blue transition-all duration-300 ${
+                  className={`flex-1 py-2 px-4 rounded-md focus:outline-none focus:shadow-outline-blue transition-al duration-300 ${
                     openTab === index + 1 ? "activeBg myTextColor" : "myPara"
                   }`}
                 >

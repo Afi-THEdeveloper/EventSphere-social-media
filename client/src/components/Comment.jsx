@@ -1,30 +1,70 @@
 import React, { useState } from "react";
-import { useAddReplyMutation } from "../Redux/Comments/CommentApi";
-import Reply from "./Reply";
 import { API_BASE_URL } from "../config/api";
+import { userRequest } from "../Helper/instance";
+import { apiEndPoints } from "../utils/api";
+import toast from "react-hot-toast";
+import { MdOutlineDeleteForever } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { hideLoading, showLoading } from "../Redux/slices/LoadingSlice";
 
-const Comment = ({ comment, user }) => {
+const Comment = ({ comment, user, fetchComments }) => {
+  const dispatch = useDispatch();
   const [reply, setReply] = useState("");
   const [showReplyBox, setShowReplyBox] = useState(false);
-
-  const [addReply, { isLoading, isSuccess }] = useAddReplyMutation() || {};
 
   const submitHandler = (e) => {
     e.preventDefault();
     if (!reply.length) {
       return;
     }
-    addReply({
-      commentId: comment?._id,
+    dispatch(showLoading());
+    userRequest({
+      url: apiEndPoints.addReply,
+      method: "put",
       data: {
         commentId: comment?._id,
         username: user?.username,
-        reply: reply,
+        reply,
       },
-    });
+    })
+      .then((res) => {
+        dispatch(hideLoading());
+        if (res?.data?.success) {
+          fetchComments();
+          setReply("");
+          setShowReplyBox(false);
+        } else {
+          toast.error(res?.data?.error);
+        }
+      })
+      .catch((err) => {
+        dispatch(hideLoading());
+        toast.error(err.message);
+      });
+  };
 
-    setReply("");
-    setShowReplyBox(false);
+  const deleteReplyhandler = (Reply) => {
+    dispatch(showLoading());
+    userRequest({
+      url: apiEndPoints.deleteUserReply,
+      method: "delete",
+      data: {
+        commentId: Reply?.commentId,
+        replyId: Reply?._id,
+      },
+    })
+      .then((res) => {
+        dispatch(hideLoading());
+        if (res.data?.success) {
+          fetchComments();
+        } else {
+          toast.error(res.data?.error);
+        }
+      })
+      .catch((err) => {
+        dispatch(hideLoading());
+        toast.error(err.message);
+      });
   };
 
   const replyButtonClicked = () => {
@@ -93,33 +133,45 @@ const Comment = ({ comment, user }) => {
 
       {comment?.replies?.length >= 0 &&
         comment?.replies?.map((reply) => {
-          return <Reply key={reply?._id} reply={reply} user={user} />;
+          return (
+            <footer class="flex justify-between items-center mb-2 ml-8">
+              <div class="flex items-center mx-2 px-2 rounded-md my-1 py-0.5">
+                <p class="inline-flex items-center mr-3 text-sm myTextColor">
+                  <img
+                    class="mr-2 w-6 h-6 rounded-full"
+                    src={`${API_BASE_URL}/profiles/${reply?.repliedUser?.profile}`}
+                    alt="Michael Gough"
+                  />
+                  {reply?.username}
+                </p>
+                <p class="text-sm myPara">
+                  <time
+                    pubdate
+                    datetime="2022-02-08"
+                    title="February 8th, 2022"
+                  >
+                    {reply?.reply}
+                  </time>
+                </p>
+                {reply.repliedUser.id === user._id && (
+                  <MdOutlineDeleteForever
+                    className="fill-red-800 mx-2"
+                    onClick={() => deleteReplyhandler(reply)}
+                  />
+                )}
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                  <time
+                    pubdate
+                    datetime="2022-02-08"
+                    title="February 8th, 2022"
+                  ></time>
+                </p>
+              </div>
+            </footer>
+          );
         })}
     </article>
   );
 };
 
 export default Comment;
-
-// < div class="flex flex-col space-y-4 md:flex-row md:items-center md:space-y-0 md:space-x-4" >
-//         <p class="text-center md:text-left md:w-1/2">author: {comment?.username} commented {comment?.comment}</p>
-//         <div class="w-full md:w-1/2">
-//             <div class="space-y-4">
-//                 <div>
-//                     <h2 class="text-center md:text-left">---Replies---</h2>
-//                     <div class="space-y-2">
-//                         {comment?.replies?.length >= 0 && comment?.replies?.map((r, index) => {
-//                             return <p class="ml-4 bg-blue-600 px-2 text-white" key={r?._id}>{r?.reply}</p>
-//                         })}
-//                     </div>
-//                 </div>
-//                 <div class="flex flex-col space-y-2 md:flex-row md:justify-end md:space-y-0">
-//                     <form onSubmit={submitHandler} class="flex space-x-2">
-//                         <input type="text" value={reply} onChange={(e) => setReply(e.target.value)} placeholder="reply" class="flex-1 border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-//                         <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">Reply</button>
-//                     </form>
-//                 </div>
-//             </div>
-//             <hr class="my-4" />
-//         </div>
-//     </ >

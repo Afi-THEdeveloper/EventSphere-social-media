@@ -15,6 +15,7 @@ import Button1 from "../../components/Button1";
 import { updateUser } from "../../Redux/slices/AuthSlice";
 import Button2 from "../../components/Button2";
 import ErrorStyle from "../../components/ErrorStyle";
+import UserNavbar from "../../components/User/UserNavbar";
 
 function EditJobProfile() {
   const { user } = useSelector((state) => state.Auth);
@@ -51,9 +52,9 @@ function EditJobProfile() {
     validationSchema: registerSchema,
     onSubmit: (values) => {
       if (!file) {
-        setError('pdf is required');
+        setError("pdf is required");
         setTimeout(() => {
-            setError('');
+          setError("");
         }, 2000);
         return;
       }
@@ -92,6 +93,7 @@ function EditJobProfile() {
   });
   return (
     <>
+      <UserNavbar />
       <div className="flex">
         <UserSidebar />
 
@@ -99,7 +101,7 @@ function EditJobProfile() {
           <div className="flex-1 flex flex-col items-center justify-center min-h-screen">
             <div className="flex w-full flex-col max-w-[400px] items-center space-y-3">
               <Myh1 title="Edit job profile" />
-              <div className="w-full mt-10">
+              <div className="w-[270px] sm:w-full mt-10">
                 <form onSubmit={formik.handleSubmit} noValidate>
                   <AuthInput
                     name="fullName"

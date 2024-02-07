@@ -12,6 +12,7 @@ import { userRequest } from "../../Helper/instance";
 import { apiEndPoints } from "../../utils/api";
 import { ServerVariables } from "../../utils/ServerVariables";
 import { API_BASE_URL } from "../../config/api";
+import UserNavbar from "../../components/User/UserNavbar";
 
 function UserNotifications() {
   const [notifications, setNotifications] = useState([]);
@@ -19,35 +20,35 @@ function UserNotifications() {
   const navigate = useNavigate();
 
   const clearMessge = (NotId) => {
-    dispatch(showLoading())
+    dispatch(showLoading());
     userRequest({
       url: apiEndPoints.clearUserNotification,
       method: "delete",
       data: { NotId },
     })
       .then((res) => {
-        dispatch(hideLoading())
+        dispatch(hideLoading());
         getUserNotifications();
       })
       .catch((err) => {
-        dispatch(hideLoading())
+        dispatch(hideLoading());
         toast.error(err.messsage);
       });
   };
 
   const clearAllNotifications = () => {
-    dispatch(showLoading())
+    dispatch(showLoading());
     userRequest({
       url: apiEndPoints.clearAllUserNotifications,
       method: "delete",
     })
       .then((res) => {
-        dispatch(hideLoading())
+        dispatch(hideLoading());
         getUserNotifications();
         toast.success(res.data?.success);
       })
       .catch((err) => {
-        dispatch(hideLoading())
+        dispatch(hideLoading());
         toast.error(err.messsage);
       });
   };
@@ -90,6 +91,7 @@ function UserNotifications() {
 
   return (
     <>
+      <UserNavbar />
       <div className="flex">
         <UserSidebar />
         <div className="flex-grow flex-shrink min-h-screen">
@@ -109,7 +111,10 @@ function UserNotifications() {
                     key={item?._id}
                     className="myBorder border-y-[0.1px] p-2 w-full rounded-lg shadow-md flex items-center justify-between space-x-4"
                   >
-                    <div className="flex-grow" onClick={() => handleNotificationClick(item?.actionOn)}>
+                    <div
+                      className="flex-grow"
+                      onClick={() => handleNotificationClick(item?.actionOn)}
+                    >
                       <small className="myTextColor font-extrabold cursor-pointer">
                         {item?.notificationMessage}
                         {item?.actionOn?.model === "eventPosts" && (

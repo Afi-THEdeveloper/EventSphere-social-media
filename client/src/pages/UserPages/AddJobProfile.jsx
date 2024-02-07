@@ -15,6 +15,7 @@ import Button1 from "../../components/Button1";
 import { updateUser } from "../../Redux/slices/AuthSlice";
 import Button2 from "../../components/Button2";
 import ErrorStyle from "../../components/ErrorStyle";
+import UserNavbar from "../../components/User/UserNavbar";
 
 function AddJobProfile() {
   const navigate = useNavigate();
@@ -50,9 +51,9 @@ function AddJobProfile() {
     validationSchema: registerSchema,
     onSubmit: (values) => {
       if (!file) {
-        setError('pdf is required');
+        setError("pdf is required");
         setTimeout(() => {
-            setError('');
+          setError("");
         }, 2000);
         return;
       }
@@ -91,6 +92,7 @@ function AddJobProfile() {
   });
   return (
     <>
+      <UserNavbar />
       <div className="flex">
         <UserSidebar />
 
@@ -98,7 +100,7 @@ function AddJobProfile() {
           <div className="flex-1 flex flex-col items-center justify-center min-h-screen">
             <div className="flex w-full flex-col max-w-[400px] items-center space-y-3">
               <Myh1 title="Add job profile" />
-              <div className="w-full mt-10">
+              <div className="w-[270px] sm:w-full mt-10">
                 <form onSubmit={formik.handleSubmit} noValidate>
                   <AuthInput
                     name="fullName"

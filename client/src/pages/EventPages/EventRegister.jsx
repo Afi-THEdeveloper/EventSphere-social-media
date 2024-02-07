@@ -14,59 +14,66 @@ import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
 
 function EventRegister() {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const registerSchema = Yup.object().shape({
     eventName: Yup.string()
       .min(3, "Event name must be atleast 3 characters")
       .required("Event name is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
     phone: Yup.number()
-    .typeError('Invalid number') // Handles non-numeric input
-    .positive('Phone number must be a positive number') // Handles negative numbers
-    .integer('Phone number must be an integer') // Handles non-integer input
-    .test('len', 'Phone number must be exactly 10 characters', (val) => val && val.toString().length === 10)
-    .required('Phone number is required'),
-     altPhone: Yup.number()
-    .typeError('Invalid number') // Handles non-numeric input
-    .positive('Phone number must be a positive number') // Handles negative numbers
-    .integer('Phone number must be an integer') // Handles non-integer input
-    .test('len', 'Phone number must be exactly 10 characters', (val) => val && val.toString().length === 10)
-    .required('Phone number is required'),
-    Ownername:Yup.string()
-      .min(3,'Owner name must be atleast 3 characters')  
-      .required('owner name is required'),
-    place:Yup.string()
-      .min(4,'place must be atleast 4 characters')  
-      .required('place is required'),
-    services:Yup.string()
-      .min(10,'services must be atleast 10 characters')  
-      .required('services is required'),
-    officeAddress:Yup.string()
-      .min(15,'office address must be atleast 15 characters')  
-      .required('office address is required'),
+      .typeError("Invalid number") // Handles non-numeric input
+      .positive("Phone number must be a positive number") // Handles negative numbers
+      .integer("Phone number must be an integer") // Handles non-integer input
+      .test(
+        "len",
+        "Phone number must be exactly 10 characters",
+        (val) => val && val.toString().length === 10
+      )
+      .required("Phone number is required"),
+    altPhone: Yup.number()
+      .typeError("Invalid number") // Handles non-numeric input
+      .positive("Phone number must be a positive number") // Handles negative numbers
+      .integer("Phone number must be an integer") // Handles non-integer input
+      .test(
+        "len",
+        "Phone number must be exactly 10 characters",
+        (val) => val && val.toString().length === 10
+      )
+      .required("Phone number is required"),
+    Ownername: Yup.string()
+      .min(3, "Owner name must be atleast 3 characters")
+      .required("owner name is required"),
+    place: Yup.string()
+      .min(4, "place must be atleast 4 characters")
+      .required("place is required"),
+    services: Yup.string()
+      .min(10, "services must be atleast 10 characters")
+      .required("services is required"),
+    officeAddress: Yup.string()
+      .min(15, "office address must be atleast 15 characters")
+      .required("office address is required"),
 
     password: Yup.string()
       .min(6, "Password must be atleast 6 characters")
       .required("Password is required"),
-   
   });
 
   const formik = useFormik({
     initialValues: {
       eventName: "",
-      Ownername:"",
+      Ownername: "",
       email: "",
-      place:'',
-      services:"",
-      officeAddress:"",
+      place: "",
+      services: "",
+      officeAddress: "",
       phone: "",
-      altPhone:'',
+      altPhone: "",
       password: "",
     },
     validationSchema: registerSchema,
     onSubmit: (values) => {
-      console.log(values)  
-      dispatch(showLoading())
+      console.log(values);
+      dispatch(showLoading());
       let registerData = values;
       console.log(registerData);
       eventRequest({
@@ -75,26 +82,28 @@ function EventRegister() {
         data: registerData,
       })
         .then((res) => {
-          dispatch(hideLoading())
+          dispatch(hideLoading());
           console.log(res.data);
           if (res.data.success) {
-            navigate(ServerVariables.eventOtp, {state : {email:res.data.email}});    
+            navigate(ServerVariables.eventOtp, {
+              state: { email: res.data.email },
+            });
           } else {
-            toast.error(res.data.error)
+            toast.error(res.data.error);
           }
         })
         .catch((err) => {
-          dispatch(hideLoading())
-          toast.error(err.message)
+          dispatch(hideLoading());
+          toast.error(err.message);
         });
     },
   });
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center min-h-screen">
-      <div className="flex w-full flex-col max-w-[400px] items-center space-y-3">
+      <div className="flex w-full flex-col max-w-[400px] items-center space-y-3 py-2">
         <Myh1 title="Register Event" />
-        <div className="w-full mt-10">
+        <div className="w-[270px] sm:w-full mt-10">
           <form onSubmit={formik.handleSubmit} noValidate>
             <AuthInput
               name="eventName"
@@ -175,9 +184,8 @@ function EventRegister() {
               </p>
             )}
 
-
             <textarea
-              className="myDivBg text-[#85ACEF] block w-full rounded-xl p-3 mt-1"
+              className="myDivBg border myBorder text-[#85ACEF] block w-full rounded-xl p-3 mt-1"
               name="services"
               type="text"
               placeholder="services"
@@ -191,7 +199,7 @@ function EventRegister() {
               </p>
             )}
             <textarea
-              className="myDivBg text-[#85ACEF] block w-full rounded-xl p-3 bg-[#1E1E1E]  mt-3"
+              className="myDivBg border myBorder text-[#85ACEF] block w-full rounded-xl p-3 bg-[#1E1E1E] mt-3"
               name="officeAddress"
               type="text"
               placeholder="office Address"
@@ -218,14 +226,10 @@ function EventRegister() {
                 {formik.errors.password}
               </p>
             )}
-            
-           
+
             <Button1 text="Register" style={{ marginTop: 10 }} />
-            <Link
-              to={ServerVariables.eventLogin}
-              className="myBorder mt-2 h-10 w-full rounded-full px-4 text-sm font-semibold myTextColor border-2  flex items-center justify-center"
-            >
-              Back to login
+            <Link to={ServerVariables.eventLogin}>
+              <Button1 text="Back to Login" style={{ marginTop: 10 }} />
             </Link>
           </form>
         </div>

@@ -14,18 +14,22 @@ import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
 
 function UserRegister() {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const registerSchema = Yup.object().shape({
     username: Yup.string()
       .min(3, "username must be 3 characters")
       .required("username is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
     phone: Yup.number()
-    .typeError('Invalid number') // Handles non-numeric input
-    .positive('Phone number must be a positive number') // Handles negative numbers
-    .integer('Phone number must be an integer') // Handles non-integer input
-    .test('len', 'Phone number must be exactly 10 characters', (val) => val && val.toString().length === 10)
-    .required('Phone number is required'),
+      .typeError("Invalid number") // Handles non-numeric input
+      .positive("Phone number must be a positive number") // Handles negative numbers
+      .integer("Phone number must be an integer") // Handles non-integer input
+      .test(
+        "len",
+        "Phone number must be exactly 10 characters",
+        (val) => val && val.toString().length === 10
+      )
+      .required("Phone number is required"),
     password: Yup.string()
       .min(6, "Password must be atleast 6 characters")
       .required("Password is required"),
@@ -44,7 +48,7 @@ function UserRegister() {
     },
     validationSchema: registerSchema,
     onSubmit: (values) => {
-      dispatch(showLoading())
+      dispatch(showLoading());
       let registerData = values;
       console.log(registerData);
       userRequest({
@@ -53,26 +57,26 @@ function UserRegister() {
         data: registerData,
       })
         .then((res) => {
-          dispatch(hideLoading())
+          dispatch(hideLoading());
           console.log(res.data);
           if (res.data.success) {
-            navigate(ServerVariables.Otp, {state : {email:res.data.email}});
+            navigate(ServerVariables.Otp, { state: { email: res.data.email } });
           } else {
-            toast.error(res.data.error)
+            toast.error(res.data.error);
           }
         })
         .catch((err) => {
-          dispatch(hideLoading())
-          toast.error(err.message)
+          dispatch(hideLoading());
+          toast.error(err.message);
         });
     },
   });
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center min-h-screen">
-      <div className="flex w-full flex-col max-w-[400px] items-center space-y-3">
+      <div className="flex w-full flex-col max-w-[400px] items-center space-y-3 py-2">
         <Myh1 title="Register User" />
-        <div className="w-full mt-10">
+        <div className="w-[270px] sm:w-full mt-10">
           <form onSubmit={formik.handleSubmit} noValidate>
             <AuthInput
               name="username"
@@ -139,13 +143,10 @@ function UserRegister() {
                 {formik.errors.Cpassword}
               </p>
             )}
-           
+
             <Button1 text="Register" style={{ marginTop: 10 }} />
-            <Link
-              to={ServerVariables.Login}
-              className="myTextColor border-2 myBorder mt-2 h-10 w-full rounded-full px-4 text-sm font-semibold flex items-center justify-center"
-            >
-              Back to login
+            <Link to={ServerVariables.Login}>
+              <Button1 text="Back to login" style={{ marginTop: 10 }} />
             </Link>
           </form>
         </div>

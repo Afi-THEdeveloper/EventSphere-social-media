@@ -13,6 +13,7 @@ import { apiEndPoints } from "../../utils/api";
 import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
 import FollowerCard from "../../components/FollowerCard";
 import { API_BASE_URL } from "../../config/api";
+import UserNavbar from "../../components/User/UserNavbar";
 
 function UserProfile() {
   const navigate = useNavigate();
@@ -59,6 +60,7 @@ function UserProfile() {
 
   return (
     <>
+      <UserNavbar />
       <div className="flex">
         <UserSidebar />
 

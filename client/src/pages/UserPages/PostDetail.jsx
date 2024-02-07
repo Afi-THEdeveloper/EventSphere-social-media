@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import UserSidebar from "../../components/User/UserSidebar";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  useAddCommentMutation,
-  useFetchCommentsQuery,
-} from "../../Redux/Comments/CommentApi";
 import Comment from "../../components/Comment";
 import { useDispatch, useSelector } from "react-redux";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
@@ -14,14 +10,15 @@ import { userRequest } from "../../Helper/instance";
 import { apiEndPoints } from "../../utils/api";
 import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
 import { ServerVariables } from "../../utils/ServerVariables";
-import Button2 from "../../components/Button2";
 import { API_BASE_URL } from "../../config/api";
+import UserNavbar from "../../components/User/UserNavbar";
 
 function PostDetail() {
   const [post, setPost] = useState({});
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [comment, setComment] = useState("");
   const { user } = useSelector((state) => state.Auth);
 
   const location = useLocation();
@@ -30,32 +27,57 @@ function PostDetail() {
   useEffect(() => {
     if (Post) {
       setPost(Post);
+      getComments();
     } else {
       navigate(ServerVariables.UserHome);
     }
   }, []);
 
-  const [addComment] = useAddCommentMutation() || {};
-  const { data: comments } = useFetchCommentsQuery(Post?._id) || {};
-
-  let totals = comments?.map((item) => item?.replies?.length);
-  let ultimateTotal = totals?.reduce((acc, item) => acc + item, 0);
-  ultimateTotal = ultimateTotal + comments?.length;
+  const getComments = () => {
+    userRequest({
+      url: `${apiEndPoints.getAllComments}/${Post?._id}`,
+      method: "get",
+    })
+      .then((res) => {
+        if (res.data?.success) {
+          setComments(res.data?.comments);
+        } else {
+          toast.error(res.data?.error);
+        }
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  };
 
   const submitHandler = (e) => {
     e.preventDefault();
 
-    addComment({
-      postId: post._id,
+    userRequest({
+      url: apiEndPoints.createComment,
+      method: "post",
       data: {
-        postId: post._id,
-        comment: comment,
-        username: user.username,
+        id: post._id,
+        comment,
+        username: user?.username,
       },
-    });
-
-    setComment("");
+    })
+      .then((res) => {
+        if (res.data?.success) {
+          getComments();
+          setComment("");
+        } else {
+          toast.error(res.data?.error);
+        }
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
   };
+
+  let totals = comments?.map((item) => item?.replies?.length);
+  let ultimateTotal = totals?.reduce((acc, item) => acc + item, 0);
+  ultimateTotal = ultimateTotal + comments?.length;
 
   const handleLike = (postId) => {
     dispatch(showLoading());
@@ -101,6 +123,7 @@ function PostDetail() {
 
   return (
     <>
+      <UserNavbar />
       <div className="flex">
         <UserSidebar />
 
@@ -176,6 +199,7 @@ function PostDetail() {
                         key={comment?._id}
                         comment={comment}
                         user={user}
+                        fetchComments={getComments}
                       />
                     );
                   })}

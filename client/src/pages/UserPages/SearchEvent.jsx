@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import { updateUser } from "../../Redux/slices/AuthSlice";
 import { updateEvent } from "../../Redux/slices/EventAuthSlice";
 import { ServerVariables } from "../../utils/ServerVariables";
+import UserNavbar from "../../components/User/UserNavbar";
 
 function SearchEvent() {
   const navigate = useNavigate();
@@ -114,6 +115,7 @@ function SearchEvent() {
 
   return (
     <>
+      <UserNavbar/>
       <div className="flex">
         <UserSidebar />
 

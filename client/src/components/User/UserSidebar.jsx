@@ -195,7 +195,7 @@ function UserSidebar() {
         </div>
       </div>
       {/* for small screens */}
-      <div className="relative myDivBg h-screen sm:block md:hidden lg:hidden mr-[14vh] ml-0">
+      {/* <div className="relative myDivBg h-screen sm:block md:hidden lg:hidden mr-[14vh] ml-0">
         <nav className="myDivBg z-20 flex shrink-0 grow-0 justify-around gap-4 border-t  p-2.5 shadow-lg backdrop-blur-lg border-slate-600/60 fixed top-2/4 -translate-y-2/4 left-6 min-h-[auto] min-w-[64px] flex-col rounded-lg border">
           {sideBarItems.map((item) => (
             <div
@@ -226,7 +226,8 @@ function UserSidebar() {
             </div>
           ))}
         </nav>
-      </div>
+      </div> */}
+      
       <Modal
         isOpen={CallModalOpen}
         onRequestClose={closeModal}
@@ -245,190 +246,3 @@ function UserSidebar() {
 }
 
 export default UserSidebar;
-
-// function UserSidebar() {
-//   const [activeItem, setActiveItem] = useState(null);
-//   const [sender, setSender] = useState({});
-//   const [meetlink, setMeetlink] = useState("");
-//   const [notificationsCount, setNotificationsCount] = useState(0);
-//   const [msgCount, setMsgCount] = useState(0);
-//   const [CallModalOpen, setCallModalOpen] = useState(false);
-//   const dispatch = useDispatch();
-//   const navigate = useNavigate();
-
-//   const location = useLocation();
-//   let ExtraPagePaths = [
-//     ServerVariables.editUser,
-//     ServerVariables.editJobProfile,
-//   ];
-
-//   useEffect(() => {
-//     if (location.state) {
-//       const { clicked } = location.state;
-//       setActiveItem(clicked);
-//     } else if (ExtraPagePaths.includes(location?.pathname)) {
-//       setActiveItem("Profile");
-//     }
-//   }, []);
-
-//   useEffect(() => {
-//     console.log("socket", socket);
-//     socket.on("userNotification", (notification) => {
-//       toast.success(notification.message, { duration: 5000 });
-//     });
-
-//     socket.on("videoCallInvite", (data) => {
-//       setSender(data?.sender);
-//       setMeetlink(data?.meetlink);
-//       setCallModalOpen(true);
-//     });
-
-//     return () => {
-//       socket.off("userNotification");
-//       socket.off("videoCallInvite");
-//     };
-//   }, []);
-
-//   useEffect(() => {
-//     userRequest({
-//       url: apiEndPoints.getUserNotificationsCount,
-//       method: "get",
-//     })
-//       .then((res) => {
-//         setNotificationsCount(res.data.count);
-//         if (location.pathname !== ServerVariables.chatPage) {
-//           setMsgCount(res.data?.MsgCount);
-//         }
-//       })
-//       .catch((err) => {
-//         toast.error(err.message);
-//       });
-//   }, [notificationsCount, msgCount]);
-
-//   const sideBarItems = [
-//     {
-//       label: "Home",
-//       icon: <HomeIcon />,
-//       onclick: () => {
-//         navigate(ServerVariables.UserHome, { state: { clicked: "Home" } });
-//       },
-//     },
-//     {
-//       label: "Explore",
-//       icon: <ExploreIcon />,
-//       onclick: () => {
-//         navigate(ServerVariables.explore, { state: { clicked: "Explore" } });
-//       },
-//     },
-//     {
-//       label: "Search",
-//       icon: <SearchIcons />,
-//       onclick: () => {
-//         navigate(ServerVariables.searchEvent, { state: { clicked: "Search" } });
-//       },
-//     },
-//     {
-//       label: "Messages",
-//       icon: <MessageIcon />,
-//       href: ServerVariables.chatPage,
-//       onclick: () => {
-//         navigate(ServerVariables.chatPage, { state: { clicked: "Messages" } });
-//       },
-//     },
-//     {
-//       label: "Notifications",
-//       icon: <NotificationIcon />,
-//       onclick: () => {
-//         navigate(ServerVariables.userNotifications, {
-//           state: { clicked: "Notifications" },
-//         });
-//       },
-//     },
-//     {
-//       label: "Profile",
-//       icon: <ProfileIcon />,
-//       onclick: () => {
-//         navigate(ServerVariables.userProfile, {
-//           state: { clicked: "Profile" },
-//         });
-//       },
-//     },
-//     {
-//       label: "Logout",
-//       icon: <LogoutIcon />,
-//       onclick: () => {
-//         dispatch(logout());
-//       },
-//     },
-//   ];
-
-//   const customStyles = {
-//     content: {
-//       top: "30%",
-//       left: "50%",
-//       right: "auto",
-//       bottom: "30%",
-//       marginRight: "-50%",
-//       transform: "translate(-50%, -50%)",
-//     },
-//   };
-//   const closeModal = () => {
-//     socket.emit("videoCallResponse", {
-//       eventId: sender?._id,
-//       accepted: false,
-//     });
-//     setCallModalOpen(false);
-//   };
-
-//   return (
-//     <>
-//       <div className="relative myDivBg h-screen ml-[20vh]">
-//         <nav className="myDivBg z-20 flex shrink-0 grow-0 justify-around gap-4 border-t  p-2.5 shadow-lg backdrop-blur-lg border-slate-600/60 fixed top-2/4 -translate-y-2/4 left-6 min-h-[auto] min-w-[64px] flex-col rounded-lg border">
-//           {sideBarItems.map((item) => (
-//             <div
-//               key={item.label}
-//               className={`myTextColor myHover cursor-pointer  flex aspect-square min-h-[32px] w-16 flex-col items-center justify-center gap-1 rounded-md p-1.5 ${
-//                 activeItem === item.label && "activeBg"
-//               }`}
-//               onClick={() => {
-//                 setActiveItem(item.label);
-//                 item.onclick();
-//               }}
-//             >
-//               {item.label === "Notifications" && notificationsCount > 0 && (
-//                 <div className="text-xs absolute left-0 mb-8 ml-4 bg-red-500 myTextColor w-4 h-4 flex items-center justify-center rounded-full">
-//                   {notificationsCount}
-//                 </div>
-//               )}
-//               {item.label === "Messages" && msgCount > 0 && (
-//                 <div className="text-xs absolute left-0 mb-8 ml-4 bg-red-500 myTextColor w-4 h-4 flex items-center justify-center rounded-full">
-//                   {msgCount}
-//                 </div>
-//               )}
-//               {item.icon}
-//               <small className="text-center text-xs font-medium">
-//                 {item.label}
-//               </small>
-//               <hr className="dark:border-gray-700/60" />
-//             </div>
-//           ))}
-//         </nav>
-//       </div>
-//       <Modal
-//         isOpen={CallModalOpen}
-//         onRequestClose={closeModal}
-//         ariaHideApp={false}
-//         style={customStyles}
-//       >
-//         <CallRequest
-//           isOpen={CallModalOpen}
-//           closeModal={closeModal}
-//           sender={sender}
-//           link={meetlink}
-//         />
-//       </Modal>
-//     </>
-//   );
-// }
-
-// export default UserSidebar;

@@ -36,7 +36,7 @@ const BannerCourosel = ({ banners }) => {
       {
         breakpoint: 1200,
         settings: {
-          slidesToShow: 4,
+          slidesToShow: 1,
           slidesToScroll: 1,
         },
       },
@@ -54,13 +54,17 @@ const BannerCourosel = ({ banners }) => {
           />
           <div className="bg-[#0f1015] bg-opacity-60 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center p-8">
             <div>
-              <h2 className="text-7xl font-serif myTextColor">{banner.title}</h2>
-              <p className="text-lg font-serif myTextColor">{banner?.description}</p>
+              <h2 className="text-xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-serif myTextColor">
+                {banner.title}
+              </h2>
+              <p className="text-[10px] sm:text-xs md:text-sm lg:text-lg xl:text-xl font-serif myTextColor">
+                {banner?.description}
+              </p>
             </div>
 
             {/* who are you part */}
 
-            <div className="flex-1 flex flex-col items-center justify-center p-4 mt-8">
+            <div className="flex-1 flex flex-col items-center justify-center p-4">
               <div className="w-[110px] h-[110px] my-12">
                 <img src="/images/Es.png" alt="" />
                 <p className="text-slate-400 text-xs font-bold">

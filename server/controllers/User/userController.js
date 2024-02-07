@@ -154,7 +154,7 @@ exports.getFollowingposts = CatchAsync(async (req, res) => {
     const posts = await EventPost.find({ postedBy: { $in: followingEventIds } })
       .skip((page - 1) * pageSize)
       .limit(pageSize)
-      .sort({ likes: -1, createdAt: -1 })
+      .sort({  createdAt: -1, likes: -1 })
       .populate("postedBy");
     return res
       .status(200)

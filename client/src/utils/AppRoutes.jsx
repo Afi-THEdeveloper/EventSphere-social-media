@@ -52,7 +52,6 @@ import UserNotifications from "../pages/UserPages/UserNotifications";
 import HiringsPage from "../pages/EventPages/HiringsPage";
 import AddJobPost from "../pages/EventPages/AddJobPost";
 import EditJobPost from "../pages/EventPages/EditJobPost";
-import JobDetails from "../pages/UserPages/JobDetails";
 import JobStats from "../pages/UserPages/JobStats";
 import ShowUser from "../pages/EventPages/ShowUser";
 import EventJobStats from "../pages/EventPages/EventJobStats";
@@ -132,7 +131,6 @@ function AppRoutes() {
           <Route path={ServerVariables.searchEvent} element={<SearchEvent/>} />
           <Route path={ServerVariables.userNotifications} element={<UserNotifications/>} />
           <Route path={ServerVariables.showJobs} element={<JobsPage/>} />
-          <Route path={ServerVariables.jobDetails} element={<JobDetails/>} />
           <Route path={ServerVariables.jobStats} element={<JobStats/>} />
         </Route>
 

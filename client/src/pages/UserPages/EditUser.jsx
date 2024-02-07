@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import UserSidebar from "../../components/User/UserSidebar";
 import AuthInput from "../../components/AuthInput";
-import * as Yup from "yup";
-import { useFormik } from "formik";
 import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +13,7 @@ import { apiEndPoints } from "../../utils/api";
 import { updateUser } from "../../Redux/slices/AuthSlice";
 import { useNavigate } from "react-router-dom";
 import { ServerVariables } from "../../utils/ServerVariables";
+import UserNavbar from "../../components/User/UserNavbar";
 
 function EditUser() {
   const { user } = useSelector((state) => state.Auth);
@@ -66,7 +65,7 @@ function EditUser() {
     }
     data.append("username", username);
     data.append("phone", phone);
-    
+
     dispatch(showLoading());
     userRequest({
       url: apiEndPoints.editUser,
@@ -100,6 +99,7 @@ function EditUser() {
 
   return (
     <>
+      <UserNavbar />
       <div className="flex">
         <UserSidebar />
 
@@ -107,7 +107,7 @@ function EditUser() {
           <div className="flex-1 flex flex-col items-center justify-center min-h-screen">
             <div className="flex w-full flex-col max-w-[400px] items-center space-y-3">
               <Myh1 title="Edit Profile" />
-              <div className="w-full mt-10">
+              <div className="w-[270px] sm:w-full mt-10">
                 <AuthInput
                   name="username"
                   type="text"

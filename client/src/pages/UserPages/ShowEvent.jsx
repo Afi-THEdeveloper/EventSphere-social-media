@@ -6,12 +6,13 @@ import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
 import { apiEndPoints } from "../../utils/api";
 import toast from "react-hot-toast";
 import { ServerVariables } from "../../utils/ServerVariables";
-import {  userRequest } from "../../Helper/instance";
+import { userRequest } from "../../Helper/instance";
 import { SlUserFollow, SlUserUnfollow } from "react-icons/sl";
 import { updateUser } from "../../Redux/slices/AuthSlice";
 import { updateEvent } from "../../Redux/slices/EventAuthSlice";
 import Myh1 from "../../components/Myh1";
 import { API_BASE_URL } from "../../config/api";
+import UserNavbar from "../../components/User/UserNavbar";
 
 function ShowEvent() {
   const navigate = useNavigate();
@@ -32,7 +33,6 @@ function ShowEvent() {
       navigate(ServerVariables.UserHome);
     }
   }, []);
-
 
   const getPostsinUser = async (eventId) => {
     dispatch(showLoading());
@@ -129,6 +129,7 @@ function ShowEvent() {
 
   return (
     <>
+      <UserNavbar />
       <div className="flex">
         <UserSidebar />
 

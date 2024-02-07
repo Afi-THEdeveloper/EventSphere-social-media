@@ -7,6 +7,10 @@ export const apiEndPoints = {
     getFollowingposts:'/api/user/getFollowingposts',
     getEPosts:'/api/user/getEPosts',
     likePost:'api/user/likePost',
+    createComment:'api/user/createComment',
+    getAllComments:'api/user/getAllComments',
+    addReply:'api/user/addReply',
+    deleteUserReply:'api/user/deleteReply',
     UnlikePost:'api/user/UnlikePost',
     followEvent:'api/user/followEvent',
     unfollowEvent:'api/user/unfollowEvent',
@@ -29,6 +33,7 @@ export const apiEndPoints = {
     UserSearchJob : 'api/user/UserSearchJob',
     getEventPostsinUser:'api/user/getEventPostsinUser',
     getEventStoryinUser:'api/user/getEventStoryinUser',
+
     
 
 

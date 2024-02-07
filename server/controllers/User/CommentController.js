@@ -5,8 +5,7 @@ const Notification = require("../../models/NotificationModel");
 const CatchAsync = require("../../util/CatchAsync");
 
 exports.createComment = CatchAsync(async (req, res) => {
-  const id = req?.params?.postId;
-  const { comment, username } = req?.body;
+  const { comment, id, username } = req?.body;
   if (id) {
     const createdComment = await Comment.create({
       postId: id,
@@ -25,9 +24,9 @@ exports.createComment = CatchAsync(async (req, res) => {
       senderId: req?.userId,
       notificationMessage: `${username} commented "${comment}" on your post`,
       actionOn: id,
-      actionOn:{
-        model:'eventPosts',
-        objectId:id,
+      actionOn: {
+        model: "eventPosts",
+        objectId: id,
       },
       date: new Date(),
     });
@@ -52,15 +51,15 @@ exports.getAllComments = CatchAsync(async (req, res) => {
     });
 
     let NewComments = [...comments, replies];
-    res.json(comments);
+    res.status(200).json({ success: true, comments });
   } else {
-    res.status(404).json({ message: "comment id is not found" });
+    res.json({ error: "comment id is not found" });
   }
 });
 
 exports.addReply = CatchAsync(async (req, res) => {
-  console.log(req.params, req.body);
-  const comment_Id = req?.params?.commentId;
+  console.log(req.body);
+  const comment_Id = req?.body?.commentId;
   const user = await User.findById(req?.userId);
   console.log(user);
   if (comment_Id) {
@@ -75,15 +74,16 @@ exports.addReply = CatchAsync(async (req, res) => {
       { $push: { replies: reply } },
       { new: true }
     );
-    res.json(newComment);
+    res.status(200).json({ success: true, newComment });
   } else {
-    res.status(404).json({ message: "comment id is not found" });
+    res.json({ error: "comment id is not found" });
   }
 });
 
 exports.deleteReply = CatchAsync(async (req, res) => {
-  const comment_Id = req?.params?.commentId;
-  const reply_Id = req?.params?.replyId;
+  console.log(req?.body);
+  const comment_Id = req?.body?.commentId;
+  const reply_Id = req?.body?.replyId;
 
   if (comment_Id && reply_Id) {
     const newComment = await Comment.findByIdAndUpdate(
@@ -91,8 +91,8 @@ exports.deleteReply = CatchAsync(async (req, res) => {
       { $pull: { replies: { _id: reply_Id } } },
       { new: true }
     );
-    res.json(newComment);
+    res.status(200).json({ success: true, newComment });
   } else {
-    res.status(404).json({ message: "comment id is not found" });
+    res.json({ error: "comment id is not found" });
   }
 });
