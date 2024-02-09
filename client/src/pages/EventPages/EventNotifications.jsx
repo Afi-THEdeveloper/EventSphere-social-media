@@ -14,6 +14,7 @@ import { formatDistanceToNow } from "date-fns";
 import { ServerVariables } from "../../utils/ServerVariables";
 import CommentModal from "../../components/CommentModal";
 import { API_BASE_URL } from "../../config/api";
+import EventNavbar from "../../components/Event/EventNavbar";
 
 function EventNotifications() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -128,6 +129,7 @@ function EventNotifications() {
 
   return (
     <>
+      <EventNavbar />
       <div className="flex">
         <EventSideBar />
         <div className="flex-grow flex-shrink min-h-screen">
@@ -147,7 +149,10 @@ function EventNotifications() {
                     key={item?._id}
                     className="myBorder border-y-[0.1px] p-2 w-full rounded-lg shadow-md flex items-center justify-between space-x-4"
                   >
-                    <div className="flex-grow"  onClick={() => handleNotificationClick(item?.actionOn)}>
+                    <div
+                      className="flex-grow"
+                      onClick={() => handleNotificationClick(item?.actionOn)}
+                    >
                       <small className="myTextColor font-extrabold cursor-pointer">
                         {item?.notificationMessage}
                         {item?.actionOn?.model === "eventPosts" && (

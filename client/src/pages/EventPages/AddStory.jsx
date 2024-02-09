@@ -13,6 +13,7 @@ import { eventRequest } from "../../Helper/instance";
 import { apiEndPoints } from "../../utils/api";
 import toast from "react-hot-toast";
 import { ServerVariables } from "../../utils/ServerVariables";
+import EventNavbar from "../../components/Event/EventNavbar";
 
 function AddStory() {
   const [imageFile, setImageFile] = useState(null);
@@ -22,13 +23,13 @@ function AddStory() {
   const navigate = useNavigate();
 
   const addCroppedImg = (file) => {
-      setImageFile(file);
+    setImageFile(file);
   };
 
   const handleAdd = () => {
     const data = new FormData();
     console.log(imageFile);
-    if (!imageFile ) {
+    if (!imageFile) {
       setError("story image is required");
       return setTimeout(() => {
         setError("");
@@ -37,7 +38,7 @@ function AddStory() {
     data.append("post", imageFile);
     if (description.length) {
       data.append("description", description);
-    }   
+    }
     dispatch(showLoading());
     eventRequest({
       url: apiEndPoints.addStory,
@@ -51,7 +52,7 @@ function AddStory() {
           navigate(ServerVariables.eventHome);
         } else {
           toast.error(res.data?.error);
-          navigate(ServerVariables.PlansAvailable)
+          navigate(ServerVariables.PlansAvailable);
         }
       })
       .catch((err) => {
@@ -62,14 +63,14 @@ function AddStory() {
 
   return (
     <>
+      <EventNavbar />
       <div className="flex">
         <EventSideBar />
         <div className="flex-grow flex-shrink min-h-screen">
           <div className="flex-1 flex flex-col items-center justify-center min-h-screen">
             <div className="flex w-full flex-col max-w-[400px] items-center space-y-3">
               <Myh1 title="Add story" />
-              <div className="w-full mt-10">
-                
+              <div className="w-[270px] sm:w-full mt-10">
                 <AuthInput
                   name="description"
                   type="text"

@@ -9,6 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ServerVariables } from "../../utils/ServerVariables";
 import JobCard from "../../components/JobCard";
 import SectionTabs from "../../components/SectionTabs";
+import EventNavbar from "../../components/Event/EventNavbar";
 
 function EventJobStats() {
   const [jobStats, setJobStats] = useState([]);
@@ -47,11 +48,14 @@ function EventJobStats() {
   };
   return (
     <>
+      <EventNavbar />
       <div className="flex">
         <EventSideBar />
 
-        <div className="flex-grow flex-shrink min-h-screen mx-8 text-center">
-          {jobStats.length && <JobCard jobPost={jobDetails} />}
+        <div className="flex-grow flex-shrink min-h-screen my-8 text-center">
+          <div className="grid grid-cols-1  gap-6 mx-2 md:mx-10 my-2">
+            {jobStats.length && <JobCard jobPost={jobDetails} />}
+          </div>
           <div>
             {jobStats.length && (
               <SectionTabs sections={jobStats} role={"event"} />

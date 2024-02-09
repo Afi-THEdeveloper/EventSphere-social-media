@@ -13,6 +13,7 @@ import { eventRequest } from "../../Helper/instance";
 import { apiEndPoints } from "../../utils/api";
 import toast from "react-hot-toast";
 import { ServerVariables } from "../../utils/ServerVariables";
+import EventNavbar from "../../components/Event/EventNavbar";
 
 function EditJobPost() {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ function EditJobPost() {
   useEffect(() => {
     if (post) {
       formik.setValues({
-        id : post._id || "",
+        id: post._id || "",
         title: post.title || "",
         jobType: post.jobType || "",
         location: post.location || "",
@@ -76,7 +77,7 @@ function EditJobPost() {
 
   const formik = useFormik({
     initialValues: {
-      id:'',  
+      id: "",
       title: "", // Set default value to an empty string if jobPost.title is undefined
       jobType: "",
       location: "",
@@ -109,6 +110,7 @@ function EditJobPost() {
 
   return (
     <>
+      <EventNavbar />
       <div className="flex">
         <EventSideBar />
         <div className="flex-grow flex-shrink min-h-screen">
@@ -116,7 +118,7 @@ function EditJobPost() {
           <div className="flex-1 flex flex-col items-center justify-center min-h-screen">
             <div className="flex w-full flex-col max-w-[400px] items-center space-y-3">
               <Myh1 title="Edit job post" />
-              <div className="w-full mt-10">
+              <div className="w-[270px] sm:w-full mt-10"> 
                 <form onSubmit={formik.handleSubmit} noValidate>
                   <AuthInput
                     name="title"

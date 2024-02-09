@@ -50,7 +50,7 @@ exports.register = CatchAsync(async (req, res) => {
         .catch((err) => console.log(err.message));
       return res.status(200).json({ success: "ok", email: req.body.email });
     } else {
-      res.status(404).json({ error: "user registration failed" });
+      res.json({ error: "user registration failed" });
     }
   }
 });
@@ -130,6 +130,45 @@ exports.ResendOtp = CatchAsync(async (req, res) => {
     .json({ success: "Otp Resended", email: req.body.email });
 });
 
+exports.verifyEmail = CatchAsync(async (req, res) => {
+  const email = req.body?.email;
+  const user = await User.findOne({ email });
+  if (user) {
+    const newOtp = randomString.generate({
+      length: 4,
+      charset: "numeric",
+    });
+    const options = {
+      from: process.env.EMAIL,
+      to: email,
+      subject: "EventSphere verification otp",
+      html: `<center> <h2>Verify Your Email </h2> <br> <h5>OTP :${newOtp} </h5><br><p>This otp is only valid for 1 minutes only</p></center>`,
+    };
+    await OtpMailer.sendMail(options)
+      .then((res) => console.log("otp sended"))
+      .catch((err) => console.log(err.message));
+    user.otp.code = newOtp;
+    user.otp.generatedAt = Date.now();
+    await user.save();
+    return res.status(200).json({ success: "ok", email });
+  } else {
+    res.json({ error: "user does not exist, enter valid email" });
+  }
+});
+
+exports.resetPassword = CatchAsync(async (req,res) => {
+  const email = req.body?.email;
+  const secPassword = await securePassword(req?.body?.password);
+  const user = await User.findOne({email})
+  if(user){
+    user.password = secPassword
+    await user.save();
+    return res.status(200).json({ success: "password changed"});
+  }else{
+    res.json({ error: "user credentials missing, try again" });
+  }
+})
+
 exports.getFollowingposts = CatchAsync(async (req, res) => {
   const user = await User.findById(req?.userId);
   if (user?.following.length === 0) {
@@ -154,7 +193,7 @@ exports.getFollowingposts = CatchAsync(async (req, res) => {
     const posts = await EventPost.find({ postedBy: { $in: followingEventIds } })
       .skip((page - 1) * pageSize)
       .limit(pageSize)
-      .sort({  createdAt: -1, likes: -1 })
+      .sort({ createdAt: -1, likes: -1 })
       .populate("postedBy");
     return res
       .status(200)

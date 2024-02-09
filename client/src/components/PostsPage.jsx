@@ -72,7 +72,6 @@ const PostCard = ({ post, onDelete }) => {
     }
   };
 
-
   const customStyles = {
     content: {
       top: "30%",
@@ -139,7 +138,7 @@ const PostCard = ({ post, onDelete }) => {
           isOpen={islikeModalOpen}
           closeModal={closeModal}
           items={likedUsers}
-          role={'liked users'}
+          role={"liked users"}
         />
       </Modal>
     </div>
@@ -158,10 +157,28 @@ const PostList = ({ posts, onDelete }) => {
 
 const NewPostButton = () => {
   const navigate = useNavigate();
+  const handleAddPostClick = () => {
+    eventRequest({
+      url: apiEndPoints.hasPlan,
+      method: "get",
+    })
+      .then((res) => {
+        if (res.data?.success) {
+          navigate(ServerVariables.addPost);
+        } else {
+          toast.error(res?.data?.error);
+          navigate(ServerVariables.PlansAvailable);
+        }
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  };
+  
   return (
     <button
       className="fixed bottom-4 right-4 myDivBg myTextColor p-4 rounded-full myHover border myBorder"
-      onClick={() => navigate(ServerVariables.addPost)}
+      onClick={handleAddPostClick}
     >
       <PlusIcon className="h-6 w-6 font-bold" />
     </button>

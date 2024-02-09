@@ -13,12 +13,15 @@ eventRouter
     .post('/verifyEventOtp', eventController.verifyEventOtp)
     .post('/ResendOtp', eventController.ResendOtpEvent)
     .post('/verifyEventLogin', eventController.verifyEventLogin)
+    .put('/resetEventPassword', eventController.resetEventPassword)
+    .post('/verifyEvent', eventController.verifyEvent)
     .post('/updateEvent', eventAuth, eventController.updateEvent)
     .post('/updateEventProfile', eventAuth,uploadEventProfile,resizeEventProfile, eventController.updateEventProfile)
     .post('/getEventPosts', eventAuth, eventController.getEventPosts)
     .post('/getlikedUsers', eventAuth, eventController.getlikedUsers)
 
     .post('/addPost', eventAuth,IsPlanExpired, uploadEventPost,processEventPost, eventController.addPost)
+    .get('/hasPlan', eventAuth,eventController.hasPlan) 
 
     .post('/deletePost', eventAuth, eventController.deletePost)
     .post('/addStory', eventAuth,IsPlanExpired, uploadEventPost, processEventPost, eventController.addStory)

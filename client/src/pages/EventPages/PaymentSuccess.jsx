@@ -3,15 +3,16 @@ import Button2 from "../../components/Button2";
 import { ServerVariables } from "../../utils/ServerVariables";
 import { useNavigate } from "react-router-dom";
 import EventSideBar from "../../components/EventSideBar";
+import EventNavbar from "../../components/Event/EventNavbar";
 
 function PaymentSuccess() {
   const navigate = useNavigate();
   return (
     <>
+      <EventNavbar />
       <div className="flex">
         <EventSideBar />
         <div className="flex-grow flex-shrink min-h-screen">
-            
           <div className="h-screen">
             <div className="myDivBg  p-6 m-4">
               <svg
@@ -32,12 +33,14 @@ function PaymentSuccess() {
                 </p>
                 <p className="myPara"> Have a great day! </p>
                 <div className="py-10 text-center">
-                  <Button2 text='Go back' onClick={()=> navigate(ServerVariables.PlansAvailable)}/>
+                  <Button2
+                    text="Go back"
+                    onClick={() => navigate(ServerVariables.PlansAvailable)}
+                  />
                 </div>
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </>

@@ -17,6 +17,7 @@ import Search1 from "../../components/Search1";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
 import { BsEmojiSmile } from "react-icons/bs";
+import EventNavbar from "../../components/Event/EventNavbar";
 
 function EventChats() {
   const [selectedUserId, setSelectedUserId] = useState("");
@@ -175,205 +176,213 @@ function EventChats() {
   );
 
   return (
-    <div className="flex">
-      <EventSideBar />
-      <div className="flex-grow flex-shrink min-h-screen ml-4">
-        <div className="flex h-screen">
-          {/* contacts */}
-          <div className="myDivBg w-1/3">
-            <div className="myTextColor font-bold flex gap-4 p-4 my-2 border-b-2 myBorder">
-              <MessageIcon />
-              <Search1
-                search={"search chats..."}
-                value={searched}
-                onChange={(e) => setSearched(e.target.value)}
-              />
-            </div>
-            {contactLists.length ? (
-              contactLists
-                .filter((item) => {
-                  return searched?.toLowerCase() === ""
-                    ? item
-                    : item?.userId?.username?.toLowerCase().includes(searched);
-                })
-                .map((contact) => (
-                  <div
-                    key={contact?.userId?._id}
-                    onClick={() => handleClickContact(contact?.userId?._id)}
-                    className={
-                      "py-2 pl-4 border-0 border-gray-100 flex-col items-center gap-2 cursor-pointer " +
-                      (contact?.userId?._id === selectedUserId
-                        ? "activeBg"
-                        : "")
-                    }
-                  >
-                    <div className="flex gap-4 pl-4 items-center">
-                      {contact?.userId?._id === selectedUserId && (
-                        <div className="bg-blue-500 w-1 h-12 rounded-r-md"></div>
-                      )}
-                      <Avatar profile={contact?.userId?.profile} />
-                      <span className="myTextColor">
-                        {contact?.userId?.username}
-                      </span>
-                      {contact?.unseenMessagesCount > 0 && (
-                        <span className="bg-green-500 text-white w-5 h-5 flex items-center justify-center rounded-full">
-                          {contact?.unseenMessagesCount}
+    <>
+      <EventNavbar />
+      <div className="flex">
+        <EventSideBar />
+        <div className="flex-grow flex-shrink min-h-screen ml-4">
+          <div className="flex h-screen">
+            {/* contacts */}
+            <div className="myDivBg w-1/3">
+              <div className="myTextColor font-bold flex gap-4 p-4 my-2 border-b-2 myBorder">
+                <MessageIcon />
+                <Search1
+                  search={"search chats..."}
+                  value={searched}
+                  onChange={(e) => setSearched(e.target.value)}
+                />
+              </div>
+              {contactLists.length ? (
+                contactLists
+                  .filter((item) => {
+                    return searched?.toLowerCase() === ""
+                      ? item
+                      : item?.userId?.username
+                          ?.toLowerCase()
+                          .includes(searched);
+                  })
+                  .map((contact) => (
+                    <div
+                      key={contact?.userId?._id}
+                      onClick={() => handleClickContact(contact?.userId?._id)}
+                      className={
+                        "py-2 pl-4 border-0 border-gray-100 flex-col items-center gap-2 cursor-pointer " +
+                        (contact?.userId?._id === selectedUserId
+                          ? "activeBg"
+                          : "")
+                      }
+                    >
+                      <div className="flex gap-4 pl-4 items-center">
+                        {contact?.userId?._id === selectedUserId && (
+                          <div className="bg-blue-500 w-1 h-12 rounded-r-md"></div>
+                        )}
+                        <Avatar profile={contact?.userId?.profile} />
+                        <span className="myTextColor">
+                          {contact?.userId?.username}
                         </span>
+                        {contact?.unseenMessagesCount > 0 && (
+                          <span className="bg-green-500 text-white w-5 h-5 flex items-center justify-center rounded-full">
+                            {contact?.unseenMessagesCount}
+                          </span>
+                        )}
+                      </div>
+                      {contact?.latestMessage ? (
+                        <div className="flex gap-4  pl-20 items-center myPara text-xs">
+                          <span>
+                            {contact?.latestMessageSenderId !== contact?._id
+                              ? `You: ${contact?.latestMessage}`
+                              : `${contact?.title}: ${contact?.latestMessage}`}
+                          </span>
+                          <small>
+                            {formatDistanceToNow(new Date(contact?.time), {
+                              addSuffix: true,
+                            })}
+                          </small>
+                        </div>
+                      ) : (
+                        ""
                       )}
                     </div>
-                    {contact?.latestMessage ? (
-                      <div className="flex gap-4  pl-20 items-center myPara text-xs">
-                        <span>
-                          {contact?.latestMessageSenderId !== contact?._id
-                            ? `You: ${contact?.latestMessage}`
-                            : `${contact?.title}: ${contact?.latestMessage}`}
-                        </span>
-                        <small>
-                          {formatDistanceToNow(new Date(contact?.time), {
-                            addSuffix: true,
-                          })}
-                        </small>
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                  </div>
-                ))
-            ) : (
-              <p className="myTextColor p-2">no connected users to chat</p>
-            )}
-          </div>
-
-          {/* chat header */}
-          <div className="flex flex-col  w-2/3 p-2">
-            <div className="flex-grow">
-              {selectedUserId ? (
-                <div className="myDivBg py-4 pl-4  flex items-center gap-4 cursor-pointer justify-between">
-                  <Avatar profile={chatPartner?.userId?.profile} />
-                  <div className="myTextColor font-bold">
-                    {chatPartner?.userId?.username}
-                  </div>
-                  <FaVideo
-                    className="myTextColor w-8 h-8 mr-2"
-                    onClick={() =>
-                      handleVideoClick(
-                        chatPartner?.eventId?._id,
-                        chatPartner?.userId?._id
-                      )
-                    }
-                  />
-                </div>
+                  ))
               ) : (
-                <div className="h-full flex items-center justify-center">
-                  <div className="myTextColor">
-                    &larr; select a person from sidebar
-                  </div>
-                </div>
+                <p className="myTextColor p-2">no connected users to chat</p>
               )}
             </div>
 
-            {/* chats */}
-
-            <div className="relative h-full">
-              <div
-                className="overflow-y-scroll absolute top-0 left-0 right-0 bottom-2"
-                ref={chatContainerRef}
-              >
-                {chatHistory?.map((message) => {
-                  const isEventChat = message.senderId === message.eventId;
-                  const timeAgo = formatDistanceToNow(new Date(message.time), {
-                    addSuffix: true,
-                  });
-                  return (
-                    <div
-                      key={message._id}
-                      className={
-                        isEventChat ? "text-right mx-8" : "text-left mx-8"
-                      }
-                    >
-                      <div
-                        className={
-                          "text-left inline-block p-2 my-2 rounded-md text-sm " +
-                          (isEventChat
-                            ? "bg-blue-500 text-white"
-                            : "bg-white text-gray-500")
-                        }
-                      >
-                        {message.message}
-                      </div>
-
-                      <div className="text-xs text-gray-500 self-end">
-                        {timeAgo}
-                      </div>
+            {/* chat header */}
+            <div className="flex flex-col  w-2/3 p-2">
+              <div className="flex-grow">
+                {selectedUserId ? (
+                  <div className="myDivBg py-4 pl-4  flex items-center gap-4 cursor-pointer justify-between">
+                    <Avatar profile={chatPartner?.userId?.profile} />
+                    <div className="myTextColor font-bold">
+                      {chatPartner?.userId?.username}
                     </div>
-                  );
-                })}
-                <div ref={divUnderMessages}></div>
-              </div>
-            </div>
-
-            {!!selectedUserId && (
-              <div className="flex gap-2 mx-2 p-2">
-                <input
-                  type="text"
-                  ref={inputRef}
-                  value={newMessageText}
-                  onChange={(e) => setNewMessageText(e.target.value)}
-                  placeholder="message..."
-                  className="myDivBg border p-2 flex-grow rounded-sm text-[#5A91E2]"
-                />
-
-                {/* emoji */}
-                <span
-                  onClick={() => setShowEmoji(!showEmoji)}
-                  className="myTextColor cursor-pointer hover:text-slate-300"
-                >
-                  <BsEmojiSmile />
-                </span>
-
-                {showEmoji && (
-                  <div className="absolute bottom-12">
-                    <Picker
-                      data={data}
-                      emojiSize={20}
-                      emojiButtonSize={28}
-                      onEmojiSelect={addEmoji}
-                      maxFrequentRows={0}
+                    <FaVideo
+                      className="myTextColor w-8 h-8 mr-2"
+                      onClick={() =>
+                        handleVideoClick(
+                          chatPartner?.eventId?._id,
+                          chatPartner?.userId?._id
+                        )
+                      }
                     />
                   </div>
+                ) : (
+                  <div className="h-full flex items-center justify-center">
+                    <div className="myTextColor">
+                      &larr; select a person from sidebar
+                    </div>
+                  </div>
                 )}
-
-                <button
-                  onClick={() =>
-                    sendMessage(
-                      chatPartner._id,
-                      selectedUserId,
-                      chatPartner.eventId?._id
-                    )
-                  }
-                  className="bg-blue-700  p-2 text-white"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-6 h-6"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
-                    />
-                  </svg>
-                </button>
               </div>
-            )}
+
+              {/* chats */}
+
+              <div className="relative h-full">
+                <div
+                  className="overflow-y-scroll absolute top-0 left-0 right-0 bottom-2"
+                  ref={chatContainerRef}
+                >
+                  {chatHistory?.map((message) => {
+                    const isEventChat = message.senderId === message.eventId;
+                    const timeAgo = formatDistanceToNow(
+                      new Date(message.time),
+                      {
+                        addSuffix: true,
+                      }
+                    );
+                    return (
+                      <div
+                        key={message._id}
+                        className={
+                          isEventChat ? "text-right mx-8" : "text-left mx-8"
+                        }
+                      >
+                        <div
+                          className={
+                            "text-left inline-block p-2 my-2 rounded-md text-sm " +
+                            (isEventChat
+                              ? "bg-blue-500 text-white"
+                              : "bg-white text-gray-500")
+                          }
+                        >
+                          {message.message}
+                        </div>
+
+                        <div className="text-xs text-gray-500 self-end">
+                          {timeAgo}
+                        </div>
+                      </div>
+                    );
+                  })}
+                  <div ref={divUnderMessages}></div>
+                </div>
+              </div>
+
+              {!!selectedUserId && (
+                <div className="flex gap-2 mx-2 p-2">
+                  <input
+                    type="text"
+                    ref={inputRef}
+                    value={newMessageText}
+                    onChange={(e) => setNewMessageText(e.target.value)}
+                    placeholder="message..."
+                    className="myDivBg border p-2 flex-grow rounded-sm text-[#5A91E2]"
+                  />
+
+                  {/* emoji */}
+                  <span
+                    onClick={() => setShowEmoji(!showEmoji)}
+                    className="myTextColor cursor-pointer hover:text-slate-300"
+                  >
+                    <BsEmojiSmile />
+                  </span>
+
+                  {showEmoji && (
+                    <div className="absolute bottom-12">
+                      <Picker
+                        data={data}
+                        emojiSize={20}
+                        emojiButtonSize={28}
+                        onEmojiSelect={addEmoji}
+                        maxFrequentRows={0}
+                      />
+                    </div>
+                  )}
+
+                  <button
+                    onClick={() =>
+                      sendMessage(
+                        chatPartner._id,
+                        selectedUserId,
+                        chatPartner.eventId?._id
+                      )
+                    }
+                    className="bg-blue-700  p-2 text-white"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="w-6 h-6"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

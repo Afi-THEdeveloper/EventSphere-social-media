@@ -3,11 +3,13 @@ import EventSideBar from "../../components/EventSideBar";
 import Button2 from "../../components/Button2";
 import { ServerVariables } from "../../utils/ServerVariables";
 import { useNavigate } from "react-router-dom";
+import EventNavbar from "../../components/Event/EventNavbar";
 
 function PaymentError() {
-  const navigate = useNavigate()  
+  const navigate = useNavigate();
   return (
     <>
+      <EventNavbar />
       <div className="flex">
         <EventSideBar />
         <div className="flex-grow flex-shrink min-h-screen">
@@ -26,9 +28,7 @@ function PaymentError() {
                 <h3 className="myTextColor md:text-2xl text-base font-semibold text-center">
                   Payment Cancelled
                 </h3>
-                <p className="myPara my-2">
-                  Try again ...
-                </p>
+                <p className="myPara my-2">Try again ...</p>
                 <p className="myPara"> check if any invalid steps done </p>
                 <div className="py-10 text-center">
                   <Button2

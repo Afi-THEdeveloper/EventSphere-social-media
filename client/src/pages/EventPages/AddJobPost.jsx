@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import EventSideBar from "../../components/EventSideBar";
 import Button1 from "../../components/Button1";
-import Button2 from "../../components/Button2";
 import AuthInput from "../../components/AuthInput";
 import Myh1 from "../../components/Myh1";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,6 +12,7 @@ import { eventRequest } from "../../Helper/instance";
 import { apiEndPoints } from "../../utils/api";
 import toast from "react-hot-toast";
 import { ServerVariables } from "../../utils/ServerVariables";
+import EventNavbar from "../../components/Event/EventNavbar";
 
 function AddJobPost() {
   const navigate = useNavigate();
@@ -87,6 +87,7 @@ function AddJobPost() {
 
   return (
     <>
+      <EventNavbar />
       <div className="flex">
         <EventSideBar />
         <div className="flex-grow flex-shrink min-h-screen">
@@ -94,7 +95,7 @@ function AddJobPost() {
           <div className="flex-1 flex flex-col items-center justify-center min-h-screen">
             <div className="flex w-full flex-col max-w-[400px] items-center space-y-3 my-4">
               <Myh1 title="Add job post" />
-              <div className="w-full mt-10">
+              <div className="w-[270px] sm:w-full mt-10">
                 <form onSubmit={formik.handleSubmit} noValidate>
                   <AuthInput
                     name="title"

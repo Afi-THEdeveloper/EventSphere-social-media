@@ -62,6 +62,7 @@ exports.registerEvent = CatchAsync(async (req, res) => {
 });
 
 exports.verifyEventOtp = CatchAsync(async (req, res) => {
+  // return console.log(req?.body);
   const { otp, email } = req.body;
   const event = await Event.findOne({ email: email });
   const generatedAt = new Date(event.otp.generatedAt).getTime();
@@ -134,6 +135,46 @@ exports.verifyEventLogin = CatchAsync(async (req, res) => {
   });
   event.password = "";
   res.status(200).json({ success: "Login successful", token, event });
+});
+
+exports.verifyEvent = CatchAsync(async (req, res) => {
+  const email = req.body?.email;
+  const event = await Event.findOne({ email });
+  if (event) {
+    const newOtp = randomString.generate({
+      length: 4,
+      charset: "numeric",
+    });
+    const options = {
+      from: process.env.EMAIL,
+      to: email,
+      subject: "EventSphere verification otp",
+      html: `<center> <h2>Verify Your Email </h2> <br> <h5>OTP :${newOtp} </h5><br><p>This otp is only valid for 1 minutes only</p></center>`,
+    };
+    await OtpMailer.sendMail(options)
+      .then((res) => console.log("otp sended"))
+      .catch((err) => console.log(err.message));
+    event.otp.code = newOtp;
+    event.otp.generatedAt = Date.now();
+    await event.save();
+    return res.status(200).json({ success: "ok", email });
+  } else {
+    res.json({ error: "user does not exist, enter valid email" });
+  }
+});
+
+exports.resetEventPassword = CatchAsync(async (req, res) => {
+  console.log("event side");
+  const email = req.body?.email;
+  const secPassword = await securePassword(req?.body?.password);
+  const event = await Event.findOne({ email });
+  if (event) {
+    event.password = secPassword;
+    await event.save();
+    return res.status(200).json({ success: "password changed" });
+  } else {
+    res.json({ error: "user credentials missing, try again" });
+  }
 });
 
 exports.updateEvent = CatchAsync(async (req, res) => {
@@ -258,6 +299,25 @@ exports.deleteReply = CatchAsync(async (req, res) => {
   }
 });
 
+exports.hasPlan = CatchAsync(async (req, res) => {
+  const event = await Event.findById(req.eventId);
+  const currentDate = new Date();
+  console.log("selected", event.selectedPlan);
+  if (event.selectedPlan.transactionId) {
+    if (event.selectedPlan.expiry < currentDate) {
+      await Event.updateOne(
+        { _id: req.eventId },
+        { $unset: { selectedPlan: 1 } }
+      );
+      return res.json({ error: "your plan has been expired" });
+    } else {
+      return res.status(200).json({ success: "ok" });
+    }
+  } else {
+    return res.json({ error: "please subscribe to a plan" });
+  }
+});
+
 exports.addPost = CatchAsync(async (req, res) => {
   console.log(req.body);
   const event = await Event.findById(req.eventId);
@@ -298,7 +358,7 @@ exports.addStory = CatchAsync(async (req, res) => {
   const createdAt = new Date();
 
   data.postedBy = event._id;
-  data.expiresOn = new Date(createdAt.getTime() + 3 * 60 * 1000); // 3 mins valid
+  data.expiresOn = new Date(createdAt.getTime() + 1 * 24 * 60 * 60 * 1000); // 1 day valid
   console.log(data);
   const story = new Story(data);
   await story.save();
@@ -331,11 +391,10 @@ exports.getEventStory = CatchAsync(async (req, res) => {
 
 exports.getlikedUsers = CatchAsync(async (req, res) => {
   const postId = req?.body?.postId;
-  const post = await EventPost.findById(postId).populate('likes')
-  const users = post?.likes
+  const post = await EventPost.findById(postId).populate("likes");
+  const users = post?.likes;
   return res.status(200).json({ success: "ok", users });
 });
-
 
 // notifications
 

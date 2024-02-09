@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../Redux/slices/LoadingSlice";
+import { formatDistanceToNow } from "date-fns";
 
 const Comment = ({ comment, user, fetchComments }) => {
   const dispatch = useDispatch();
@@ -71,6 +72,29 @@ const Comment = ({ comment, user, fetchComments }) => {
     setShowReplyBox((prev) => !prev);
   };
 
+  const deleteComment = (commentId) => {
+    dispatch(showLoading());
+    userRequest({
+      url: apiEndPoints.deleteComment,
+      method: "delete",
+      data: {
+        commentId,
+      },
+    })
+      .then((res) => {
+        dispatch(hideLoading());
+        if (res.data?.success) {
+          fetchComments();
+        } else {
+          toast.error(res.data?.error);
+        }
+      })
+      .catch((err) => {
+        dispatch(hideLoading());
+        toast.error(err.message);
+      });
+  };
+
   return (
     <article className="p-6 mb-6 text-base activeBg rounded-lg">
       <footer className="flex justify-between items-center mb-2">
@@ -83,11 +107,19 @@ const Comment = ({ comment, user, fetchComments }) => {
             />
             {comment?.userId?.username}
           </p>
-          <p className="text-sm myPara">
+          <p className="text-xs myPara">
             <time pubdate datetime="2022-02-08" title="February 8th, 2022">
-              {comment?.createdAt}
+              {formatDistanceToNow(new Date(comment?.createdAt), {
+                addSuffix: true,
+              })}
             </time>
           </p>
+          {comment?.userId?._id === user._id && (
+            <MdOutlineDeleteForever
+              className="fill-red-800 mx-2"
+              onClick={() => deleteComment(comment?._id)}
+            />
+          )}
         </div>
       </footer>
       <p className="myPara">{comment?.comment}</p>

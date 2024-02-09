@@ -9,6 +9,7 @@ import { eventRequest } from "../../Helper/instance";
 import { apiEndPoints } from "../../utils/api";
 import toast from "react-hot-toast";
 import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
+import EventNavbar from "../../components/Event/EventNavbar";
 
 function EventHome() {
   const [posts, setPosts] = useState([]);
@@ -62,6 +63,7 @@ function EventHome() {
 
   return (
     <>
+      <EventNavbar />
       <div className="flex">
         <EventSideBar />
 

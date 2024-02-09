@@ -172,40 +172,6 @@ function EventSideBar() {
           ))}
         </div>
       </div>
-
-      {/* small screens */}
-      <div className="relative myDivBg h-screen sm:block md:hidden lg:hidden mr-[15vh] ml-0">
-        <nav className="myDivBg z-20 flex shrink-0 grow-0 justify-around gap-4 border-t  p-2.5 shadow-lg backdrop-blur-lg border-slate-600/60 fixed top-2/4 -translate-y-2/4 left-6 min-h-[auto] min-w-[64px] flex-col rounded-lg border">
-          {sideBarItems.map((item) => (
-            <div
-              key={item.label}
-              className={`myTextColor myHover cursor-pointer  flex aspect-square min-h-[32px] w-16 flex-col items-center justify-center gap-1 rounded-md p-1.5 ${
-                activeItem === item.label && "activeBg"
-              }`}
-              onClick={() => {
-                setActiveItem(item.label);
-                item.onclick();
-              }}
-            >
-              {item.label === "Notifications" && notificationsCount > 0 && (
-                <div className="text-xs absolute left-0 mb-8 ml-4 bg-red-500 myTextColor w-4 h-4 flex items-center justify-center rounded-full">
-                  {notificationsCount}
-                </div>
-              )}
-              {item.label === "Messages" && msgCount > 0 && (
-                <div className="text-xs absolute left-0 mb-8 ml-4 bg-red-500 myTextColor w-4 h-4 flex items-center justify-center rounded-full">
-                  {msgCount}
-                </div>
-              )}
-              {item.icon}
-              <small className="text-center text-xs font-medium">
-                {item.label}
-              </small>
-              <hr className="dark:border-gray-700/60" />
-            </div>
-          ))}
-        </nav>
-      </div>
       <Modal
         isOpen={CallModalOpen}
         onRequestClose={closeModal}

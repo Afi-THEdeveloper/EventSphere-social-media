@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Button1 from "../../components/Button1";
 import Myh1 from "../../components/Myh1";
 import AuthInput from "../../components/AuthInput";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { ServerVariables } from "../../utils/ServerVariables";
-import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { loginThunk } from "../../Redux/slices/AuthSlice";
 import Button2 from "../../components/Button2";
 import HomeIcon from "../../components/icons/HomeIcon";
 import ErrorStyle from "../../components/ErrorStyle";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const loginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -21,10 +21,9 @@ const loginSchema = Yup.object().shape({
 });
 
 function UserLogin() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isLoading, isError, isSuccess, message, errorMsg, token } =
-    useSelector((state) => state.Auth);
+  const navigate = useNavigate();
+  const [showPswd, setShowPswd] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -57,14 +56,28 @@ function UserLogin() {
                   {formik.errors.email}
                 </p>
               )}
-              <AuthInput
-                name="password"
-                type="password"
-                placeholder="Password"
-                value={formik.values.password}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
+              <div className="relative">
+                <AuthInput
+                  name="password"
+                  type={showPswd === true ? "text" : "password"}
+                  placeholder="Password"
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 mx-2"
+                  onClick={() => setShowPswd(!showPswd)}
+                >
+                  {showPswd ? (
+                    <FiEye color="white" />
+                  ) : (
+                    <FiEyeOff color="white" />
+                  )}
+                </button>
+                <p className="myPara flex justify-end text-xs cursor-pointer mr-2" onClick={()=> navigate(ServerVariables.VerifyEmail)}>Forget password ?</p>
+              </div>
               {formik.errors.password && formik.touched.password && (
                 <ErrorStyle error={formik.errors.password} />
               )}

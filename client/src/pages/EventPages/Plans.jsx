@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
 import Button2 from "../../components/Button2";
+import EventNavbar from "../../components/Event/EventNavbar";
 
 function Plans() {
   const [plans, setPlans] = useState([]);
@@ -66,6 +67,7 @@ function Plans() {
 
   return (
     <>
+      <EventNavbar />
       <div className="flex">
         <EventSideBar />
         <div className="min-h-screen bg-black-100 flex items-center justify-center">
@@ -88,7 +90,9 @@ function Plans() {
             ) : (
               <div className="border-red-900  p-6 rounded-lg shadow-md transition-transform transform hover:scale-105 border-2">
                 <h3 className="myPara">- You have no plans now</h3>
-                <p className="myPara">- Purchase one and explore your event..</p>
+                <p className="myPara">
+                  - Purchase one and explore your event..
+                </p>
               </div>
             )}
 
@@ -104,7 +108,9 @@ function Plans() {
                   </h1>
                   <small className="myPara mb-4 max-w-10">{`available for ${plan.totalDays} days`}</small>
                   <br />
-                  <small className="myPara mb-4 max-w-10">{plan.description}</small>
+                  <small className="myPara mb-4 max-w-10">
+                    {plan.description}
+                  </small>
                   <br />
 
                   <Button2

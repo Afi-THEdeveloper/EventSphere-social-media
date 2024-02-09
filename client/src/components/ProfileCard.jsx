@@ -15,7 +15,7 @@ import { API_BASE_URL } from "../config/api";
 
 function ProfileCard({ event, postCount, story }) {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [followers, setFollowers] = useState([]);
   const ProfileClickHandler = () => {
@@ -27,13 +27,13 @@ function ProfileCard({ event, postCount, story }) {
   };
 
   const openModal = () => {
-    dispatch(showLoading())
+    dispatch(showLoading());
     eventRequest({
       url: apiEndPoints.getFollowers,
       method: "get",
     })
       .then((res) => {
-        dispatch(hideLoading())
+        dispatch(hideLoading());
         if (res.data.success) {
           setFollowers(res.data?.followers);
           setIsModalOpen(true);
@@ -42,7 +42,7 @@ function ProfileCard({ event, postCount, story }) {
         }
       })
       .catch((err) => {
-        dispatch(hideLoading())
+        dispatch(hideLoading());
         toast.error(err.message);
       });
   };
@@ -60,6 +60,24 @@ function ProfileCard({ event, postCount, story }) {
       marginRight: "-50%",
       transform: "translate(-50%, -50%)",
     },
+  };
+
+  const handleAddStoryClick = () => {
+    eventRequest({
+      url: apiEndPoints.hasPlan,
+      method: "get",
+    })
+      .then((res) => {
+        if (res.data?.success) {
+          navigate(ServerVariables.addStory);
+        } else {
+          toast.error(res?.data?.error);
+          navigate(ServerVariables.PlansAvailable);
+        }
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
   };
 
   return (
@@ -85,11 +103,16 @@ function ProfileCard({ event, postCount, story }) {
                   </span>
                   <span className="text-sm myTextColor">Posts</span>
                 </div>
-                <div className="p-3 text-center cursor-pointer" onClick={openModal}>
+                <div
+                  className="p-3 text-center cursor-pointer"
+                  onClick={openModal}
+                >
                   <span className="text-xl font-bold block uppercase tracking-wide myTextColor hover:text-white">
                     {event?.followers?.length}
                   </span>
-                  <span className="text-sm myTextColor hover:text-white">Followers</span>
+                  <span className="text-sm myTextColor hover:text-white">
+                    Followers
+                  </span>
                 </div>
                 <div className="p-3 text-center">
                   <span className="text-xl font-bold block uppercase tracking-wide myTextColor hover:bg-slate-500">
@@ -107,7 +130,7 @@ function ProfileCard({ event, postCount, story }) {
                   <span className="text-xl font-bold block uppercase tracking-wide">
                     <button
                       className="border p-2 rounded-full hover:bg-[#0F1015]"
-                      onClick={() => navigate(ServerVariables.addStory)}
+                      onClick={handleAddStoryClick}
                     >
                       <PlusIcon className="myPara h-3 w-3" />
                     </button>
@@ -160,7 +183,7 @@ function ProfileCard({ event, postCount, story }) {
             isOpen={isModalOpen}
             closeModal={closeModal}
             items={followers}
-            role={'event'}
+            role={"event"}
           />
         </Modal>
       </div>

@@ -59,6 +59,10 @@ import Banners from "../pages/AdminPages/Banners";
 import AddBanner from "../pages/AdminPages/AddBanner";
 import EditBanner from "../pages/AdminPages/EditBanner";
 import JobsPage from "../pages/UserPages/JobsPage";
+import VerifyEmail from "../pages/UserPages/VerifyEmail";
+import ChangePassword from "../pages/UserPages/ChangePassword";
+import EventVerify from "../pages/EventPages/EventVerify";
+import ResetEventPassword from "../pages/EventPages/ResetEventPassword";
 
 
 function AppRoutes() {
@@ -101,8 +105,6 @@ function AppRoutes() {
       <Routes>
         <Route path={ServerVariables.Landing} element={<LandingPage />} />
         <Route path={ServerVariables.storyCourosel} element={<StoryCourosel />} />
-        {/* <Route path={`${ServerVariables.userVideoCallRoom}/:roomId/:eventId`} element={<UserVideoRoom/>} />
-        <Route path={`${ServerVariables.EventVideoCallRoom}/:roomId/:userId`} element={<VideoRoom />} /> */}
         <Route path='*' element={<Page404 />} />
         
         
@@ -114,6 +116,8 @@ function AppRoutes() {
           <Route path={ServerVariables.Login} element={<UserLogin />} />
           <Route path={ServerVariables.Register} element={<UserRegister />} />
           <Route path={ServerVariables.Otp} element={<Otp />} />
+          <Route path={ServerVariables.VerifyEmail} element={<VerifyEmail />} />
+          <Route path={`${ServerVariables.changePassword}/:email`} element={<ChangePassword />} />
         </Route>    
 
         <Route element={<IsLoggedInUser />}> {/* protected  */}
@@ -187,6 +191,8 @@ function AppRoutes() {
           <Route path={ServerVariables.eventLogin} element={<EventLogin />} />
           <Route path={ServerVariables.eventRegister} element={<EventRegister />}/>
           <Route path={ServerVariables.eventOtp} element={<EventOtp />} />
+          <Route path={ServerVariables.eventEmailVerification} element={<EventVerify />} />
+          <Route path={`${ServerVariables.changeEventPassword}/:email`} element={<ResetEventPassword />} />
         </Route>
 
 

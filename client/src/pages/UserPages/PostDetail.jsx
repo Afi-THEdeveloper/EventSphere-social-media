@@ -13,6 +13,7 @@ import { ServerVariables } from "../../utils/ServerVariables";
 import { API_BASE_URL } from "../../config/api";
 import UserNavbar from "../../components/User/UserNavbar";
 
+
 function PostDetail() {
   const [post, setPost] = useState({});
   const [comment, setComment] = useState("");

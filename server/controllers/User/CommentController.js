@@ -57,6 +57,18 @@ exports.getAllComments = CatchAsync(async (req, res) => {
   }
 });
 
+exports.deleteComment = CatchAsync(async (req, res) => {
+  console.log(req?.body);
+  const comment_Id = req?.body?.commentId;
+
+  if (comment_Id) {
+    await Comment.findByIdAndDelete(comment_Id);
+    res.status(200).json({ success: true });
+  } else {
+    res.json({ error: "comment id is not found" });
+  }
+});
+
 exports.addReply = CatchAsync(async (req, res) => {
   console.log(req.body);
   const comment_Id = req?.body?.commentId;

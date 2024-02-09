@@ -124,7 +124,7 @@ exports.getSuccessPage = CatchAsync(async (req, res) => {
         event.selectedPlan.plan = plan._id;
         event.selectedPlan.transactionId = transactionId;
         event.selectedPlan.expiry = new Date(
-          createdOn.getTime() + 10 * 60 * 1000
+          createdOn.getTime() + plan?.totalDays * 24 * 60 * 60 * 1000
         ); // 10 min valid for test case
         await event.save();
 
@@ -133,10 +133,10 @@ exports.getSuccessPage = CatchAsync(async (req, res) => {
           event: eventId,
           transactionId: transactionId,
           startDate: createdOn,
-          expireDate: new Date(createdOn.getTime() + 10 * 60 * 1000),
+          expireDate: new Date(
+            createdOn.getTime() + plan?.totalDays * 24 * 60 * 60 * 1000
+          ),
         });
-        // http://localhost:5173
-        // https://eventsphere.netlify.app
         return res.redirect(`${process.env.FRONTEND_URL}/PaymentSuccess`);
       }
     }

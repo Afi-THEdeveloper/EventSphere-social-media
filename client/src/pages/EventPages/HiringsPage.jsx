@@ -1,21 +1,17 @@
 import React, { useEffect, useState } from "react";
 import EventSideBar from "../../components/EventSideBar";
 import { PlusIcon } from "@heroicons/react/24/outline";
-import Button2 from "../../components/Button2";
-import Button1 from "../../components/Button1";
 import { ServerVariables } from "../../utils/ServerVariables";
 import { useNavigate } from "react-router-dom";
-import Myh1 from "../../components/Myh1";
 import JobCard from "../../components/JobCard";
 import { eventRequest } from "../../Helper/instance";
 import { apiEndPoints } from "../../utils/api";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
-import Modal from "react-modal";
 import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
-import FollowerCard from "../../components/FollowerCard";
 import Search1 from "../../components/Search1";
+import EventNavbar from "../../components/Event/EventNavbar";
 
 function HiringsPage() {
   const navigate = useNavigate();
@@ -115,8 +111,8 @@ function HiringsPage() {
     })
       .then((res) => {
         if (res.data.success) {
-          setJobPosts(res.data.results)
-          setSearched('')
+          setJobPosts(res.data.results);
+          setSearched("");
         } else {
           toast.error(res.data.error);
         }
@@ -126,8 +122,27 @@ function HiringsPage() {
       });
   };
 
+  const handlePostJobClick = () => {
+    eventRequest({
+      url: apiEndPoints.hasPlan,
+      method: "get",
+    })
+      .then((res) => {
+        if (res.data?.success) {
+          navigate(ServerVariables.postJob);
+        } else {
+          toast.error(res?.data?.error);
+          navigate(ServerVariables.PlansAvailable);
+        }
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  };
+
   return (
     <>
+      <EventNavbar />
       <div className="flex">
         <EventSideBar />
         <div className="flex-grow flex-shrink min-h-screen">
@@ -153,7 +168,7 @@ function HiringsPage() {
               <span className="font-bold block uppercase tracking-wide">
                 <button
                   className="border p-2 rounded-full myHover"
-                  onClick={() => navigate(ServerVariables.postJob)}
+                  onClick={handlePostJobClick}
                 >
                   <PlusIcon className="myPara h-4 w-4" />
                 </button>

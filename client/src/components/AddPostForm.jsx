@@ -68,7 +68,7 @@ function AddPostForm() {
     <div className="flex-1 flex flex-col items-center justify-center min-h-screen">
       <div className="flex w-full flex-col max-w-[400px] items-center space-y-3">
         <Myh1 title='Add post' />
-        <div className="w-full mt-10">
+        <div className="w-[270px] sm:w-full mt-10">
           <AuthInput
             name="location"
             type="text"

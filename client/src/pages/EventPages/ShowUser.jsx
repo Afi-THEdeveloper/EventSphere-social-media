@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import EventSideBar from "../../components/EventSideBar";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ServerVariables } from "../../utils/ServerVariables";
 import { FaFilePdf } from "react-icons/fa";
-import Myh1 from "../../components/Myh1";
 import { eventRequest } from "../../Helper/instance";
 import { apiEndPoints } from "../../utils/api";
 import toast from "react-hot-toast";
@@ -12,6 +10,7 @@ import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import { hideLoading, showLoading } from "../../Redux/slices/LoadingSlice";
 import { API_BASE_URL } from "../../config/api";
+import EventNavbar from "../../components/Event/EventNavbar";
 
 function ShowUser() {
   const [user, setUser] = useState({});
@@ -76,6 +75,7 @@ function ShowUser() {
 
   return (
     <>
+      <EventNavbar />
       <div className="flex">
         <EventSideBar />
 
@@ -143,7 +143,11 @@ function ShowUser() {
 
           {/* applied jobs */}
           <div className="text-center">
-            {userJobs.length ? <h1 className="myTextColor">Applied for jobs posted by you</h1>:<p className="myPara">Not applied for any jobs</p>}
+            {userJobs.length ? (
+              <h1 className="myTextColor">Applied for jobs posted by you</h1>
+            ) : (
+              <p className="myPara">Not applied for any jobs</p>
+            )}
             <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6 mx-16 my-8">
               {userJobs.length &&
                 userJobs.map((jobPost) => {
